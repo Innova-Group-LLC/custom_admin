@@ -1,0 +1,56 @@
+@media only screen and (min-width: 1101px) {
+    .data-form {
+        margin: 15px 30px!important;
+    }
+}
+@media only screen and (max-width: 1100px) {
+    .data-form {
+        margin: 15px!important;
+    }
+}
+.el-tabs {
+    height: 100%;
+}
+.el-tabs__content {
+    height: 100%;
+    //overflow: visible;
+}
+.ti-input{
+    padding: 0px!important;
+}
+.el-tabs--top .el-tabs__item {
+    padding: 0 10px;
+}
+.create-dialog {
+    max-width: 1300px;
+}
+
+.el-form-item {
+    .ck-editor {
+        max-width: 900px;
+    }
+}
+.edit-page-tabs {
+    .el-tabs__header {
+        height: 100%;
+    }
+    border-bottom: none;
+    box-shadow: none;
+}
+.model-form-tab {
+}
+.inline-tabs > .el-tabs__header {
+    padding-left: 15px;
+}
+.edit-page-tabs > .el-tabs__content {
+    padding: 0px;
+}
+
+.translation-tabs {
+    margin-bottom: 10px;
+    max-width: 950px;
+
+    .el-form-item-delimiter {
+        padding-bottom: 0px;
+    }
+}

@@ -1,0 +1,128 @@
+.ti-new-tag-input-wrapper {
+    ::placeholder {
+        color: #c1c7d2;
+        font-size: 13px;
+        font-family: sans-serif;
+        font-size: 100%;
+        padding-left: 5px;
+    }
+}
+.ti-new-tag-input {
+    height: auto!important;
+}
+.el-date-editor .el-range__icon {
+    line-height: 23px;
+}
+.el-date-editor .el-range-separator {
+    line-height: 19px;
+}
+.el-select__caret {
+    line-height: 20px;
+    vertical-align: top;
+    height: 30px;
+}
+.filter-button {
+    height: 28px;
+    padding: 2px 10px;
+    vertical-align: top;
+}
+.filter-container {
+    .el-date-editor{
+        width: 250px;
+        .el-input__prefix {
+            .el-icon-time{
+                line-height: 25px;
+            }
+        }
+        .el-input__suffix{
+            .el-input__suffix-inner{
+                .el-input__icon{
+                    line-height: 25px;
+                    padding-right: 10px;
+                }
+            }
+        }
+    }
+}
+.filter-search {
+    width: 300px!important;
+    padding-right: 10px;
+}
+.filter-element > .el-range-editor {
+    width: 290px;
+}
+.filter-element {
+    margin-bottom: 5px;
+    height: auto;
+    width: 300px;
+    display: inline-block;
+    padding-right: 10px!important;
+}
+.filter-element input {
+    height: 28px;
+    vertical-align: top;
+}
+.filter-element > .el-input {
+    height: 28px;
+    vertical-align: top;
+}
+.filter-element > .el-date-editor {
+    height: 28px;
+    vertical-align: top;
+}
+.filter-element > .tags-container > .vue-tags-input > .ti-input {
+    padding: 0px;
+}
+.el-date-editor .el-range__close-icon {
+    line-height: 20px;
+}
+.filter-daterange {
+    width: 300px!important;
+    height: 28px;
+}
+.mx-datepicker-range {
+    width: 290px!important;
+    font-family: sans-serif;
+    color: #606266;
+}
+.mx-icon-clear {
+    top: 14px!important;
+}
+.mx-icon-calendar {
+    top: 14px!important;
+}
+.mx-input-wrapper {
+    ::placeholder {
+        color: #c1c7d2;
+        font-size: 13px;
+        font-family: sans-serif;
+        font-size: 100%;
+        padding-left: 5px;
+    }
+    .mx-input {
+        webkit-box-shadow: none;
+        box-shadow: none;
+        border: 1px solid #dcdfe6;
+    }
+    .mx-input:hover {
+        border-color: #c1c3c9;
+    }
+    .mx-input:focus {
+        border-color: #dcdfe6;
+    }
+}
+.input-number {
+    line-height: 20px;
+    .el-input-number__increase {
+        line-height: 38px;
+        margin-right: 10px;
+    }
+    .el-input-number__decrease,.el-input-number__increase {
+        line-height: 38px;
+        height: 26px;
+        width: 30px;
+        i {
+            vertical-align: super;
+        }
+    }
+}
