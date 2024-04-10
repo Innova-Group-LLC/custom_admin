@@ -1,0 +1,20 @@
+[project]
+name = "custom-admin"
+version = "0.1"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+keywords = ["django", "admin"]
+
+[project.urls]
+Repository = "https://github.com/Innova-Group-LLC/custom_admin"
+Documentation = "https://innova-group-llc.github.io/custom_admin_docs/"
+
+[tool.setuptools]
+py-modules = [
+    "custom_admin"
+]

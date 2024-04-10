@@ -57,7 +57,7 @@ export default {
       apiMethods: null,
     }
   },
-  async created() {
+  async mounted() {
     this.loadData = true
 
     this.apiMethods = getMethods(this.formInfo.viewname, this.apiInfo)
