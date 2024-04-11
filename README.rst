@@ -50,7 +50,7 @@ Build
    cp -r vue_frontend/dist/tinymce/ custom_admin/static/tinymce/
    cp -r vue_frontend/dist/static/ custom_admin/
 
-.. |logo| image:: https://raw.githubusercontent.com/Innova-Group-LLC/custom_admin/blob/master/logo.png
+.. |logo| image:: https://github.com/Innova-Group-LLC/custom_admin/blob/master/logo.png?raw=true
    :target: https://innova-group-llc.github.io/custom_admin_docs/
 .. |PyPI version| image:: https://badge.fury.io/py/django-customvueadmin.svg
    :target: https://pypi.org/project/django-customvueadmin/
