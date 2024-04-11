@@ -13,12 +13,12 @@ Make sure settings.TEMPLATES contains 'APP_DIRS': True
 
 class CustomAdminView(View):
     '''
-    # Settings in case of https:
+    # Settings in case of h2ttps:
     USE_X_FORWARDED_HOST = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     '''
 
-    template = 'custom_admin/admin_index.py'
+    template = 'custom_admin/admin_index.html'
 
     def get(self, request):
         admin_settings = {
