@@ -1,13 +1,17 @@
 # Django Custom Admin
 
-![logo](https://github.com/Innova-Group-LLC/custom_admin/blob/master/logo.png)
+<p align="center">
+  <a href="https://innova-group-llc.github.io/custom_admin_docs/">
+    <img alt="Django Custom Admin" src="https://github.com/Innova-Group-LLC/custom_admin/blob/master/logo.png" width="830">
+  </a>
+</p>
 
 A custom admin interface providing backend via DRF and frontend via Vue and Element UI that tries Keep It Simple.
 
 [![PyPI version](https://badge.fury.io/py/django-customvueadmin.svg)](https://badge.fury.io/py/django-customvueadmin)
 [![GitHub stars](https://img.shields.io/github/stars/Innova-Group-LLC/custom_admin)](https://github.com/Innova-Group-LLC/custom_admin)
 
-[Documentation](https://innova-group-llc.github.io/custom_admin_docs/)
+<a href="https://innova-group-llc.github.io/custom_admin_docs/">Documentation</a>
 
 ## Features
 
