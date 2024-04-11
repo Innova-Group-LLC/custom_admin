@@ -2,7 +2,7 @@
 const path = require('path')
 const name = 'Admin'
 const public_path = '/'
-const asset_dir = 'static'
+const asset_dir = 'static/custom_admin'
 
 function resolve(dir) {
   return path.join(__dirname, dir)

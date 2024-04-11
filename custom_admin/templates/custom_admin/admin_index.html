@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+        <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+        <title>{{ SETTINGS.title }}</title>
+        <link href={{ SETTINGS.static_prefix }}/js/app.js rel=preload as=script>
+        <link href={{ SETTINGS.static_prefix }}/js/chunk-vendors.js rel=preload as=script>
+        <!--[if IE]><link rel="icon" type="image/png" href="{{ SETTINGS.static_prefix }}/favicon.ico"><![endif]-->
+        <link rel=manifest href=/manifest.json>
+        <meta name=theme-color content=#4DBA87>
+        <meta name=apple-mobile-web-app-capable content=no>
+        <meta name=apple-mobile-web-app-status-bar-style content=default>
+        <meta name=apple-mobile-web-app-title content=vue-admin-template>
+        <link rel=mask-icon href=/img/icons/safari-pinned-tab.svg color=#4DBA87>
+        <meta name=msapplication-TileImage content=/img/icons/msapplication-icon-144x144.png>
+        <meta name=msapplication-TileColor content=#000000>
+        <link href={{ SETTINGS.static_prefix }}/css/app.css rel=preload as=style>
+        <link href={{ SETTINGS.static_prefix }}/css/chunk-elementUI.css rel=preload as=style>
+        <link href={{ SETTINGS.static_prefix }}/css/chunk-libs.css rel=preload as=style>
+        <link href={{ SETTINGS.static_prefix }}/js/app.js rel=preload as=script>
+        <link href={{ SETTINGS.static_prefix }}/js/chunk-elementUI.js rel=preload as=script>
+        <link href={{ SETTINGS.static_prefix }}/js/chunk-libs.js rel=preload as=script>
+        <link href={{ SETTINGS.static_prefix }}/js/runtime.js rel=preload as=script>
+        <link href={{ SETTINGS.static_prefix }}/css/chunk-elementUI.css rel=stylesheet>
+        <link href={{ SETTINGS.static_prefix }}/css/chunk-libs.css rel=stylesheet>
+        <link href={{ SETTINGS.static_prefix }}/css/app.css rel=stylesheet>
+        <link rel=icon type=image/png href={{ SETTINGS.static_prefix }}/favicon.ico>
+        <link rel=manifest href=/manifest.json>
+        <meta name=theme-color content=#4DBA87>
+        <meta name=apple-mobile-web-app-capable content=no>
+        <meta name=apple-mobile-web-app-status-bar-style content=default>
+        <meta name=apple-mobile-web-app-title content=vue-admin-template>
+        <link rel=mask-icon href=/img/icons/safari-pinned-tab.svg color=#4DBA87>
+        <meta name=msapplication-TileImage content=/img/icons/msapplication-icon-144x144.png>
+        <meta name=msapplication-TileColor content=#000000>
+    </head>
+    <body>
+        <noscript>
+            <strong>We're sorry but {{ SETTINGS.title }} doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+        </noscript>
+        <div id=app></div>
+        <span id=settings data-json="{{ SETTINGS_JSON }}"></span>
+        <!-- <script src={{ SETTINGS.static_prefix }}/js/chunk-vendors.js></script> -->
+        <script src={{ SETTINGS.static_prefix }}/js/app.js></script>
+        <script src={{ SETTINGS.static_prefix }}/js/runtime.js></script>
+        <script src={{ SETTINGS.static_prefix }}/js/chunk-elementUI.js></script>
+        <script src={{ SETTINGS.static_prefix }}/js/chunk-libs.js></script>
+        <script src={{ SETTINGS.static_prefix }}/js/app.js></script>
+    </body>
+</html>

@@ -44,10 +44,10 @@ Build
 ::
 
    npm run build --prefix vue_frontend
-   rm -r custom_admin/static/*
-   cp vue_frontend/dist/favicon.ico custom_admin/static/favicon.ico
-   cp vue_frontend/dist/manifest.json custom_admin/static/manifest.json
-   cp -r vue_frontend/dist/tinymce/ custom_admin/static/tinymce/
+   rm -r custom_admin/static/custom_admin/*
+   cp vue_frontend/dist/favicon.ico custom_admin/static/custom_admin/favicon.ico
+   cp vue_frontend/dist/manifest.json custom_admin/static/custom_admin/manifest.json
+   cp -r vue_frontend/dist/tinymce/ custom_admin/static/custom_admin/tinymce/
    cp -r vue_frontend/dist/static/ custom_admin/
 
 .. |logo| image:: https://github.com/Innova-Group-LLC/custom_admin/blob/master/logo.png?raw=true
