@@ -3,9 +3,9 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from custom_admin.api import filters as admin_filters
-from custom_admin.models import AdminLog
 from custom_admin.api.serializers.base_serializer import AdminModelSerializer
 from custom_admin.api.views.base_admin_viewset import WithoutCreateBaseAdminViewSet
+from custom_admin.models import AdminLog
 
 
 def get_views_choices():

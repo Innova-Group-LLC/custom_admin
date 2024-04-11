@@ -5,6 +5,8 @@ var config_dataset = {
   backend_prefix: process.env.VUE_APP_URL_PREFIX || 'http://localhost:8001/custom_admin/',
   base_admin_url: 'admin/',
   static_prefix: '',
+  logo_image_path: '',
+  auth_header_prefix: 'Token',
 }
 
 if (process.env.NODE_ENV == 'production') {

@@ -1,13 +1,10 @@
 import logging
 
-from django.db import models
-from modeltranslation.translator import translator
-from modeltranslation.utils import get_translation_fields
 from rest_framework import relations, serializers
 
-from backend.fields import models as custom_model_fields
+from django.db import models
+
 from custom_admin.api import fields
-from custom_admin.api import fields as admin_fields
 from custom_admin.controllers import AdminLogManager
 
 log = logging.getLogger("custom_admin")
@@ -24,8 +21,7 @@ class AdminFieldsMixin:
     serializer_field_mapping[models.CharField] = fields.AdminCharField
     serializer_field_mapping[models.TextField] = fields.AdminCharField
 
-    serializer_field_mapping[models.PositiveIntegerField] = admin_fields.PositiveIntegerField
-    serializer_field_mapping[custom_model_fields.PositiveDecimalField] = admin_fields.PositiveDecimalField
+    serializer_field_mapping[models.PositiveIntegerField] = fields.PositiveIntegerField
 
 
 class AdminSerializer(AdminFieldsMixin, serializers.Serializer):
@@ -55,9 +51,11 @@ class TranslatedModelSerializer(AdminModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        from modeltranslation.translator import translator
         self.trans_opts = translator.get_options_for_model(self.Meta.model)
 
     def get_field_names(self, declared_fields, info):
+        from modeltranslation.utils import get_translation_fields
         result = super().get_field_names(declared_fields, info)
         for f in self.trans_opts.fields:
             trans_fields = get_translation_fields(f)
@@ -66,6 +64,7 @@ class TranslatedModelSerializer(AdminModelSerializer):
         return result
 
     def get_extra_kwargs(self):
+        from modeltranslation.utils import get_translation_fields
         extra_kwargs = super().get_extra_kwargs()
         for field in self.trans_opts.fields:
 

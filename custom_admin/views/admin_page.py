@@ -1,6 +1,6 @@
 import json
 
-from django.conf import settings
+from django.conf import os, settings
 from django.shortcuts import render
 from django.template.exceptions import TemplateDoesNotExist
 from django.views import View
@@ -21,10 +21,17 @@ class CustomAdminView(View):
     template = 'custom_admin/admin_index.html'
 
     def get(self, request):
+        custom_admin = getattr(settings, 'CUSTOM_ADMIN', {})
+
+        static_prefix = custom_admin.get('static_prefix') or '/static/custom_admin'
+
         admin_settings = {
-            'title': settings.CUSTOM_ADMIN.get('title'),
-            'base_admin_url': settings.CUSTOM_ADMIN.get('base_admin_url') or 'admin/',
-            'static_prefix': settings.CUSTOM_ADMIN.get('static_prefix') or '/static/custom_admin',
+            'title': custom_admin.get('title', 'Admin'),
+            'base_admin_url': custom_admin.get('base_admin_url') or 'admin/',
+            'static_prefix': static_prefix,
+            'favicon_path': custom_admin.get('favicon_path') or os.path.join(static_prefix, 'favicon.ico'),
+            'logo_image_path': custom_admin.get('logo_image_path') or os.path.join(static_prefix, 'default-logo.png'),
+            'auth_header_prefix': custom_admin.get('auth_header_prefix') or 'Token',
         }
 
         if not admin_settings.get('backend_prefix'):

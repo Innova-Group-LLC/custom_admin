@@ -97,7 +97,9 @@ export default {
         }
 
         this.loadData = false
-        this.$refs.fieldscontainer.updateFormData(this.formData)
+        if (this.$refs.fieldscontainer) {
+          this.$refs.fieldscontainer.updateFormData(this.formData)
+        }
       }).catch(error => {
         this.loadData = false
         if (error.response && error.response.status === 404) {

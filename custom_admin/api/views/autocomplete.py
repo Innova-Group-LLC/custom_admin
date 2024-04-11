@@ -11,7 +11,7 @@ from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.permissions import IsStaffPermission
+from custom_admin.api.permissions import AdminPermission
 
 log = logging.getLogger("admin")
 
@@ -29,7 +29,7 @@ class ModelNotFound(Exception):
 
 class AutoCompeteView(APIView):
     throttle_classes = []
-    permission_classes = (IsStaffPermission,)
+    permission_classes = (AdminPermission,)
 
     default_fields = {
         'Permission': ('id', 'codename', 'name'),

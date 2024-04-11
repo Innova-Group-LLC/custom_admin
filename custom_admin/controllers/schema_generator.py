@@ -3,7 +3,6 @@ import typing
 from django.conf import settings
 from django.utils.translation import gettext as _
 from django_filters.utils import get_model_field
-from modeltranslation.translator import NotRegistered, translator
 
 from custom_admin.api.serializers.base_serializer import AdminModelSerializer
 from custom_admin.api.viewset_info import AdminViewSetInfo
@@ -170,6 +169,11 @@ class ViewSetSchemaGenerator:
         return actions
 
     def _get_translations_info(self, serializer):
+        try:
+            from modeltranslation.translator import NotRegistered, translator
+        except ModuleNotFoundError:
+            return {}
+
         if not self.model:
             return {}
 

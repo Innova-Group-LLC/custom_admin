@@ -26,12 +26,11 @@ export function login(userInfo) {
     loginApi(
       { username: username.trim(), password: password }
     ).then(response => {
-      setToken(response.data.access, response.data.refresh)
-      console.log('access_expiration', response.data.access_expiration)
+      setToken(response.data.token, response.data.token)
 
-      localStorage.setItem('name', response.data.user.username)
-      localStorage.setItem('user_id', response.data.user.pk)
-      setLang(response.data.user.language)
+      localStorage.setItem('name', response.data.username)
+      localStorage.setItem('user_id', response.data.pk)
+      setLang(response.data.language)
       resolve()
     }).catch(error => {
       reject(error)

@@ -2,7 +2,6 @@ import datetime
 import typing
 from io import BytesIO
 
-import unicodecsv as csv
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 
@@ -41,6 +40,7 @@ def _get_headers(view, serializer, serializer_class):
 
 def base_export_csv(filename: str, columns: typing.List, lines: typing.List):
     f = BytesIO()
+    import unicodecsv as csv
     writer = csv.writer(f, dialect=csv.excel, encoding='utf-8')
     writer.writerow(columns)
 

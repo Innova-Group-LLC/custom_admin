@@ -19,9 +19,10 @@ class GetAdminSectionsAPIView(APIView):
     router = None
 
     def get(self, request, *args, **kwargs):
+        lang = getattr(request, 'LANGUAGE_CODE', None) or getattr(settings, 'LANGUAGE_CODE', None) or 'en'
         response = Response({
             'sections': get_schema(self.router, request),
-            'language': request.LANGUAGE_CODE,
+            'language': lang,
             'languages': {lang[0]: lang[1] for lang in settings.LANGUAGES},
         })
         return response

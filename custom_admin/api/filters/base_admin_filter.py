@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 from django.db import models
-from django_filters import filters, filterset, fields
+from django_filters import fields, filters, filterset
 from django_filters import rest_framework as drf_filters
 from rest_framework import fields as drf_fields
 

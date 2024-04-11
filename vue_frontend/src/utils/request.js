@@ -12,8 +12,7 @@ service.interceptors.request.use(
   config => {
     let token = getToken()
     if (token !== null && token !== undefined) {
-      let authorization_prefix = process.env.VUE_APP_AUTHORIZATION_PREFIX || 'Bearer'
-      config.headers['Authorization'] = authorization_prefix + ' ' + token
+      config.headers['Authorization'] = config_dataset.auth_header_prefix + ' ' + token
     }
     config.headers['Accept'] = 'application/json'
     return config
