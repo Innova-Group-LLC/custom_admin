@@ -51,7 +51,7 @@ export default {
           url, 'post', {language: langSlug}
         ).then(response => {
           setLang(langSlug)
-          document.location.reload()
+          this.$router.go()
         }).catch(error => {
           Message({ message: error, type: 'error', duration: 3 * 1000 })
         })

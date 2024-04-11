@@ -1,20 +1,11 @@
-[project]
-name = "custom-admin"
-version = "0.1"
-readme = "README.md"
-requires-python = ">=3.8"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
-]
+[build-system]
+requires = ['setuptools>=40.8.0']
+build-backend = 'setuptools.build_meta'
 
-keywords = ["django", "admin"]
+[tool.black]
+target-version = ['py310']
 
-[project.urls]
-Repository = "https://github.com/Innova-Group-LLC/custom_admin"
-Documentation = "https://innova-group-llc.github.io/custom_admin_docs/"
-
-[tool.setuptools]
-py-modules = [
-    "custom_admin"
-]
+[tool.isort]
+profile = 'black'
+default_section = 'THIRDPARTY'
+known_first_party = 'django'
