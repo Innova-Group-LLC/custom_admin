@@ -1,5 +1,7 @@
 import json
 
+from django.http import HttpResponse
+
 from custom_admin.views.template import CUSTOM_ADMIN_TEMPLATE_STRING
 from django.conf import settings
 from django.template import Context, Template
@@ -31,4 +33,5 @@ class CustomAdminView(View):
         }
 
         template = Template(CUSTOM_ADMIN_TEMPLATE_STRING)
-        return template.render(Context(context))
+        code = template.render(Context(context))
+        return HttpResponse(code)
