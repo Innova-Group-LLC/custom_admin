@@ -1,14 +1,9 @@
 import json
 
+from custom_admin.views.template import CUSTOM_ADMIN_TEMPLATE_STRING
 from django.conf import settings
-from django.shortcuts import render
-from django.template.exceptions import TemplateDoesNotExist
+from django.template import Context, Template
 from django.views import View
-
-TEMPLATE_NOT_FOUND = '''
-Custom admin cannot find template "{template}".
-Make sure settings.TEMPLATES contains 'APP_DIRS': True
-'''
 
 
 class CustomAdminView(View):
@@ -35,7 +30,5 @@ class CustomAdminView(View):
             'SETTINGS_JSON': json.dumps(admin_settings),
         }
 
-        try:
-            return render(request, self.template, context)
-        except TemplateDoesNotExist as e:
-            raise TemplateDoesNotExist(TEMPLATE_NOT_FOUND.format(template=self.template)) from e
+        template = Template(CUSTOM_ADMIN_TEMPLATE_STRING)
+        return template.render(Context(context))
