@@ -6,7 +6,11 @@ from django_filters.utils import get_model_field
 
 from custom_admin.api.serializers.base_serializer import AdminModelSerializer
 from custom_admin.api.viewset_info import AdminViewSetInfo
-from custom_admin.controllers.filters_schema import ModelFieldException, get_filters_class_data, get_filters_fields_data
+from custom_admin.controllers.filters_schema import (
+    ModelFieldException,
+    get_filters_class_data,
+    get_filters_fields_data,
+)
 
 
 class ViewSetSchemaGenerator:
@@ -209,11 +213,15 @@ class ViewSetSchemaGenerator:
         list_display = self._get_list_display(serializer_info, serializer)
         search_fields = self._get_search_fields()
 
+        related_inlines = []
+        if hasattr(self.viewset, 'get_related_inlines'):
+            related_inlines = self.viewset.get_related_inlines()
+
         meta_data = {
             'serializer': serializer_info,
             'search_fields': search_fields,
             'ordering_fields': getattr(self.viewset, 'ordering_fields', []),
-            'related_inlines': getattr(self.viewset, 'related_inlines', []),
+            'related_inlines': related_inlines,
             'field_groups': getattr(serializer.Meta, 'groups', None) if serializer else None,
             'filterset_fields': filters_data,
             'filds_list': list_display,

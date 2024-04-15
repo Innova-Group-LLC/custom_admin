@@ -8,6 +8,7 @@ from django.http import QueryDict
 from django.utils.decorators import classonlymethod
 from django.utils.translation import gettext as _
 from django_filters import rest_framework
+from drf_yasg.utils import serializers
 from rest_framework import filters, mixins, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import JSONParser, MultiPartParser
@@ -18,6 +19,8 @@ from custom_admin.api.inlines import ViewActionsInlineMixIn
 from custom_admin.api.permissions import AdminPermission
 from custom_admin.controllers.custom_metadata import CustomMetadata
 from custom_admin.utils.async_mixin import AsyncMixin
+
+from custom_admin.api.inline_relation import RelatedInline
 
 log = logging.getLogger('admin')
 
@@ -187,7 +190,20 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
     # Set None for diplay all fields
     filds_list = ['id']
 
-    related_inlines = []
+    related_inlines: typing.List[RelatedInline] = []
+
+    @classmethod
+    def get_related_inlines(cls) -> typing.List[dict]:
+        result = []
+        for i, inline in enumerate(cls.related_inlines):
+
+            if not isinstance(inline, RelatedInline):
+                raise serializers.ValidationError(f'View {cls.__name__}.related_inlines[{i}] error: is not an instance of RelatedInline')
+
+            inline.validate(cls, i)
+            result.append(inline.asdict())
+
+        return result
 
     @classmethod
     def get_model(cls) -> typing.Optional[typing.Any]:

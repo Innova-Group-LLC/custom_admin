@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.template.exceptions import TemplateDoesNotExist
 from django.views import View
 
+from custom_admin.utils import get_schema
+
 TEMPLATE_NOT_FOUND = '''
 Custom admin cannot find template "{template}".
 Make sure settings.TEMPLATES contains 'APP_DIRS': True

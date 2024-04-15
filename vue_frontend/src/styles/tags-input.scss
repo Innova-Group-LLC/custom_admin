@@ -8,7 +8,7 @@
 .tag-block {
     max-width: 700px;
     white-space: nowrap;
-    height: 32px!important;
+    height: 28px!important;
 }
 .vue-tags-input {
     max-width: 750px!important;
@@ -19,10 +19,11 @@
     width: 40px;
     float: right;
     display: inline-block;
-    padding: 3px 8px;
+    padding: 2px 8px;
     font-size: 22px;
     cursor: pointer;
     color: #3a8ee6;
+    height: 28px;
 }
 .ti-tag.ti-valid:not(.tag-not-found) {
     background-color: #409EFF!important;
@@ -52,7 +53,6 @@
     display: inline-block;
 }
 .ti-tags {
-    padding-top: 1px!important;
     margin-top: 3px;
     width: 100%;
     overflow: hidden;
@@ -77,7 +77,7 @@
     line-height: 18px;
 }
 .ti-tag.ti-valid.disabled {
-    background-color: #adadad!important;   
+    background-color: #adadad!important;
 }
 .disabled .ti-new-tag-input {
     cursor: not-allowed!important;
@@ -88,6 +88,15 @@
     border-top: 1px solid #ccc!important;
     border-bottom: none;
 }
+
+.ti-new-tag-input {
+    padding: 0px!important;
+    margin: 0px!important;
+}
+.ti-new-tag-input-wrapper {
+    margin: 0px 2px!important;
+}
+
 .ti-tag {
     max-width: 142px;
 }
