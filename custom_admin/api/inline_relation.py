@@ -27,6 +27,9 @@ class RelatedInline:
     # In case of ORM related viewset
     back_relation_name: typing.Optional[str] = None
 
+    # https://element.eleme.io/#/en-US/component/icon
+    icon: typing.Optional[str] = None
+
     def asdict(self) -> dict:
         return asdict(self)
 

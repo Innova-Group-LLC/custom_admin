@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loadData" class="model-form-container">
     <div class="header-form" v-if="formInfo.showTitle">
-      <h2 class="form-title">{{ getTitle() }}</h2>
+      <h2 v-if="sectionData" class="form-title">{{ getTitle() }}</h2>
       <i class="el-icon-close icon-close" @click="handleClose"></i>
     </div>
 
@@ -57,7 +57,7 @@ export default {
       apiMethods: null,
     }
   },
-  async mounted() {
+  async created() {
     this.loadData = true
 
     this.apiMethods = getMethods(this.formInfo.viewname, this.apiInfo)

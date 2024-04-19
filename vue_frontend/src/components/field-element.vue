@@ -23,7 +23,7 @@
 
         <el-date-picker
           ref="field-element"
-          v-if="field.type === 'datetime'"
+          v-if="types.datetime.indexOf(field.type) >= 0"
           v-model="fieldValue"
           type="datetime"
           :placeholder="$t('select_datetime')"
@@ -34,7 +34,7 @@
 
         <el-date-picker
           ref="field-element"
-          v-else-if="field.type === 'date'"
+          v-else-if="types.date.indexOf(field.type) >= 0"
           v-model="fieldValue"
           type="date"
           placeholder="$t('chose_date')"
@@ -85,7 +85,7 @@
         </div>
 
         <el-input-number
-          v-else-if="field.type === 'integer'"
+          v-else-if="types.number.indexOf(field.type) >= 0"
           ref="field-element"
           v-model="fieldValue"
           :min="field.min_value"
@@ -96,7 +96,7 @@
 
         <el-input-number
           ref="field-element"
-          v-else-if="field.type === 'decimal'"
+          v-else-if="types.float.indexOf(field.type) >= 0"
           v-model="fieldValue"
           :precision="precision"
           :step="0.1"
@@ -108,7 +108,7 @@
 
         <el-time-picker
           ref="field-element"
-          v-else-if="field.type === 'time'"
+          v-else-if="types.time.indexOf(field.type) >= 0"
           v-model="fieldValue"
           :placeholder="$t('chose_time')"
           value-format="hh:mm:ss"
@@ -143,7 +143,7 @@
 
         <el-switch
           ref="field-element"
-          v-else-if="field.type === 'boolean'"
+          v-else-if="types.boolean.indexOf(field.type) >= 0"
           v-model="fieldValue"
           :class="field.type"
           :disabled="field.read_only"
@@ -169,14 +169,14 @@
 
         <el-input
           ref="field-element"
-          v-else-if="['field'].indexOf(field.type) >= 0"
+          v-else-if="types.field.indexOf(field.type) >= 0"
           v-model="fieldValue"
           class="string"
           :maxlength="field.max_length"
           :disabled="field.read_only"
         />
 
-        <div v-else>{{ field.type }} "{{ field.label }}": {{ fieldValue }}</div>
+        <div v-else>{{ field }}</div>
 
         <span class="help-text" v-if="field.help_text">{{ field.help_text }}</span>
 
@@ -252,11 +252,18 @@ export default {
   data() {
     return {
       types: {
+        number: ['integer'],
+        float: ['decimal'],
         string: ['string', 'email', 'url', 'slug'],
         choice: ['list', 'choice', 'multiple choice'],
         related: ['primary', 'primarymany'],
         file: ['image upload', 'file upload', 'svgfield'],
+        boolean: ['boolean', 'BooleanFilter'],
         json: ['json'],
+        date: ['date'],
+        datetime: ['datetime'],
+        time: ['time'],
+        field: ['field'],
       },
       getCustomField,
       typesMap: {

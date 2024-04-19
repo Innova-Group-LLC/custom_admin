@@ -106,6 +106,24 @@
           </el-table-column>
 
         </template>
+
+        <el-table-column
+          :label="$t('operations')"
+          :min-width="200"
+          v-if="hasInlineActions()"
+          fixed="right"
+        >
+          <template slot-scope="scope">
+            <template v-for="(action_info, key) in sectionData.meta.actions">
+              <el-button
+                v-if="action_info.inline_type"
+                size="mini"
+                :type="action_info.inline_type"
+                @click="actionButtonInline(key, scope.row)">{{ action_info.name }}</el-button>
+            </template>
+          </template>
+        </el-table-column>
+
       </el-table>
 
       <div class="below-list-section">
@@ -124,6 +142,7 @@
           <el-select class="action-selector" v-model="selectedAction" :placeholder="$t('select_action')">
             <el-option
               v-for="(action_info, key) in this.sectionData.meta.actions"
+              v-if="!action_info.inline_only"
               :key="`action_${key}`"
               :label="action_info.name"
               :value="key">
@@ -187,7 +206,7 @@
 
         <span slot="footer" class="dialog-footer">
           <el-button @click="actionDialog.visible = false">{{ $t('close') }}</el-button>
-          <el-button type="primary" @click="sendActionForm">{{ $t('execute') }}</el-button>
+          <el-button type="primary" @click="sendActionForm()">{{ $t('execute') }}</el-button>
         </span>
       </el-dialog>
 
@@ -274,6 +293,12 @@ export default {
     this.getListData()
   },
   methods: {
+    hasInlineActions() {
+      for (const [inline_key, inline_info] of Object.entries(this.sectionData.meta.actions)) {
+        if (inline_info.inline_type) return true
+      }
+      return false
+    },
     isColumnFixed(columnName) {
       return this.sectionData.meta.fixed_columns && this.sectionData.meta.fixed_columns.includes(columnName)
     },
@@ -461,6 +486,9 @@ export default {
         return
       }
 
+      this.clickAction()
+    },
+    clickAction() {
       const actionInfo = this.sectionData.meta.actions[this.selectedAction]
       if (actionInfo.form_serializer) {
         this.actionDialog.formInfo = {
@@ -489,6 +517,13 @@ export default {
           this.actionDialog.loading = false
         })
       }
+    },
+    actionButtonInline(selectedAction, row) {
+      this.selectedAction = selectedAction
+      this.$refs.table.clearSelection()
+      this.$refs.table.toggleRowSelection(row)
+      console.log(row, this.$refs.table.selection)
+      this.clickAction()
     },
     sendActionForm() {
       this.$refs.fieldscontainer.$refs.form.validate().then(valid => {

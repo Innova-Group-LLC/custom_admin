@@ -39,6 +39,21 @@
         />
       </template>
 
+      <template v-else-if="types.numberRange.indexOf(filter.type) >= 0">
+        <el-input-number
+          :placeholder="`${filter.name} from`"
+          class="filter-element input-number"
+          @change="value => updateValueLookup(value, filter_name, 'min')"
+          :precision="1"
+        />
+        <el-input-number
+          :placeholder="`${filter.name} to`"
+          class="filter-element input-number"
+          :precision="1"
+          @change="value => updateValueLookup(value, filter_name, 'max')"
+        />
+      </template>
+
       <template v-else-if="types.input.indexOf(filter.type) >= 0">
         <el-input
           v-model="filterInfo.filters[filter_name]"
@@ -112,7 +127,7 @@
       </template>
 
       <template v-else>
-        {{ filter_name }}{{ filter }}
+        {{ filter_name }}: {{ filter }}
       </template>
     </template>
 
@@ -156,7 +171,8 @@ export default {
         date: ['DateTimeFilter'],
         time: ['TimeField', 'TimeFilter'],
         number: ['NumberFilter'],
-        choices: ['BooleanField'],
+        numberRange: ['NumericRangeFilter'],
+        choices: ['BooleanField', 'BooleanFilter', 'ChoiceFilter'],
         tagsfield: [
           'ForeignKey',
           'ModelChoiceFilter',
@@ -217,6 +233,13 @@ export default {
       const before = moment(value[1]).format('YYYY-MM-DD')
       this.filterInfo.filters[`${filter_name}_after`] = after
       this.filterInfo.filters[`${filter_name}_before`] = before
+    },
+    updateValueLookup(value, filter_name, lookup) {
+      if (!value) {
+        delete this.filterInfo.filters[`${filter_name}_${lookup}`]
+        return
+      }
+      this.filterInfo.filters[`${filter_name}_${lookup}`] = value
     },
     changeTags(value, filter_name) {
       let newTags = []

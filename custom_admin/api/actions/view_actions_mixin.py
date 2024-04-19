@@ -48,7 +48,7 @@ class AdminActionMixIn:
         if isinstance(actions_result, (tuple, list)):
             action_messages, code = actions_result
 
-            if isinstance(action_messages, str):
+            if isinstance(action_messages, (str)) or action_messages.__class__.__name__ == '__proxy__':
                 action_messages = [action_messages]
 
             action_request = Response({'action_messages': action_messages}, status=code)

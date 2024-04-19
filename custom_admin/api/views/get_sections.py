@@ -1,6 +1,7 @@
 import logging
 
 from django.conf import settings
+from django.utils import translation
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -19,7 +20,8 @@ class GetAdminSectionsAPIView(APIView):
     router = None
 
     def get(self, request, *args, **kwargs):
-        lang = getattr(request, 'LANGUAGE_CODE', None) or getattr(settings, 'LANGUAGE_CODE', None) or 'en'
+        lang = getattr(request.user, 'language', None) or getattr(settings, 'LANGUAGE_CODE', None) or 'en'
+        translation.activate(lang)
         response = Response({
             'sections': get_schema(self.router, request),
             'language': lang,

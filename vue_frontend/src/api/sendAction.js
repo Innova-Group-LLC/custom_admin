@@ -17,6 +17,7 @@ export function downloadContent(data, fileName, type) {
 
 export async function sendAction(viewname, action, ids, sendToAll, formData) {
   return new Promise((resolve, reject) => {
+    console.log('Send action', action, ids, sendToAll, formData)
 
     const url = `${config_dataset.backend_prefix}${viewname}/send_action/`
     request({

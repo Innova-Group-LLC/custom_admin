@@ -47,4 +47,5 @@ export default {
   aWeekAgo: 'A week ago',
   aMonthAgo: 'A month ago',
   aYearAgo: 'A year ago',
+  operations: 'Operations',
 }

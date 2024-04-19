@@ -161,9 +161,10 @@ class ViewSetSchemaGenerator:
             name = getattr(action, 'short_description', action.__name__)
             actions[action.__name__] = {'name': name}
 
-            description = getattr(action, 'description', None)
-            if description:
-                actions[action.__name__]['description'] = description
+            actions[action.__name__]['icon'] = getattr(action, 'icon', None)
+            actions[action.__name__]['description'] = getattr(action, 'description', None)
+            actions[action.__name__]['inline_type'] = getattr(action, 'inline_type', None)
+            actions[action.__name__]['inline_only'] = getattr(action, 'inline_only', None)
 
             form_serializer = getattr(action, 'form_serializer', None)
             if form_serializer:
