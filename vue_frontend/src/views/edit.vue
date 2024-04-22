@@ -33,6 +33,8 @@
             :name="methodName"
             lazy
           >
+            <span slot="label"><i v-if="method.icon" :class="method.icon"></i>{{ method.name }}</span>
+
             <inlinetable
               v-if="method.inline_type === 'table'"
               :method="method"
@@ -55,11 +57,12 @@
 
         <el-tab-pane
           v-for="relationData in sectionData.meta.related_inlines"
-          :label="relationData.title"
           :key="relationData.inline_slug"
           :name="relationData.inline_slug"
           lazy
         >
+          <span slot="label"><i v-if="relationData.icon" :class="relationData.icon"></i> {{ relationData.title }}</span>
+
           <list
             :viewname="relationData.viewset_name"
             :settings="settings"

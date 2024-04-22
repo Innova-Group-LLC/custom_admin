@@ -4,7 +4,7 @@ Django Custom Admin
 |logo|
 
 A custom admin interface providing backend via DRF and frontend via Vue
-and Element UI that tries Keep It Simple.
+and Element UI that tries to Keep It Simple.
 
 |PyPI version| |GitHub stars|
 
