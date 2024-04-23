@@ -1,10 +1,16 @@
-from rest_framework import serializers
+import typing
+
 from django.utils.translation import gettext as _
+from rest_framework import serializers
 
 
 class AdminChoiceField(serializers.ChoiceField):
+    tag_style: typing.Optional[dict]
+    max_width: typing.Optional[int]
+
     def __init__(self, *args, **kwargs):
         kwargs.pop("child", None)
+        self.tag_style = kwargs.pop('tag_style', {})
         self.max_width = kwargs.pop("max_width", None)
         super().__init__(*args, **kwargs)
 

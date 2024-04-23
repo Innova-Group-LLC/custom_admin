@@ -83,24 +83,45 @@
             <template slot-scope="scope">
               <i class="el-icon-check boolean-true" v-if="scope.row[name] === true"></i>
               <i class="el-icon-close boolean-false" v-else-if="scope.row[name] === false"></i>
+
               <template v-else-if="field.type === 'datetime'">
                 {{ formatDateTime(scope.row[name]) }}
               </template>
+
               <template v-else-if="field.type === 'decimal'">
                 {{ parseFloat(scope.row[name]).toFixed(scope.row['precision'] || 2) }}
               </template>
+
               <template v-else-if="field.type === 'primarymany'">
                 {{ formatMany(scope.row[name]) }}
               </template>
+
               <template v-else-if="field.type === 'multiple choice'">
                 {{ formatMany(scope.row[name]) }}
               </template>
+
               <template v-else-if="field.type === 'file upload'">
                 <a :href="scope.row[name]">{{ formatFileName(scope.row[name]) }}</a>
               </template>
+
               <template v-else-if="scope.row[name] && scope.row[name].text !== undefined">
-                <template v-if="scope.row[name].text">{{ scope.row[name].text }}</template><template v-else>id: {{ scope.row[name].id }}</template>
+                <template v-if="scope.row[name].text">
+
+                  <!-- Styled tag -->
+                  <template v-if="Object.keys(getTagStyle(name)).length > 0">
+                    <el-tag :type="getTagStyle(name)[scope.row[name].value]">
+                      {{ scope.row[name].text }}
+                    </el-tag>
+                  </template>
+
+                  <template v-else>
+                    {{ scope.row[name].text }}
+                  </template>
+                </template>
+
+                <template v-else>id: {{ scope.row[name].id }}</template>
               </template>
+
               <template v-else>{{ stripHtml(scope.row[name]) }}</template>
             </template>
           </el-table-column>
@@ -293,6 +314,9 @@ export default {
     this.getListData()
   },
   methods: {
+    getTagStyle(name) {
+      return this.sectionData.meta.serializer[name].tag_style || {}
+    },
     hasInlineActions() {
       for (const [inline_key, inline_info] of Object.entries(this.sectionData.meta.actions)) {
         if (inline_info.inline_type) return true

@@ -1,8 +1,6 @@
 <template>
   <div>
-    <el-skeleton class="model-form-loader" v-if="loadData" animated :rows="6"/>
-
-    <div v-show="!loadData" class="model-form-container">
+    <div v-loading="loadData" class="model-form-container">
       <div class="header-form" v-if="formInfo.showTitle">
         <h2 v-if="sectionData" class="form-title">{{ getTitle() }}</h2>
         <i class="el-icon-close icon-close" @click="handleClose"></i>
@@ -61,7 +59,7 @@ export default {
       apiMethods: null,
     }
   },
-  async created() {
+  async mounted() {
     this.loadData = true
 
     this.apiMethods = getMethods(this.formInfo.viewname, this.apiInfo)
@@ -103,6 +101,9 @@ export default {
         this.loadData = false
         if (this.$refs.fieldscontainer) {
           this.$refs.fieldscontainer.updateFormData(this.formData)
+        } else {
+          console.error(this.$refs)
+          Message({ message: 'fieldscontainer not found', type: 'error', duration: 5 * 1000 })
         }
       }).catch(error => {
         this.loadData = false

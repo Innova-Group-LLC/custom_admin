@@ -51,9 +51,7 @@
                       v-model="translationsTabs[field_slug]"
                       :label="translation.lang_translation"
                       :key="translation.lang_slug"
-                      lazy
                     >
-
                       <fieldelement
                         v-if="meta.serializer[translation.slug]"
                         :label-width="'0px'"

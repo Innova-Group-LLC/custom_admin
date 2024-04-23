@@ -22,13 +22,15 @@ class CustomMetadata(SimpleMetadata):
             'read_only', 'label', 'help_text',
             'min_length', 'max_length',
             'min_value', 'max_value', 'write_only', 'max_width', 'initial',
-            'wysiwyg', 'multilined',
+            'wysiwyg', 'multilined', 'tag_style',
         ]
 
         for attr in attrs:
             value = getattr(field, attr, None)
             if value is not None and value != '':
-                field_info[attr] = force_str(value, strings_only=True)
+                field_info[attr] = value
+                if not isinstance(value, (dict, list)):
+                    field_info[attr] = force_str(value, strings_only=True)
 
         if isinstance(field.label, str):
             field_info['label'] = field_info['label']
