@@ -18,7 +18,7 @@
     "chart.js": "^3.8.0",
     "codemirror": "^5.65.16",
     "core-js": "3.6.5",
-    "element-ui": "2.13.2",
+    "element-ui": "2.15.14",
     "js-cookie": "2.2.0",
     "jsonlint": "1.6.3",
     "moment": "^2.29.1",

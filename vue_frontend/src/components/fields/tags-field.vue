@@ -205,7 +205,7 @@ export default {
         this.modelName,
         this.appLabel,
         searchString,
-        20,
+        30,
         this.viewname,
         this.fieldSlug,
         this.formData,

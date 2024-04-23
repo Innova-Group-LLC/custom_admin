@@ -13,7 +13,12 @@
 }
 .el-tabs__content {
     height: 100%;
-    //overflow: visible;
+
+    display: flow-root;
+    overflow: visible!important;
+
+    padding-bottom: 5px!important;
+    padding-right: 5px!important;
 }
 .ti-input{
     padding: 0px!important;

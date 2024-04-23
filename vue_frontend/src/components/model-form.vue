@@ -1,23 +1,27 @@
 <template>
-  <div v-loading="loadData" class="model-form-container">
-    <div class="header-form" v-if="formInfo.showTitle">
-      <h2 v-if="sectionData" class="form-title">{{ getTitle() }}</h2>
-      <i class="el-icon-close icon-close" @click="handleClose"></i>
-    </div>
+  <div>
+    <el-skeleton class="model-form-loader" v-if="loadData" animated :rows="6"/>
 
-    <fieldscontainer
-      ref="fieldscontainer"
-      :api-info="apiInfo"
-      :form-info="formInfo"
-      :settings="settings"
-      @changed="_updateFormData"
-    />
+    <div v-show="!loadData" class="model-form-container">
+      <div class="header-form" v-if="formInfo.showTitle">
+        <h2 v-if="sectionData" class="form-title">{{ getTitle() }}</h2>
+        <i class="el-icon-close icon-close" @click="handleClose"></i>
+      </div>
 
-    <div class="form-buttons">
-      <el-button @click="handleClose">{{ $t('close') }}</el-button>
-      <el-button type="primary" @click="sendAction" v-if="canAdd()">
-        {{ getActionButtonTitle() }}
-      </el-button>
+      <fieldscontainer
+        ref="fieldscontainer"
+        :api-info="apiInfo"
+        :form-info="formInfo"
+        :settings="settings"
+        @changed="_updateFormData"
+      />
+
+      <div class="form-buttons">
+        <el-button @click="handleClose">{{ $t('close') }}</el-button>
+        <el-button type="primary" @click="sendAction" v-if="canAdd()">
+          {{ getActionButtonTitle() }}
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
