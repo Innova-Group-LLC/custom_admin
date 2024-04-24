@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { setLang, getToken } from '@/utils/auth'
+import { getToken, getLang } from '@/utils/auth'
 import { config_dataset } from '@/utils/settings'
 
 const schemeUrl = config_dataset.backend_prefix + 'get_sections/'
@@ -10,14 +10,14 @@ export async function getApiInfo() {
 
     request({
       url: schemeUrl,
-      method: 'get'
+      method: 'get',
+      headers: {
+        'Accept-Language': getLang(),
+      },
     }).then(response => {
       console.log("schemes", JSON.parse(JSON.stringify(response.data)))
-      setLang(response.data.language);
-
       resolve({
         data: response.data.sections,
-        lang: response.data.language,
         langs: response.data.languages,
       })
     }).catch(error => {

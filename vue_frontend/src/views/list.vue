@@ -255,7 +255,6 @@ export default {
     Pagination,
     "filters": Filters,
     "modelform": ModelForm,
-    "fieldscontainer": () => import('@/components/fields-container'),
   },
   props: {
     apiInfo: {type: Object, required: true},

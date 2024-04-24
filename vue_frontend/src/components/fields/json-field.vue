@@ -34,6 +34,7 @@ export default {
         mode: 'application/json',
         lint: true,
         theme: this.theme,
+        readOnly: 'nocursor',
       })
 
       this.jsonEditor.on('change', cm => {

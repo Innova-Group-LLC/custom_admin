@@ -11,7 +11,6 @@ register_admin_viewsets(admin_router)
 urlpatterns = [
     path('autocompete/', views.AutoCompeteView.as_view()),
     path('token-auth/', views.AdminAuthToken.as_view()),
-    path('change-language/', views.ChangeLanguageAPIView.as_view(), name='change-language'),
 
     path(
         'get_sections/',

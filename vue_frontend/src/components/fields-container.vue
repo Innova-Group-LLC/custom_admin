@@ -87,7 +87,6 @@
 
 <script>
 import FieldElement from '@/components/field-element'
-import { getLang } from '@/utils/auth'
 
 export default {
   name: 'FieldsContainer',

@@ -20,6 +20,9 @@ Vue.use(ElementUI, {
 })
 Vue.use(checkView)
 
+import FieldsContainer from '@/components/fields-container'// svg component
+Vue.component('fieldscontainer', FieldsContainer)
+
 Vue.config.productionTip = false
 
 new Vue({

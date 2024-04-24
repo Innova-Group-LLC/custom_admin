@@ -23,10 +23,7 @@
 </template>
 
 <script>
-import { sendData } from '@/api/sendData'
-import { Message } from 'element-ui'
-import { getLang, setLang } from '@/utils/auth'
-import { config_dataset } from '@/utils/settings'
+import { setLang } from '@/utils/auth'
 
 export default {
   props: ['langs'],
@@ -45,17 +42,8 @@ export default {
       return `https://hatscripts.github.io/circle-flags/flags/${l}.svg`
     },
     changeLang(langSlug) {
-      if (langSlug !== getLang()) {
-        const url = config_dataset.backend_prefix + 'change-language/'
-        sendData(
-          url, 'post', {language: langSlug}
-        ).then(response => {
-          setLang(langSlug)
-          this.$router.go()
-        }).catch(error => {
-          Message({ message: error, type: 'error', duration: 3 * 1000 })
-        })
-      }
+      setLang(langSlug)
+      document.location.reload()
     }
   }
 }

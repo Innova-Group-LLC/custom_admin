@@ -20,7 +20,7 @@ class GetAdminSectionsAPIView(APIView):
     router = None
 
     def get(self, request, *args, **kwargs):
-        lang = getattr(request.user, 'language', None) or getattr(settings, 'LANGUAGE_CODE', None) or 'en'
+        lang = request.headers.get('Accept-Language') or getattr(settings, 'LANGUAGE_CODE', None) or 'en'
         translation.activate(lang)
         response = Response({
             'sections': get_schema(self.router, request),

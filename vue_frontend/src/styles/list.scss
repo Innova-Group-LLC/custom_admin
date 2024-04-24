@@ -21,8 +21,23 @@
     margin-top: 10px!important;
 }
 .el-table td, .el-table th {
-    padding: 4px 0!important;
+    padding: 8px 0!important;
 }
+
+.el-table__cell {
+    // Inline buttons
+    .el-button {
+        padding: 5px 12px!important;
+    }
+
+    // Inline tags
+    .el-tooltip {
+        .el-tag {
+            height: 28px;
+        }
+    }
+}
+
 .selection-button {
     display: inline-block;
     vertical-align: sub!important;

@@ -30,7 +30,6 @@ export function login(userInfo) {
 
       localStorage.setItem('name', response.data.username)
       localStorage.setItem('user_id', response.data.pk)
-      setLang(response.data.language)
       resolve()
     }).catch(error => {
       reject(error)

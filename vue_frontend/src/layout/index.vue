@@ -17,7 +17,7 @@ import { Navbar, Sidebar, AppMain } from './components'
 import { Message } from 'element-ui'
 import { getApiInfo } from '@/api/scheme'
 import { getSettings } from '@/utils/settings'
-import { removeToken, getLang } from '@/utils/auth'
+import { removeToken } from '@/utils/auth'
 
 export default {
   name: 'Layout',
@@ -41,8 +41,6 @@ export default {
 
     this.sidebarOpen = JSON.parse(localStorage.getItem('sidebarOpen'))
     if (this.sidebarOpen === null) { this.sidebarOpen = true }
-
-    this.$i18n.locale = getLang()
 
     getApiInfo().then(apiInfo => {
       this.apiInfo = apiInfo.data

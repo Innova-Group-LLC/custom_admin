@@ -32,9 +32,6 @@ import { getMethods } from '@/api/scheme'
 
 export default {
   name: 'ModelForm',
-  components: {
-    "fieldscontainer": () => import('@/components/fields-container'),
-  },
   props: {
     settings: {
       type: Object,
@@ -55,14 +52,19 @@ export default {
     return {
       sectionData: null,
       formData: {},
-      loadData: false,
+      loadData: true,
       apiMethods: null,
     }
   },
-  async mounted() {
+  async created() {
     this.loadData = true
 
     this.apiMethods = getMethods(this.formInfo.viewname, this.apiInfo)
+    if (!this.apiMethods) {
+      console.error(`apiMethods is null in "${this.formInfo.viewname}"`)
+      return
+    }
+
     this.sectionData = this.apiInfo[this.formInfo.viewname]
     if (!this.sectionData) {
       console.error(`Error getting section data for model "${this.formInfo.viewname}"`)
@@ -99,12 +101,7 @@ export default {
         }
 
         this.loadData = false
-        if (this.$refs.fieldscontainer) {
-          this.$refs.fieldscontainer.updateFormData(this.formData)
-        } else {
-          console.error(this.$refs)
-          Message({ message: 'fieldscontainer not found', type: 'error', duration: 5 * 1000 })
-        }
+        this.$refs.fieldscontainer.updateFormData(this.formData)
       }).catch(error => {
         this.loadData = false
         if (error.response && error.response.status === 404) {
@@ -127,6 +124,8 @@ export default {
       this.formData = formData
     },
     canAdd() {
+      if (!this.apiMethods) return
+
       if (this.formInfo.formType === 'create')
           return 'create' in this.apiMethods
       else
