@@ -20,6 +20,7 @@ class AdminFieldsMixin:
     serializer_field_mapping[models.ImageField] = fields.Base64ImageField
     serializer_field_mapping[models.CharField] = fields.AdminCharField
     serializer_field_mapping[models.TextField] = fields.AdminCharField
+    serializer_field_mapping[models.JSONField] = fields.AdminJsonField
 
     serializer_field_mapping[models.PositiveIntegerField] = fields.PositiveIntegerField
 

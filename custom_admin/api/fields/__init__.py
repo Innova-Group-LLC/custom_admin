@@ -7,4 +7,5 @@ from .relation import AdminPrimaryKeyRelatedField
 from .choice import AdminChoiceField
 from .numbers import PositiveIntegerField
 from .numbers import PositiveDecimalField
+from .json import AdminJsonField
 from rest_framework.fields import *

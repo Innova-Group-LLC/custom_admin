@@ -159,10 +159,19 @@
         </template>
 
         <template v-else-if="types.json.indexOf(field.type) >= 0">
-          <jsonfield
+          <jsonforms
+            v-if="field.json_forms"
             ref="field-element"
             :field="field"
             :field-slug="field_slug"
+            :disabled="field.read_only"
+            @changed="_updateValue"
+          />
+          <jsonfield v-else
+            ref="field-element"
+            :field="field"
+            :field-slug="field_slug"
+            :disabled="field.read_only"
             @changed="_updateValue"
           />
         </template>
@@ -197,6 +206,7 @@
 import JsonField from '@/components/fields/json-field'
 import TagsField from '@/components/fields/tags-field'
 import FileField from '@/components/fields/file-field'
+import JsonForms from '@/components/fields/json-forms'
 import FieldWysiwyg from '@/components/fields/field-wysiwyg/index'
 import { getCustomField } from '@/components/custom-fields'
 
@@ -246,6 +256,7 @@ export default {
   components: {
     tagsfield: TagsField,
     filefield: FileField,
+    jsonforms: JsonForms,
     jsonfield: JsonField,
     fieldwysiwyg: FieldWysiwyg,
   },

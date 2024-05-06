@@ -1,5 +1,5 @@
 <template>
-  <div class="json-editor">
+  <div class="json-editor" :class="{ 'read-only': disabled }">
     <textarea ref="textarea" />
   </div>
 </template>
@@ -17,7 +17,7 @@ import 'codemirror/addon/lint/json-lint'
 export default {
   name: 'jsonfield',
   props: [
-    'field', 'fieldSlug',
+    'field', 'fieldSlug', 'disabled',
   ],
   data(props) {
     return {
@@ -34,7 +34,7 @@ export default {
         mode: 'application/json',
         lint: true,
         theme: this.theme,
-        readOnly: 'nocursor',
+        readOnly: this.disabled,
       })
 
       this.jsonEditor.on('change', cm => {

@@ -23,6 +23,9 @@ Vue.use(checkView)
 import FieldsContainer from '@/components/fields-container'// svg component
 Vue.component('fieldscontainer', FieldsContainer)
 
+import VueCompositionAPI from '@vue/composition-api'
+Vue.use(VueCompositionAPI)
+
 Vue.config.productionTip = false
 
 new Vue({
