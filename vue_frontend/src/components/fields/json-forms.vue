@@ -13,10 +13,11 @@
 </template>
 
 <script>
-import { JsonForms } from "@jsonforms/vue2";
+import { defineComponent } from '@vue/composition-api';
+import { JsonForms } from "@jsonforms/vue2"
 import { defaultStyles, mergeStyles, vanillaRenderers } from '@jsonforms/vue2-vanilla'
 
-const myStyles = mergeStyles(defaultStyles, {control: { root: 'my-control' }});
+const myStyles = mergeStyles(defaultStyles, {control: { root: 'my-control' }})
 
 const renderers = [
   ...vanillaRenderers,
@@ -36,7 +37,6 @@ const schema = {
           },
           "message": {
             "type": "string",
-            "maxLength": 5
           },
           "enum": {
             "type": "string",
@@ -52,7 +52,7 @@ const schema = {
 }
 
 const uischema = {
-  "type": "VerticalLayout",
+  "type": "HorizontalLayout",
   "elements": [
     {
       "type": "Control",
@@ -61,7 +61,7 @@ const uischema = {
   ]
 }
 
-export default {
+export default defineComponent({
   name: 'jsonforms',
   props: [
     'field', 'fieldSlug', 'disabled',
@@ -94,5 +94,5 @@ export default {
       styles: myStyles,
     };
   },
-}
+})
 </script>

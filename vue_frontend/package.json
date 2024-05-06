@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@johmun/vue-tags-input": "^2.1.0",
+    "@jsonforms/core": "^2.5.2",
     "@jsonforms/vue2": "^2.5.2",
     "@jsonforms/vue2-vanilla": "^2.5.2",
     "@vue/composition-api": "^1.4.9",

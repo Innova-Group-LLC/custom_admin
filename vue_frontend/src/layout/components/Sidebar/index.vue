@@ -13,8 +13,8 @@
         mode="vertical"
       >
 
-        <app-link :to="link.url" v-for="link in staticLinks">
-          <el-menu-item :index="link.url" class="submenu-title-noDropdown">
+        <app-link :key="link.title" :to="link.url" v-for="link in staticLinks">
+          <el-menu-item :index="link.url"class="submenu-title-noDropdown">
             <item :icon="link.icon" v-if="link.icon"/>
             <item :title="link.title" :_static="true" />
           </el-menu-item>
