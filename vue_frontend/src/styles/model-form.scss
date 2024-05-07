@@ -1,0 +1,133 @@
+.file-remove {
+    cursor: pointer;
+    vertical-align: top;
+    margin-top: 3px;
+}
+.upload-button {
+    margin-right: 15px;
+}
+.file-link {
+    margin-right: 10px;
+    vertical-align: top;
+}
+.upload-info {
+    display: inline-block!important;
+    vertical-align: top;
+}
+.image-upload > .el-image {
+    margin-right: 20px;
+    display: inline-block!important;
+}
+.image-upload > label{
+    height: 28px;
+    padding: 6px;
+}
+.icon-close {
+    font-size: 22px;
+    float: right;
+    cursor: pointer;
+}
+.form-title {
+    margin: 0px 0px 20px 0px;
+    display: inline-block;
+}
+.form-desctiption {
+    display: block;
+    margin: 0px 0px 20px 0px;
+}
+.el-form-item--mini {
+    padding-bottom: 0px;
+}
+.el-form-item-delimiter {
+    padding-bottom: 15px;
+}
+.el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
+    margin-bottom: 5px;
+}
+.el-form-item__label {
+    line-height: 20px!important;
+    word-break: break-word;
+}
+.el-form-item__content {
+}
+.help-text {
+    color: #7e8286;
+    font-size: 12px;
+    display: block;
+}
+.form-buttons {
+    text-align: end;
+}
+.error-text {
+    color: #F56C6C;
+    font-size: 12px;
+    line-height: 1;
+}
+.string {
+    max-width: 450px;
+  &--button_url {
+    display: flex;
+    flex-direction: column;
+    max-width: 900px;
+    & .el-input-group__prepend {
+      display: flex;
+      height: inherit;
+      width: 100%;
+      border-right: 1px solid #DCDFE6;
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      min-height: 28px;
+      align-items: center;
+      padding: 0 15px;
+    }
+    & .el-input__inner {
+      margin-top: 4px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+  }
+}
+.el-upload-list__item {
+    max-width: 300px;
+}
+.hide-header > .el-tabs__header {
+    display: none;
+}
+.v-modal {
+    display: none;
+}
+.el-transfer-panel {
+    width: 300px;
+}
+.transfer-container {
+    width: 700px;
+}
+.transfer-block {
+    max-width: 810px;
+    white-space: nowrap;
+}
+.form-error {
+    margin-bottom: 10px;
+}
+.image-field{
+    max-width: 100px;
+    max-height: 100px;
+    display: inline-block;
+    margin-right: 20px;
+}
+.el-form-item__error {
+    line-height: 6px;
+    white-space: pre-line;
+}
+.choice-button {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 16px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.model-form-loader {
+    padding: 25px;
+    max-width: 900px;
+}

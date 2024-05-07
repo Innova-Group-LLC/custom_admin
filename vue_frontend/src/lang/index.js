@@ -3,16 +3,21 @@ import VueI18n from 'vue-i18n'
 
 import enLocale from './en'
 import ruLocale from './ru'
-import { getLang } from './utils/auth'
+import { getLang } from '../utils/auth'
+
+import ru from 'element-plus/es/locale/lang/ru'
+import en from 'element-plus/es/locale/lang/en'
 
 Vue.use(VueI18n)
 
 const messages = {
   en: {
     ...enLocale,
+    ...en,
   },
   ru: {
     ...ruLocale,
+    ...ru,
   },
 }
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
-import { getToken, removeToken } from '@/utils/auth'
-import { config_dataset } from '@/utils/settings'
+
+import { getToken, removeToken } from '/src/utils/auth'
+import { config_dataset } from '/src/utils/settings'
 
 const service = axios.create({
   baseURL: config_dataset.backend_prefix,

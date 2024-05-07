@@ -1,0 +1,111 @@
+.el-popup-parent--hidden > .v-modal {
+    z-index: 1!important;
+}
+.tags-container, .transfer-container {
+    display: flex;
+    justify-content: space-between;
+}
+.tag-block {
+    max-width: 700px;
+    white-space: nowrap;
+}
+.vue-tags-input {
+    max-width: 750px!important;
+    width: 100%;
+    display: inline-block;
+}
+.add-model-icon {
+    width: 40px;
+    float: right;
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #3a8ee6;
+    height: 28px;
+}
+.ti-tag.ti-valid:not(.tag-not-found) {
+    background-color: #409EFF!important;
+}
+.ti-autocomplete ul li{
+    overflow: hidden;
+}
+.ti-item {
+    min-width: 288px;
+}
+.form-tags .ti-item {
+    min-width: 100%;
+}
+.ti-selected-item {
+    background-color: #409EFF!important;
+    overflow: visible!important;
+    display: inline-grid;
+    div {
+        overflow: visible!important;
+    }
+}
+.ti-input {
+    border-radius: 4px;
+    border: 1px solid #DCDFE6!important;
+    color: #606266;
+    vertical-align: top;
+    display: inline-block;
+}
+.ti-tags {
+    margin-top: 3px;
+    width: 100%;
+    overflow: hidden;
+    height: -webkit-fill-available;
+}
+.ti-input {
+    min-height: 31px;
+    height: auto;
+}
+.vue-tags-input {
+    min-height: 28px;
+    height: auto;
+    vertical-align: top;
+}
+.vue-tags-input > .ti-input {
+    min-height: 28px;
+    padding: 0px;
+}
+.ti-item {
+    height: 25px;
+    font-size: 14px;
+    line-height: 18px;
+}
+.ti-tag.ti-valid.disabled {
+    background-color: #adadad!important;
+}
+.disabled .ti-new-tag-input {
+    cursor: not-allowed!important;
+}
+.below-center > .vue-tags-input > .ti-autocomplete {
+    transform: translate(0%,-100%);
+    top: 0px;
+    border-top: 1px solid #ccc!important;
+    border-bottom: none;
+}
+
+.ti-new-tag-input {
+    padding: 0px!important;
+    margin: 0px!important;
+}
+.ti-new-tag-input-wrapper {
+    margin: 0px 2px!important;
+}
+
+.ti-tag {
+    max-width: 142px;
+}
+.ti-content {
+    max-width: 117px;
+}
+.ti-tag-center {
+    width: 112px;
+    overflow: hidden;
+}
+.tag-not-found {
+    background-color: #919191 !important;
+}
