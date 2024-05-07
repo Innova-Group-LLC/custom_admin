@@ -6,8 +6,6 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import VueCompositionAPI from '@vue/composition-api'
 Vue.use(VueCompositionAPI)
 
-import "@jsonforms/vue2-vanilla/vanilla.css";
-
 import ElementUI from 'element-ui'
 import i18n from './lang'
 

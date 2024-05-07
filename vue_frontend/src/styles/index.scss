@@ -12,6 +12,7 @@
 @import './language.scss';
 @import './dashboard.scss';
 @import './json-editor.scss';
+@import './json-forms.scss';
 @import '~vue2-datepicker/scss/index.scss';
 
 // @import './tinymce/oxide-dark/content.min.css';
@@ -78,9 +79,6 @@ div:focus {
 }
 .avatar-wrapper {
     margin-top: 0px!important;
-}
-.el-form-item {
-    white-space: break-spaces;
 }
 
 .submenu-static-link-title {

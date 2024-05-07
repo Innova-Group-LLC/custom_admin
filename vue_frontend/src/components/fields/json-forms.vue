@@ -1,14 +1,16 @@
 <template>
-  <div>
-    field.json_forms: {{ field.json_forms }}
+  <div class="json-forms-container">
     <json-forms
       :data="data"
       :renderers="renderers"
-      :schema="schema"
-      :uischema="uischema"
+      :schema="field.json_forms.schema"
+      :uischema="field.json_forms.uischema"
       :readonly="disabled"
       @change="onChange"
     />
+    <div v-if="isDev()">
+      {{ data }}
+    </div>
   </div>
 </template>
 
@@ -23,44 +25,6 @@ const renderers = [
   ...vanillaRenderers,
 ];
 
-const schema = {
-  "type": "object",
-  "properties": {
-    "comments": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "date": {
-            "type": "string",
-            "format": "date"
-          },
-          "message": {
-            "type": "string",
-          },
-          "enum": {
-            "type": "string",
-            "enum": [
-              "foo",
-              "bar"
-            ]
-          }
-        }
-      }
-    }
-  }
-}
-
-const uischema = {
-  "type": "HorizontalLayout",
-  "elements": [
-    {
-      "type": "Control",
-      "scope": "#/properties/comments"
-    }
-  ]
-}
-
 export default defineComponent({
   name: 'jsonforms',
   props: [
@@ -71,8 +35,6 @@ export default defineComponent({
       // freeze renderers for performance gains
       renderers: Object.freeze(renderers),
       data: {},
-      schema,
-      uischema,
     }
   },
   components: {
@@ -81,6 +43,9 @@ export default defineComponent({
   created() {
   },
   methods: {
+    isDev() {
+      return process.env.NODE_ENV != 'production'
+    },
     updateFormData(formData) {
       this.data = JSON.parse(formData[this.fieldSlug] || '{}')
     },

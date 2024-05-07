@@ -1,0 +1,62 @@
+.json-forms-container {
+
+    .array-list-item-label {
+        display: none;
+    }
+
+    .array-list-label {
+        color: #606266;
+        font-size: 14px;
+    }
+
+    .horizontal-layout {
+        display: block;
+
+        .horizontal-layout-item {
+            display: inline-block;
+            .control {
+                display: inline-block;
+            }
+        }
+    }
+
+    .control {
+        margin-right: 10px;
+    }
+
+    .vertical-layout {
+    }
+
+    // To display items horisontally inside array
+    // Crutch, delete after migration to new versioin of JSONForms
+    .array-list-item-wrapper {
+        .vertical-layout-item {
+            display: inline-block;
+        }
+    }
+
+    .array-list-item-toolbar {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+
+    .array-list-item-content {
+        display: inline-block;
+    }
+
+    .label {
+        color: #606266;
+        font-size: 14px;
+        display: block;
+    }
+    .wrapper {
+        display: block;
+        .input {
+            padding-left: 7px;
+            border-radius: 4px;
+            border: 1px solid #DCDFE6;
+            border-color: #C0C4CC;
+        }
+    }
+}
