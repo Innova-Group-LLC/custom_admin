@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import VueTagsInput from '@johmun/vue-tags-input';
+import { VueTagsInput } from '@vojtechlanka/vue-tags-input';
 import { getAutocomplete } from '@/api/getAutocomplete'
 import { Message } from 'element-ui'
 import { getMethods } from '@/api/scheme'

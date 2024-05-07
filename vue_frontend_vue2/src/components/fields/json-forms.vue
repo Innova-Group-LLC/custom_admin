@@ -16,8 +16,8 @@
 
 <script>
 import { defineComponent } from '@vue/composition-api';
-import { JsonForms } from "@jsonforms/vue2"
-import { defaultStyles, mergeStyles, vanillaRenderers } from '@jsonforms/vue2-vanilla'
+import { JsonForms } from "@jsonforms/vue"
+import { defaultStyles, mergeStyles, vanillaRenderers } from '@jsonforms/vue-vanilla'
 
 const myStyles = mergeStyles(defaultStyles, {control: { root: 'my-control' }})
 
