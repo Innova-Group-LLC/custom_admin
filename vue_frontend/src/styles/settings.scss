@@ -1,0 +1,11 @@
+// https://vuetifyjs.com/features/sass-variables/
+// @use 'vuetify/settings' with (
+//   $color-pack: false
+// );
+
+// https://vuetifyjs.com/en/features/sass-variables/#variable-api
+@use 'vuetify/settings' with (
+    $list-item-prepend-size: 20px,
+    $list-item-icon-margin-start: 10px,
+    $list-item-slim-action-spacer-width: 10px,
+);

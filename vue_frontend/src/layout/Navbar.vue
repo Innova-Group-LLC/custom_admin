@@ -1,5 +1,7 @@
 <template>
-  <v-navigation-drawer>
+  <v-navigation-drawer
+    class="navbar-container bg-indigo-darken-2"
+  >
     <v-list-item>
       <p class="text-h6">{{ getTitle() }}</p>
     </v-list-item>
@@ -16,6 +18,7 @@
             v-bind="props"
             :title="view.meta.title"
             :prepend-icon="view.meta.icon"
+            density="default"
           ></v-list-item>
         </template>
 
@@ -23,7 +26,7 @@
           v-for="line in view.children" :key="line.meta.key"
           :prepend-icon="line.meta.icon"
           :title="line.meta.title"
-          :value="line.path"
+          :link="line.path"
         ></v-list-item>
       </v-list-group>
     </v-list>
