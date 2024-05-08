@@ -15,7 +15,6 @@ export async function getApiInfo() {
         'Accept-Language': getLang(),
       },
     }).then(response => {
-      console.log("schemes", JSON.parse(JSON.stringify(response.data)))
       resolve({
         data: response.data.sections,
         langs: response.data.languages,
@@ -26,9 +25,9 @@ export async function getApiInfo() {
   })
 }
 
-export function getSidebarInfo(router, apiInfo) {
+export function getNavigationInfo(router, apiInfo) {
   if (!apiInfo) {
-    console.error('getSidebarInfo error: apiInfo is null')
+    console.error('getNavigationInfo error: apiInfo is null')
     return
   }
 
