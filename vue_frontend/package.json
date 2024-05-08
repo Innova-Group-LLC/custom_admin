@@ -9,27 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@jsonforms/core": "^3.2.1",
-    "@jsonforms/vue": "^3.2.1",
-    "@jsonforms/vue-vanilla": "^3.2.1",
     "@vue/reactivity": "^3.4.27",
     "@vue/shared": "^3.4.27",
-    "axios": "^1.6.8",
-    "chart.js": "^4.4.2",
-    "codemirror": "^6.0.1",
-    "core-js": "^3.37.0",
     "element-plus": "^2.7.2",
-    "js-cookie": "^3.0.5",
-    "moment": "^2.30.1",
-    "tinymce": "^7.0.1",
     "vue": "^3.4.21",
-    "vue-i18n": "^9.13.1",
-    "vue-router": "^4.3.2",
-    "vue3-tags-input": "^1.0.12"
+    "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
-    "sass": "^1.77.0",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.27.0",
     "vite": "^5.2.0"

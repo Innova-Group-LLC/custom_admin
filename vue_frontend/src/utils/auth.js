@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 const TokenKey = 'vadmin_token'
 const TokenRefreshKey = 'vadmin_refresh_token'
 
-const LANGUAGE_COOKIE_NAME = process.env.VUE_APP_LANGUAGE_COOKIE_NAME || 'LANGUAGE'
+const LANGUAGE_COOKIE_NAME = import.meta.env.VUE_APP_LANGUAGE_COOKIE_NAME || 'LANGUAGE'
 
 export function getToken() {
   return Cookies.get(TokenKey)

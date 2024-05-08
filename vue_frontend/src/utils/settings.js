@@ -2,19 +2,19 @@ import Cookies from 'js-cookie'
 
 var config_dataset = {
   title: 'Dev Admin',
-  backend_prefix: process.env.VUE_APP_URL_PREFIX || 'http://localhost:8001/custom_admin/',
+  backend_prefix: import.meta.env.VUE_APP_URL_PREFIX || 'http://localhost:8001/custom_admin/',
   base_admin_url: 'admin/',
   static_prefix: '',
   logo_image_path: '',
   auth_header_prefix: 'Token',
 }
 
-if (process.env.NODE_ENV == 'production') {
+if (import.meta.env.NODE_ENV == 'production') {
   config_dataset = JSON.parse(document.getElementById("settings").dataset.json)
 }
 
 export var config_dataset
-console.log('config_dataset', config_dataset, 'env', process.env.NODE_ENV)
+console.log('config_dataset', config_dataset, 'env', import.meta.env.NODE_ENV)
 
 const SETTINGS_COOKIE_NAME = 'SETTINGS'
 

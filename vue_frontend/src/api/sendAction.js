@@ -41,7 +41,7 @@ export async function sendAction(viewname, action, ids, sendToAll, formData) {
         )
       }
       else {
-        Message({ message: response.data.action_messages.join('<br>'), type: 'success', duration: 5 * 1000 , dangerouslyUseHTMLString: true,})
+        ElMessage({ message: response.data.action_messages.join('<br>'), type: 'success', duration: 5 * 1000 , dangerouslyUseHTMLString: true,})
       }
       resolve(response)
     }).catch(error => {
@@ -49,12 +49,12 @@ export async function sendAction(viewname, action, ids, sendToAll, formData) {
         if (error.response.status == 400) {
 
           if (error.response.data.action_messages) {
-            Message({ message: error.response.data.action_messages.join('<br>'), type: 'error', duration: 5 * 1000 , dangerouslyUseHTMLString: true,})
+            ElMessage({ message: error.response.data.action_messages.join('<br>'), type: 'error', duration: 5 * 1000 , dangerouslyUseHTMLString: true,})
           }
           reject(error.response.data)
         }
         else if (error.response.status == 500) {
-          Message({ message: `Error; Status code: ${error.response.status}`, type: 'error', duration: 5 * 1000 })
+          ElMessage({ message: `Error; Status code: ${error.response.status}`, type: 'error', duration: 5 * 1000 })
           reject(null)
         }
       }

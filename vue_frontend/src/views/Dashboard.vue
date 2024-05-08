@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { getSidebarInfo } from '@/api/scheme'
+import { getSidebarInfo } from '/src/api/scheme'
 
 export default {
   name: 'Dashboard',

@@ -2,7 +2,6 @@ import moment from 'moment';
 
 import request from '/src/utils/request'
 
-
 export async function sendData(url, method, formData, relationNameFilter, filterId) {
   return new Promise((resolve, reject) => {
     let urlsParams = {}
