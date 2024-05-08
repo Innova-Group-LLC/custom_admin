@@ -8,8 +8,22 @@ $color-darken-4: rgb(31, 45, 61);
     .v-list-item__spacer {
         width: 10px !important;
     }
-
     .navbar-link {
         background-color: $color-darken-4 !important;
+    }
+}
+
+.dashboard-page {
+    margin: 20px;
+
+    .v-list {
+        padding: 0px;
+        background-color: unset;
+    }
+    .v-list-item {
+        padding: 2px 0px;
+        height: 32px !important;
+        min-height: unset !important;
+        padding-inline: 0px;
     }
 }

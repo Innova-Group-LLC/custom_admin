@@ -1,20 +1,34 @@
 <template>
   <div class="dashboard-page">
 
-    <el-card class="dashboard-box-card" v-for="view in navigation_info" :key="view.meta.key">
-      <div slot="header">
-        <i :class="view.meta.icon" v-if="view.meta && view.meta.icon"></i>
-        <span class="dashboard-title">{{ view.meta.title }}</span>
-      </div>
+    <v-row>
+      <v-col cols="12" md="3" v-for="view in navigation_info" :key="view.meta.key">
+        <v-card
+          class="mx-auto"
+          :prepend-icon="view.meta.icon"
+          width="400"
+        >
+          <template v-slot:title>
+            <span class="font-weight-black">{{ view.meta.title }}</span>
+          </template>
 
-      <div v-for="line in view.children" :key="line.meta.key">
+          <v-card-text class="bg-surface-light pt-4">
 
-        <router-link :to="line.path" replace>
-          <div class="dashboard-link">{{ line.meta.title }}</div>
-        </router-link>
+            <v-list>
+              <v-list-item
+                v-for="line in view.children"
+                :key="line.meta.key"
+                :title="line.meta.title"
+                :prepend-icon="line.meta.icon"
+                :to="line.path"
+              ></v-list-item>
+            </v-list>
 
-      </div>
-    </el-card>
+          </v-card-text>
+        </v-card>
+
+      </v-col>
+    </v-row>
 
   </div>
 </template>

@@ -7,7 +7,10 @@
       <v-main class="d-flex">
         <Header :settings="settings" />
 
-        <router-view :api-info="apiInfo" :settings="settings"/>
+        <div class="page-container">
+          <router-view :api-info="apiInfo" :settings="settings"/>
+        </div>
+
       </v-main>
 
     </template>
