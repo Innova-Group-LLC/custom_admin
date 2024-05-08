@@ -2,8 +2,6 @@
   <el-menu
     default-active="2"
     class="el-menu-navbar"
-    @open="handleOpen"
-    @close="handleClose"
   >
     <el-sub-menu index="1">
       <template #title>
@@ -48,7 +46,6 @@ import {
 import { getNavigationInfo } from '/src/api/scheme'
 
 export default {
-  name: 'Navbar',
   props: {
     apiInfo: {type: Object, required: true},
     settings: {type: Object, required: true},

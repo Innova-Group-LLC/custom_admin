@@ -1,7 +1,10 @@
 <template>
   <div class="common-layout" v-loading="loading">
     <el-container v-if="apiInfo">
-      <el-header>Header</el-header>
+
+      <el-header>
+        <header/>
+      </el-header>
 
       <el-container>
 
@@ -19,6 +22,7 @@
 import { ElMessage } from 'element-plus'
 
 import Navbar from '/src/layout/Navbar.vue'
+import Header from '/src/layout/Header.vue'
 
 import { getApiInfo } from '/src/api/scheme'
 import { getSettings } from '/src/utils/settings'
@@ -27,6 +31,7 @@ import { removeToken } from '/src/utils/auth'
 export default {
   components: {
     Navbar,
+    Header,
   },
   data() {
     return {
