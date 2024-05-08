@@ -1,26 +1,20 @@
 <template>
-  <div class="common-layout" v-loading="loading">
-    <el-container v-if="apiInfo">
+  <v-layout class="rounded rounded-md">
+    <template v-if="apiInfo">
 
-      <el-header>
-        <header/>
-      </el-header>
+      <Navbar :api-info="apiInfo" :settings="settings" />
 
-      <el-container>
+      <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
+        <Header :settings="settings" />
 
-        <el-aside width="200px">
-          <navbar :api-info="apiInfo" :langs="langs" :settings="settings"/>
-        </el-aside>
+        Main Content
+      </v-main>
 
-        <el-main>Main</el-main>
-      </el-container>
-    </el-container>
-  </div>
+    </template>
+  </v-layout>
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
-
 import Navbar from '/src/layout/Navbar.vue'
 import Header from '/src/layout/Header.vue'
 
@@ -49,8 +43,7 @@ export default {
       this.loading = false
     }).catch(error => {
       this.loading = false
-      console.error('Error getting API data:' + error)
-      ElMessage({ message: error, type: 'error', duration: 5 * 1000 })
+      console.error('API error:', error)
       if (error.response.status == 401) {
         removeToken()
         this.$router.push({ path: '/login' })

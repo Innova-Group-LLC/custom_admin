@@ -73,7 +73,7 @@ class AdminPaginator(PageNumberPagination):
 
 
 class BaseAdminDataViewSet(ViewActionsInlineMixIn, viewsets.ViewSet):
-    icon: typing.Optional[str] = None  # https://element.eleme.io/#/en-US/component/icon
+    icon: typing.Optional[str] = None  # # https://pictogrammers.com/library/mdi/
     hide_in_navigation: typing.Optional[bool] = None
 
     throttle_classes = []

@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import { config_dataset } from '/src/utils/settings'
 
 import Layout from '/src/layout/Layout.vue'
@@ -20,14 +20,10 @@ const routes = [
       },
     ]
   },
-
   { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true }
 ]
 
-const router = createRouter({
-  base: config_dataset.base_admin_url,
-  history: createMemoryHistory(),
+export default createRouter({
+  history: createWebHistory(config_dataset.base_admin_url),
   routes,
 })
-
-export default router

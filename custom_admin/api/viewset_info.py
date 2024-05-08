@@ -11,7 +11,7 @@ class AdminViewSetInfo:
 
     views: typing.List[str]
 
-    # https://element.eleme.io/#/en-US/component/icon
+    # https://pictogrammers.com/library/mdi/
     icon: typing.Optional[str] = None
 
     def __post_init__(self):

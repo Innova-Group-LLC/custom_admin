@@ -6,7 +6,7 @@ def admin_action(
         description: typing.Optional[str] = None,
         short_description: typing.Optional[str] = None,
 
-        # https://element.eleme.io/#/en-US/component/icon
+        # https://pictogrammers.com/library/mdi/
         icon: typing.Optional[str] = None,
 
         # https://element.eleme.io/#/en-US/component/button

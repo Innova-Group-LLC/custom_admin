@@ -1,24 +1,39 @@
 {
   "name": "django-custom-admin",
-  "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "serve": "vite",
+    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@vue/reactivity": "^3.4.27",
-    "@vue/shared": "^3.4.27",
-    "element-plus": "^2.7.2",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.2"
+    "@mdi/font": "7.0.96",
+    "axios": "^1.6.8",
+    "core-js": "^3.34.0",
+    "js-cookie": "^3.0.5",
+    "roboto-fontface": "*",
+    "vue": "^3.4.0",
+    "vuetify": "^3.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-vue": "^9.22.0",
+    "pinia": "^2.1.7",
+    "sass": "^1.71.1",
     "unplugin-auto-import": "^0.17.5",
-    "unplugin-vue-components": "^0.27.0",
-    "vite": "^5.2.0"
+    "unplugin-fonts": "^1.1.1",
+    "unplugin-vue-components": "^0.26.0",
+    "unplugin-vue-router": "^0.8.4",
+    "vite": "^5.1.5",
+    "vite-plugin-vue-layouts": "^0.11.0",
+    "vite-plugin-vuetify": "^2.0.3",
+    "vue-router": "^4.3.0"
   }
 }
