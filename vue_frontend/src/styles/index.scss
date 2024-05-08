@@ -1,0 +1,15 @@
+$color-darken-3: rgb(48, 65, 86);
+$color-darken-4: rgb(31, 45, 61);
+
+.navbar-container {
+    background-color: $color-darken-3 !important;
+    color: #FFFFFF !important;
+
+    .v-list-item__spacer {
+        width: 10px !important;
+    }
+
+    .navbar-link {
+        background-color: $color-darken-4 !important;
+    }
+}

@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    class="navbar-container bg-indigo-darken-2"
+    class="navbar-container"
   >
     <v-list-item>
       <p class="text-h6">{{ getTitle() }}</p>
@@ -23,10 +23,11 @@
         </template>
 
         <v-list-item
+          class="navbar-link"
           v-for="line in view.children" :key="line.meta.key"
           :prepend-icon="line.meta.icon"
           :title="line.meta.title"
-          :link="line.path"
+          :to="line.path"
         ></v-list-item>
       </v-list-group>
     </v-list>

@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar title="Application bar" height="48px">
+  <v-app-bar title="Application bar" height="56">
   </v-app-bar>
 </template>
 
