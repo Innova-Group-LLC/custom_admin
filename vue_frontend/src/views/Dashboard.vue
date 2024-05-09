@@ -37,7 +37,6 @@
 import { getNavigationInfo } from '/src/api/scheme'
 
 export default {
-  name: 'Dashboard',
   props: {
     apiInfo: {type: Object, required: true},
   },

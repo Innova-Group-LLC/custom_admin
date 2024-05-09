@@ -3,6 +3,8 @@ import { config_dataset } from '/src/utils/settings'
 
 import Layout from '/src/layout/Layout.vue'
 import Dashboard from '/src/views/Dashboard.vue'
+import List from '/src/views/List.vue'
+import Edit from '/src/views/List.vue'
 
 const routes = [
   {
@@ -18,6 +20,23 @@ const routes = [
         props: true,
         component: Dashboard,
       },
+      {
+        path: ':group/:viewname/list',
+        props: true,
+        component: List,
+      },
+      {
+        path: ':group/:viewname/:id/:mode',
+        props: true,
+        name: 'edit',
+        component: Edit,
+      },
+      {
+        path: ':group/:viewname/:mode',
+        props: true,
+        name: 'create',
+        component: Edit,
+      }
     ]
   },
   { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true }
