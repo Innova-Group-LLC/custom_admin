@@ -1,6 +1,7 @@
 <template>
   <v-navigation-drawer
     class="navbar-container"
+    width='255'
   >
     <v-list-item>
       <p class="text-h6">{{ getTitle() }}</p>

@@ -23,6 +23,7 @@ const routes = [
       {
         path: ':group/:viewname/list',
         props: true,
+        name: 'list',
         component: List,
       },
       {

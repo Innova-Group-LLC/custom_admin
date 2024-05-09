@@ -27,3 +27,11 @@ $color-darken-4: rgb(31, 45, 61);
         padding-inline: 0px;
     }
 }
+
+.model-table {
+    .v-data-table__tr:nth-child(2n) {
+        .v-data-table__td {
+            background-color: #fafafa;
+        }
+    }
+}

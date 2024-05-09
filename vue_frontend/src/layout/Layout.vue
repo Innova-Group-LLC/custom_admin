@@ -7,7 +7,7 @@
       <v-main class="d-flex">
         <Header :settings="settings" />
 
-        <div class="page-container">
+        <div class="page-container" style="width: calc(100vw - 255px)">
           <router-view :api-info="apiInfo" :settings="settings"/>
         </div>
 

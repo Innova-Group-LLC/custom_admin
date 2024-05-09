@@ -2,8 +2,14 @@
   <div class="list-page">
 
     <v-data-table
-      :items="pageData.data"
+      class="model-table"
+      :items-per-page="pageInfo.limit"
+      :page="pageInfo.page"
+      :items="pageData.data || []"
+      :headers="getHeaders()"
       :loading="listLoading"
+      :show-select="true"
+      height="calc(100vh - (56px + 62px))"
     >
     </v-data-table>
 
@@ -145,6 +151,47 @@ export default {
         console.error('Get list error:' + error)
         Message({ message: error, type: 'error', duration: 5 * 1000 })
       })
+    },
+    getHeaders() {
+      let result = []
+
+      for (const name of this.sectionData.meta.filds_list) {
+
+        const field = this.sectionData.meta.serializer[name]
+        if (!field) {
+          console.error(`Field ${field_name} is not presented in serializer fields`)
+          return
+        }
+
+        if (this.canDisplayInList(field, name)) {
+          let headerData = {
+            title: field.label,
+            align: field.align || 'start',
+            minWidth: field.min_width || '150',
+            sortable: this.sectionData.meta.ordering_fields.indexOf(name) >= 0,
+            key: name,
+          }
+          if (this.isColumnFixed(name)) {
+            headerData['fixed'] = true
+            headerData['width'] = field.width || '150'
+          }
+          if (name === 'id') {
+            headerData['minWidth'] = field.width || '50'
+            headerData['width'] = field.width || '50'
+          }
+          result.push(headerData)
+        }
+      }
+      return result
+    },
+    isColumnFixed(columnName) {
+      return this.sectionData.meta.fixed_columns && this.sectionData.meta.fixed_columns.includes(columnName)
+    },
+    canDisplayInList(field, field_name) {
+      if (!field.write_only && (!this.sectionData.meta.filds_list || this.sectionData.meta.filds_list.indexOf(field_name) !== -1)) {
+        return true
+      }
+      return false
     },
   }
 }
