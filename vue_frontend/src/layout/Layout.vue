@@ -2,13 +2,13 @@
   <v-layout class="rounded rounded-md">
     <template v-if="apiInfo">
 
-      <Navbar :api-info="apiInfo" :settings="settings" />
+      <Navbar ref="navbar" :api-info="apiInfo" :settings="settings"/>
 
       <v-main class="d-flex">
-        <Header :settings="settings" />
+        <Header :settings="settings" @toggle-drawer="toggleDrawer()"/>
 
-        <div class="page-container" style="width: calc(100vw - 255px)">
-          <router-view :api-info="apiInfo" :settings="settings"/>
+        <div class="page-container">
+          <router-view :key="$route.fullPath" :api-info="apiInfo" :settings="settings"/>
         </div>
 
       </v-main>
@@ -54,6 +54,9 @@ export default {
     })
   },
   methods: {
+    toggleDrawer() {
+      this.$refs.navbar.toggleDrawer()
+    },
   }
 }
 </script>

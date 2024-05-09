@@ -1,5 +1,6 @@
 <template>
   <v-app-bar height="56">
+    <v-app-bar-nav-icon variant="text" @click="toggleDrawer"/>
 
     <v-breadcrumbs :items="['Foo', 'Bar', 'Fizz']">
       <template v-slot:divider>
@@ -14,6 +15,16 @@
 
 export default {
   props: {
+  },
+  data() {
+    return {
+      drawer: null,
+    }
+  },
+  methods: {
+    toggleDrawer() {
+      this.$emit("toggleDrawer");
+    },
   },
 }
 </script>

@@ -9,6 +9,7 @@
       :headers="getHeaders()"
       :loading="listLoading"
       :show-select="true"
+      :items-per-page-options="perPageOptions"
       height="calc(100vh - (56px + 62px))"
     >
     </v-data-table>
@@ -32,23 +33,11 @@ export default {
   },
   data() {
     return {
-      deserts: [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: '1',
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-          iron: '0',
-        },
+      perPageOptions: [
+        {value: 25, title: '25'},
+        {value: 50, title: '50'},
+        {value: 100, title: '100'},
+        {value: 250, title: '250'},
       ],
       listLoading: true,
       pageData: {

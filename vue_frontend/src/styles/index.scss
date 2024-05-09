@@ -13,6 +13,10 @@ $color-darken-4: rgb(31, 45, 61);
     }
 }
 
+.page-container {
+    overflow-x: auto;
+}
+
 .dashboard-page {
     margin: 20px;
 

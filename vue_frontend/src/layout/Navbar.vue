@@ -2,6 +2,7 @@
   <v-navigation-drawer
     class="navbar-container"
     width='255'
+    :modelValue="drawer"
   >
     <v-list-item>
       <p class="text-h6">{{ getTitle() }}</p>
@@ -49,6 +50,7 @@ export default {
   data() {
     return {
       navigation_info: null,
+      drawer: null,
       open: null,
     }
   },
@@ -58,7 +60,10 @@ export default {
   methods: {
     getTitle() {
       return config_dataset.title
-    }
+    },
+    toggleDrawer() {
+      this.drawer = !this.drawer
+    },
   }
 }
 </script>
