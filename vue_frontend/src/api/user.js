@@ -19,10 +19,9 @@ function loginApi(data) {
   })
 }
 
-export function login(userInfo) {
+export function login(username, password) {
   console.assert(config_dataset.backend_prefix, 'backend url is not set!')
 
-  const { username, password } = userInfo
   return new Promise((resolve, reject) => {
     loginApi(
       { username: username.trim(), password: password }

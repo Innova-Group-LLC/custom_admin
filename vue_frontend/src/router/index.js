@@ -3,6 +3,7 @@ import { config_dataset } from '/src/utils/settings'
 
 import Layout from '/src/layout/Layout.vue'
 import Dashboard from '/src/views/Dashboard.vue'
+import Login from '/src/views/Login.vue'
 import List from '/src/views/List.vue'
 import Edit from '/src/views/List.vue'
 
@@ -10,6 +11,10 @@ const routes = [
   {
     path: '',
     redirect: '/dashboard',
+  },
+  {
+    path: '/login',
+    component: Login,
   },
   {
     path: '',

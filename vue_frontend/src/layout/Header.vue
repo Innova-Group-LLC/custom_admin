@@ -10,55 +10,26 @@
 
     <v-spacer></v-spacer>
 
-    <v-dialog max-width="500">
-      <template v-slot:activator="{ props: activatorProps }">
-        <v-btn icon v-bind="activatorProps"><v-icon>mdi-translate</v-icon></v-btn>
-      </template>
+    <Language :langs="langs"/>
 
-      <template v-slot:default="{ isActive }">
-        <v-card>
-
-          <v-card-title class="d-flex justify-space-between align-center">
-            <div class="text-h5 text-medium-emphasis ps-2">
-              {{ $t('languageSelection') }}
-            </div>
-
-            <v-btn
-              icon="mdi-close"
-              variant="text"
-              @click="isActive.value = false"
-            ></v-btn>
-          </v-card-title>
-
-          <v-card-text>
-            <v-list>
-              <v-list-item
-                v-for="(title, slug) in langs"
-                :key="slug"
-                :title="title"
-                @click.native="changeLang(slug)"
-              ></v-list-item>
-            </v-list>
-          </v-card-text>
-
-        </v-card>
-      </template>
-    </v-dialog>
-
-    <v-btn icon><v-icon>mdi-logout</v-icon></v-btn>
+    <v-btn icon @click.native="logout"><v-icon>mdi-logout</v-icon></v-btn>
 
   </v-app-bar>
 </template>
 
 <script>
+import Language from '/src/components/Language.vue'
 import { getBreadcrumbs } from '/src/utils/get-breadcrumb'
-import { setLang } from '/src/utils/auth'
+import { setLang, removeToken } from '/src/utils/auth'
 
 export default {
   props: {
     apiInfo: {type: Object, required: true},
     settings: {type: Object, required: true},
     langs: {type: Object, required: true},
+  },
+  components: {
+    Language,
   },
   data() {
     return {
@@ -85,6 +56,10 @@ export default {
       setLang(langSlug)
       document.location.reload()
     },
+    logout() {
+      removeToken()
+      this.$router.push({ path: '/login' })
+    }
   },
 }
 </script>

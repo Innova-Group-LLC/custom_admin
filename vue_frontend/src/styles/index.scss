@@ -1,8 +1,19 @@
-$color-darken-2: rgb(92, 124, 163);
-$color-darken-3: rgb(48, 65, 86);
-$color-darken-4: rgb(31, 45, 61);
+$color-darken-2: #5c7ca3;
+$color-darken-3: #304156;
+$color-darken-4: #1f2d3d;
 
 $header-height: 56px;
+
+:root {
+  --toastify-toast-width: 640px;
+  --toastify-toast-min-height: 64px;
+  --toastify-toast-max-height: 800px;
+}
+
+.login-page {
+    background: $color-darken-2;
+    background: radial-gradient(circle, $color-darken-2 0%, $color-darken-4 100%);
+}
 
 .navbar-container {
     background-color: $color-darken-3 !important;
