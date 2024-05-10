@@ -4,7 +4,7 @@
     <v-data-table
       class="model-table"
       :items="pageData.data || []"
-      :headers="getHeaders()"
+      :headers="headers"
       :loading="listLoading"
       :show-select="true"
 
@@ -13,6 +13,12 @@
 
       height="unset"
     >
+
+      <template
+        v-for="header in headers"
+        v-slot:[`item.${header.key}`]="{ item }">
+        {{ item[header.key] }}
+      </template>
 
       <template v-slot:bottom>
         <div class="table-bottom">
@@ -60,6 +66,7 @@ export default {
   },
   data() {
     return {
+      headers: {},
       perPageOptions: [25, 50, 100, 150],
       listLoading: true,
       pageData: {
@@ -103,6 +110,7 @@ export default {
       return
     }
 
+    this.headers = this.getHeaders()
     this.deserializeQuery()
     this.getListData()
   },
