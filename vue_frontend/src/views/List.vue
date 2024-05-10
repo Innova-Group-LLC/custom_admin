@@ -3,15 +3,42 @@
 
     <v-data-table
       class="model-table"
-      :items-per-page="pageInfo.limit"
-      :page="pageInfo.page"
       :items="pageData.data || []"
       :headers="getHeaders()"
       :loading="listLoading"
       :show-select="true"
-      :items-per-page-options="perPageOptions"
-      height="calc(100vh - (56px + 62px))"
+
+      :items-per-page="pageInfo.limit"
+      :page="pageInfo.page"
+
+      height="unset"
     >
+
+      <template v-slot:bottom>
+        <div class="table-bottom">
+
+          <v-row justify="end" no-gutters>
+            <v-select
+              class="list-pagination-per-page"
+              density="compact"
+              v-model="pageInfo.limit"
+              :items="perPageOptions"
+              @update:modelValue="changePagination"
+            ></v-select>
+
+            <v-pagination
+              class="list-pagination"
+              v-model="pageInfo.page"
+              :length="pageData.count / pageInfo.limit"
+              :total-visible="6"
+              size="40"
+              @update:modelValue="changePagination"
+            ></v-pagination>
+          </v-row>
+
+        </div>
+      </template>
+
     </v-data-table>
 
   </div>
@@ -33,12 +60,7 @@ export default {
   },
   data() {
     return {
-      perPageOptions: [
-        {value: 25, title: '25'},
-        {value: 50, title: '50'},
-        {value: 100, title: '100'},
-        {value: 250, title: '250'},
-      ],
+      perPageOptions: [25, 50, 100, 150],
       listLoading: true,
       pageData: {
         data: null,
@@ -117,6 +139,24 @@ export default {
         }
       }
     },
+    serializeQuery() {
+      // Change url params only if group presented
+      if (!this.group) return
+
+      let newQuery = {}
+      if (this.pageInfo.page) newQuery.page = this.pageInfo.page
+      if (this.pageInfo.limit) newQuery.limit = this.pageInfo.limit
+
+      if (this.ordering) newQuery.ordering = this.ordering
+      if (this.filterInfo.search) newQuery.search = this.filterInfo.search
+
+      for (const [filter_name, filter_value] of Object.entries(this.filterInfo.filters)) {
+        if (filter_value)
+          newQuery[filter_name] = filter_value
+      }
+
+      this.$router.push({name: this.$route.name, query: newQuery})
+    },
     async getListData() {
       this.listLoading = true
       getList({
@@ -138,7 +178,7 @@ export default {
       }).catch(error => {
         this.listLoading = false
         console.error('Get list error:' + error)
-        Message({ message: error, type: 'error', duration: 5 * 1000 })
+        // Message({ message: error, type: 'error', duration: 5 * 1000 })
       })
     },
     getHeaders() {
@@ -181,6 +221,11 @@ export default {
         return true
       }
       return false
+    },
+    changePagination() {
+      localStorage.setItem('paginationSize', this.pageInfo.limit)
+      this.serializeQuery()
+      this.getListData()
     },
   }
 }

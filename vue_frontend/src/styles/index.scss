@@ -1,15 +1,25 @@
+$color-darken-2: rgb(92, 124, 163);
 $color-darken-3: rgb(48, 65, 86);
 $color-darken-4: rgb(31, 45, 61);
+
+$header-height: 56px;
 
 .navbar-container {
     background-color: $color-darken-3 !important;
     color: #FFFFFF !important;
+    width: 255px;
 
     .v-list-item__spacer {
         width: 10px !important;
     }
     .navbar-link {
         background-color: $color-darken-4 !important;
+    }
+}
+
+.header-conatainer {
+    .v-toolbar__content {
+        height: $header-height !important;
     }
 }
 
@@ -33,9 +43,29 @@ $color-darken-4: rgb(31, 45, 61);
 }
 
 .model-table {
+    height: calc(100vh - ($header-height)) !important;
+
     .v-data-table__tr:nth-child(2n) {
         .v-data-table__td {
             background-color: #fafafa;
+        }
+    }
+    .table-bottom {
+        .list-pagination-per-page {
+            display: contents;
+            .v-field__field {
+                display: contents;
+                vertical-align: middle;
+            }
+            .v-input__details {
+                display: none;
+            }
+            .v-field__input {
+                vertical-align: middle;
+            }
+        }
+        .list-pagination {
+            vertical-align: middle;
         }
     }
 }

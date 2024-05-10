@@ -1,7 +1,6 @@
 <template>
   <v-navigation-drawer
     class="navbar-container"
-    width='255'
     :modelValue="drawer"
   >
     <v-list-item>
