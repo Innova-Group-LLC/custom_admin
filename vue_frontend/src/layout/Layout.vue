@@ -4,9 +4,14 @@
 
       <Navbar ref="navbar" :api-info="apiInfo" :settings="settings"/>
 
-      <v-main class="d-flex">
-        <Header :settings="settings" @toggle-drawer="toggleDrawer()"/>
+      <Header
+        :api-info="apiInfo"
+        :settings="settings"
+        :langs="langs"
+        @toggle-drawer="toggleDrawer()"
+      />
 
+      <v-main class="d-flex">
         <div class="page-container">
           <router-view :key="$route.fullPath" :api-info="apiInfo" :settings="settings"/>
         </div>
@@ -18,6 +23,8 @@
 </template>
 
 <script>
+import { toast } from "vue3-toastify";
+
 import Navbar from '/src/layout/Navbar.vue'
 import Header from '/src/layout/Header.vue'
 
@@ -35,6 +42,7 @@ export default {
       apiInfo: null,
       settings: null,
       loading: true,
+      langs: null,
     }
   },
   async created() {
@@ -47,6 +55,12 @@ export default {
     }).catch(error => {
       this.loading = false
       console.error('API error:', error)
+      toast(error, {
+        "theme": "auto",
+        "type": "error",
+        "position": "top-center",
+        "dangerouslyHTMLString": true
+      })
       if (error.response.status == 401) {
         removeToken()
         this.$router.push({ path: '/login' })

@@ -1,34 +1,12 @@
-function urlParameterToDict(parameter) {
-  let result = []
-  for (const item of parameter.split('-')) {
-    let itemInfo = item.split('.')
-    result.push({
-      'viewname': itemInfo[0],
-      'id': itemInfo[1],
-      'tab': itemInfo[2],
-    })
-  }
-  return result
-}
-
-function dictParameterToUrl(data) {
-  return data.map(item => `${item.viewname}.${item.id}.${item.tab}`).join('-')
-}
-
-export function appendBreadcrumb(route, relationNameFilter) {
-  let fromPath = route.query.from ? urlParameterToDict(route.query.from) : []
-  if (relationNameFilter) {
-    fromPath.push({
-      'viewname': route.params.viewname,
-      'id': route.params.id,
-      'tab': route.query.tab,
-    })
-  }
-  return fromPath.length > 0 ? { from: dictParameterToUrl(fromPath) } : {}
-}
+import i18n from '/src/plugins/i18n'
 
 export function getBreadcrumbs(apiInfo, router, route) {
   let path = []
+
+  path.unshift({
+    title: i18n.global.t('mainPage'),
+    to: '/dashboard',
+  })
 
   let fromPath = route.query.from ? urlParameterToDict(route.query.from) : []
 
@@ -41,7 +19,7 @@ export function getBreadcrumbs(apiInfo, router, route) {
 
     path.push({
       title: `${sectionData.title} #${itemInfo.id}`,
-      url: edit_url,
+      to: edit_url,
       group: sectionData.group,
       viewname: itemInfo.viewname,
       id: itemInfo.id,
@@ -68,10 +46,12 @@ export function getBreadcrumbs(apiInfo, router, route) {
     path.push({
       title: `${sectionData.title}`,
       viewname: route.params.viewname,
-    })    
+    })
   }
   else {
-    path = [{title: route.meta.title}]
+    if (route.meta.title) {
+      path.push({title: route.meta.title})
+    }
   }
 
   if (path[0].id !== undefined) {
@@ -81,7 +61,7 @@ export function getBreadcrumbs(apiInfo, router, route) {
     const list_url = `/${sectionData.group}/${itemInfo.viewname}/list`
     path.unshift({
       title: `${sectionData.title}`,
-      url: list_url,
+      to: list_url,
       group: sectionData.group,
       viewname: itemInfo.viewname,
     })

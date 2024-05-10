@@ -1,4 +1,4 @@
-import { ElMessage } from 'element-plus'
+import { toast } from "vue3-toastify";
 import moment from 'moment';
 
 import request from '/src/utils/request'
@@ -49,7 +49,12 @@ export async function sendAction(viewname, action, ids, sendToAll, formData) {
         if (error.response.status == 400) {
 
           if (error.response.data.action_messages) {
-            ElMessage({ message: error.response.data.action_messages.join('<br>'), type: 'error', duration: 5 * 1000 , dangerouslyUseHTMLString: true,})
+            toast(error.response.data.action_messages.join('<br>'), {
+              "theme": "auto",
+              "type": "error",
+              "position": "top-center",
+              "dangerouslyHTMLString": true
+            })
           }
           reject(error.response.data)
         }

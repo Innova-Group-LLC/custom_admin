@@ -29,7 +29,7 @@
             <v-pagination
               class="list-pagination"
               v-model="pageInfo.page"
-              :length="pageData.count / pageInfo.limit"
+              :length="getLength()"
               :total-visible="6"
               size="40"
               @update:modelValue="changePagination"
@@ -226,6 +226,9 @@ export default {
       localStorage.setItem('paginationSize', this.pageInfo.limit)
       this.serializeQuery()
       this.getListData()
+    },
+    getLength() {
+      return parseInt((this.pageData.count || 0) / this.pageInfo.limit)
     },
   }
 }
