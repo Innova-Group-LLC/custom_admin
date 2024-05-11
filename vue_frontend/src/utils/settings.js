@@ -25,6 +25,7 @@ export const wysiwygTypes = {
 }
 
 const defaultSettings = {
+  page_size: 25,
   theme: 'light',
   wysiwygSkin: 'dark-first',
 }

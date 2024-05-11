@@ -54,6 +54,16 @@ $header-height: 56px;
     }
 }
 
+.list-page {
+    .content-row {
+        margin: 10px;
+        vertical-align: middle;
+    }
+    .create-button {
+        background-color: $color-darken-2;
+    }
+}
+
 .v-theme--light {
     .v-data-table__tr:nth-child(2n) {
         .v-data-table__td {

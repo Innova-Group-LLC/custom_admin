@@ -1,6 +1,20 @@
 <template>
   <div class="list-page">
 
+    <div class="list-above-block">
+      <v-row class="content-row" justify="end" no-gutters>
+        <Create
+          v-if="canAdd()"
+          :api-info="apiInfo"
+          :settings="settings"
+
+          :viewname="viewname"
+          :relation-name-filter="relationNameFilter"
+          :filter-id="filterId"
+        />
+      </v-row>
+    </div>
+
     <v-data-table
       class="model-table"
       :items="pageData.data || []"
@@ -91,8 +105,14 @@ import moment from 'moment'
 import { getMethods } from '/src/api/scheme'
 import { getList } from '/src/api/getList'
 import { getDetailUrl } from '/src/utils/get-breadcrumb'
+import { getSettings, setSettings } from '/src/utils/settings'
+
+import Create from '/src/components/Create.vue'
 
 export default {
+  components: {
+    Create,
+  },
   props: {
     apiInfo: {type: Object, required: true},
     settings: {type: Object, required: true},
@@ -136,7 +156,7 @@ export default {
   created() {
     this.pageInfo = {
       page: 1,
-      limit: 25,
+      limit: getSettings().page_size || 25,
     }
 
     this.apiMethods = getMethods(this.viewname, this.apiInfo)
@@ -270,7 +290,10 @@ export default {
       return false
     },
     changePagination() {
-      localStorage.setItem('paginationSize', this.pageInfo.limit)
+      let settings = getSettings()
+      settings.page_size = this.pageInfo.limit,
+      setSettings(settings)
+
       this.serializeQuery()
       this.getListData()
     },

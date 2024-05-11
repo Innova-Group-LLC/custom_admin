@@ -32,12 +32,6 @@ const routes = [
         component: Edit,
       },
       {
-        path: ':group/:viewname/:mode',
-        props: true,
-        name: 'create',
-        component: Edit,
-      },
-      {
         path: ':group/:viewname/list',
         props: true,
         name: 'list',
