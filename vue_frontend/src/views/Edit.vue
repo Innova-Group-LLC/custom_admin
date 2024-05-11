@@ -7,12 +7,8 @@
 </template>
 
 <script>
-import ModelForm from '/src/components/ModelForm.vue'
 
 export default {
-  components: {
-    ModelForm
-  },
   props: {
     apiInfo: {type: Object, required: true},
     settings: {type: Object, required: true},

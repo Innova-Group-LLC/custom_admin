@@ -6,7 +6,6 @@
         <Create
           v-if="canAdd()"
           :api-info="apiInfo"
-          :settings="settings"
 
           :viewname="viewname"
           :relation-name-filter="relationNameFilter"
@@ -139,8 +138,7 @@ export default {
       },
       sectionData: null,
       apiMethods: null,
-      formInfo: null,
-      dialogVisible: false,
+
       selectedAction: null,
       actionToAll: false,
       actionDialog: {

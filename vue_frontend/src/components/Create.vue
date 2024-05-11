@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="500">
+  <v-dialog max-width="1200">
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
@@ -12,16 +12,15 @@
     <v-card title="Dialog">
       <v-card-text>
 
-        <!-- Model form for create new record -->
-        <ModelForm
+        <!-- Form for create new model record -->
+        <FieldsContainer
+          ref="fieldscontainer"
+          formType="create"
           :api-info="apiInfo"
-          :settings="settings"
-
           :viewname="viewname"
+
           :relation-name-filter="relationNameFilter"
           :filter-id="filterId"
-
-          v-if="isActive.value"
         />
 
       </v-card-text>
@@ -40,11 +39,11 @@
 </template>
 
 <script>
+import FieldsContainer from '/src/components/FieldsContainer.vue'
 
 export default {
   props: {
     apiInfo: {type: Object, required: true},
-    settings: {type: Object, required: true},
 
     viewname: {type: String, required: false},
     relationNameFilter: {type: Object, required: false},
