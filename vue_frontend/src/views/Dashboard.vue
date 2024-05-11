@@ -1,8 +1,7 @@
 <template>
   <div class="dashboard-page">
 
-    <v-row>
-      <v-col cols="12" md="3" v-for="view in navigation_info" :key="view.meta.key">
+      <div class="dashboard-element" cols="12" md="3" v-for="view in navigation_info" :key="view.meta.key">
         <v-card
           class="mx-auto"
           :prepend-icon="view.meta.icon"
@@ -27,8 +26,7 @@
           </v-card-text>
         </v-card>
 
-      </v-col>
-    </v-row>
+      </div>
 
   </div>
 </template>

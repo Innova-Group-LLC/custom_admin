@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar class="header-conatainer" height="unset">
+  <v-app-bar class="header-conatainer" :height="56">
     <v-app-bar-nav-icon variant="text" @click="toggleDrawer"/>
 
     <v-breadcrumbs :items="path">
@@ -10,6 +10,8 @@
 
     <v-spacer></v-spacer>
 
+    <Theme/>
+
     <Language :langs="langs"/>
 
     <v-btn icon @click.native="logout"><v-icon>mdi-logout</v-icon></v-btn>
@@ -19,6 +21,7 @@
 
 <script>
 import Language from '/src/components/Language.vue'
+import Theme from '/src/components/Theme.vue'
 import { getBreadcrumbs } from '/src/utils/get-breadcrumb'
 import { setLang, removeToken } from '/src/utils/auth'
 
@@ -30,6 +33,7 @@ export default {
   },
   components: {
     Language,
+    Theme,
   },
   data() {
     return {
@@ -59,7 +63,7 @@ export default {
     logout() {
       removeToken()
       this.$router.push({ path: '/login' })
-    }
+    },
   },
 }
 </script>

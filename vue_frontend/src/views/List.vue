@@ -17,7 +17,42 @@
       <template
         v-for="header in headers"
         v-slot:[`item.${header.key}`]="{ item }">
-        {{ item[header.key] }}
+
+        <template v-if="header.field.type === 'primary'">
+          <v-tooltip v-if="item[header.key]">
+            #{{ item[header.key].id }}
+            <template v-slot:activator="{ props }">
+              <v-chip size="small" v-bind="props">{{ item[header.key].text }}</v-chip>
+            </template>
+          </v-tooltip>
+        </template>
+
+        <template v-else-if="header.field.type === 'boolean'">
+          <v-icon color="green-darken-2" icon="mdi-check" size="small" v-if="item[header.key]"/>
+          <v-icon color="red-darken-2" icon="mdi-close" size="small" v-else/>
+        </template>
+
+        <template v-else-if="header.field.type === 'choice'">
+          <template v-if="item[header.key]">
+            <template v-if="Object.keys(header.field.tag_style || {}).length > 0">
+              <v-chip
+                size="small"
+                :color="header.field.tag_style[item[header.key].value]"
+              >{{ item[header.key].text }}</v-chip>
+            </template>
+            <template v-else>
+              {{ item[header.key].text }}
+            </template>
+          </template>
+        </template>
+
+        <template v-else-if="header.field.type === 'datetime'">
+          {{ formatDateTime(item[header.key]) }}
+        </template>
+
+        <template v-else>
+          {{ item[header.key] }}
+        </template>
       </template>
 
       <template v-slot:bottom>
@@ -51,6 +86,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { getMethods } from '/src/api/scheme'
 import { getList } from '/src/api/getList'
 
@@ -207,6 +243,7 @@ export default {
             minWidth: field.min_width || '150',
             sortable: this.sectionData.meta.ordering_fields.indexOf(name) >= 0,
             key: name,
+            field: field,
           }
           if (this.isColumnFixed(name)) {
             headerData['fixed'] = true
@@ -237,6 +274,11 @@ export default {
     },
     getLength() {
       return parseInt((this.pageData.count || 0) / this.pageInfo.limit)
+    },
+    formatDateTime(dateString) {
+      if (dateString) {
+        return moment(dateString).format('YYYY-MM-DD HH:mm')
+      }
     },
   }
 }
