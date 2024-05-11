@@ -12,6 +12,7 @@
       :page="pageInfo.page"
 
       height="unset"
+      @click:row="handleClick"
     >
 
       <template
@@ -89,6 +90,7 @@
 import moment from 'moment'
 import { getMethods } from '/src/api/scheme'
 import { getList } from '/src/api/getList'
+import { getDetailUrl } from '/src/utils/get-breadcrumb'
 
 export default {
   props: {
@@ -279,6 +281,23 @@ export default {
       if (dateString) {
         return moment(dateString).format('YYYY-MM-DD HH:mm')
       }
+    },
+    canAdd() {
+      return 'create' in this.apiMethods
+    },
+    canRetrieve() {
+      return 'retrieve' in this.apiMethods
+    },
+    clickRow(row, column, event) {
+      if (column.label && column.label.toLowerCase() === 'id') {
+        if (this.canRetrieve())
+          this.openDetail(this.viewname, row.id)
+      }
+    },
+    handleClick(click, row) {
+      const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.item.id}/update`
+      const query = getDetailUrl(this.$route, this.relationNameFilter)
+      this.$router.push({ path: edit_url, query: query } )
     },
   }
 }

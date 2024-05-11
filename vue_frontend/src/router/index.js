@@ -5,7 +5,7 @@ import Layout from '/src/layout/Layout.vue'
 import Dashboard from '/src/views/Dashboard.vue'
 import Login from '/src/views/Login.vue'
 import List from '/src/views/List.vue'
-import Edit from '/src/views/List.vue'
+import Edit from '/src/views/Edit.vue'
 
 const routes = [
   {
@@ -26,12 +26,6 @@ const routes = [
         component: Dashboard,
       },
       {
-        path: ':group/:viewname/list',
-        props: true,
-        name: 'list',
-        component: List,
-      },
-      {
         path: ':group/:viewname/:id/:mode',
         props: true,
         name: 'edit',
@@ -42,7 +36,13 @@ const routes = [
         props: true,
         name: 'create',
         component: Edit,
-      }
+      },
+      {
+        path: ':group/:viewname/list',
+        props: true,
+        name: 'list',
+        component: List,
+      },
     ]
   },
   { path: '/:pathMatch(.*)*', redirect: '/404', hidden: true }

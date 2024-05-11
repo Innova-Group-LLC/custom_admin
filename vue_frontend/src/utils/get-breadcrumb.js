@@ -1,5 +1,17 @@
 import i18n from '/src/plugins/i18n'
 
+export function getDetailUrl(route, relationNameFilter) {
+  let fromPath = route.query.from ? urlParameterToDict(route.query.from) : []
+  if (relationNameFilter) {
+    fromPath.push({
+      'viewname': route.params.viewname,
+      'id': route.params.id,
+      'tab': route.query.tab,
+    })
+  }
+  return fromPath.length > 0 ? { from: dictParameterToUrl(fromPath) } : {}
+}
+
 export function getBreadcrumbs(apiInfo, router, route) {
   let path = []
 

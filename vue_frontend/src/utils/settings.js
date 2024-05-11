@@ -25,6 +25,7 @@ export const wysiwygTypes = {
 }
 
 const defaultSettings = {
+  theme: 'light',
   wysiwygSkin: 'dark-first',
 }
 
