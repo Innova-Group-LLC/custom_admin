@@ -29,11 +29,9 @@
         :key="groupInfo.title"
         :text="groupInfo.title"
       >
-        <v-card
-          v-for="(field, field_slug) in meta.serializer"
-        >
+        <div v-for="(field, field_slug) in meta.serializer">
 
-          <v-row v-if="canBeDisplayed(field, field_slug, tab_id) && !isTranslation(field_slug)">
+          <v-row class="fields-tab" v-if="canBeDisplayed(field, field_slug, tab_id) && !isTranslation(field_slug)">
             <v-col cols="3">
               <v-list-subheader>{{ field.label }}</v-list-subheader>
             </v-col>
@@ -57,7 +55,7 @@
             </v-col>
           </v-row>
 
-        </v-card>
+        </div>
       </v-tabs-window-item>
     </v-tabs-window>
 

@@ -74,6 +74,9 @@ $header-height: 56px;
 }
 
 .fields-container {
+    .fields-tab {
+        padding: 10px;
+    }
     .v-tab {
         text-transform: none !important;
     }
@@ -83,7 +86,6 @@ $header-height: 56px;
         color: #000;
     }
     .form-field-container {
-        margin: 10px 0px;
     }
 }
 
