@@ -184,7 +184,7 @@ export default {
       return true
     },
     _updateValue(value, field_slug) {
-      this.$set(this.formData, field_slug, value)
+      this.formData[field_slug] = value
 
       for (const [slug, value] of Object.entries(this.meta.serializer)) {
         const field = this.$refs[`field_${slug}`]

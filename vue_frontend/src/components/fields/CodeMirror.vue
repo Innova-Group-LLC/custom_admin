@@ -10,13 +10,14 @@ import { defaultProps, validateProps } from '/src/utils/fields.js'
 import CodeMirror from 'codemirror'
 import 'codemirror/addon/lint/lint.css'
 import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/rubyblue.css'
 import 'codemirror/mode/javascript/javascript'
 import 'codemirror/addon/lint/lint'
 import 'codemirror/addon/lint/json-lint'
 
-// import '/src/utils/jsonlint'
-// window.jsonlint = jsonlint;
+import 'codemirror/theme/rubyblue.css'
+
+import jsonlint from 'jsonlint-mod'
+window.jsonlint = jsonlint;
 
 const requiredFields = [
   'choices',
@@ -40,10 +41,10 @@ export default {
       this.jsonEditor = CodeMirror.fromTextArea(this.$refs.textarea, {
         lineNumbers: true,
         mode: 'application/json',
-        lint: false,
+        lint: true,
 
         // https://codemirror.net/5/demo/theme.html#default
-        theme: 'default',
+        theme: 'rubyblue',
 
         readOnly: this.field.read_only,
       })
@@ -56,13 +57,6 @@ export default {
   methods: {
     updateFormData(initFormData) {
       let init = initFormData[this.fieldSlug]
-
-      try {
-        init = JSON.stringify(JSON.parse(init), null, 2)
-      } catch (e) {
-        console.error(`Json "${this.fieldSlug}" error:`, e)
-      }
-
       this.jsonEditor.setValue(init)
     },
   },
