@@ -1,65 +1,82 @@
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="4">
-        <v-list-subheader>Prefix for dollar currency</v-list-subheader>
-      </v-col>
+  <v-container fluid class="fields-container">
 
-      <v-col cols="8">
-        <v-text-field
-          label="Amount"
-          model-value="10.00"
-          prefix="$"
-        ></v-text-field>
-      </v-col>
-    </v-row>
+    <v-tabs
+      class="container-tabs"
+      next-icon="mdi-arrow-right-bold-box-outline"
+      prev-icon="mdi-arrow-left-bold-box-outline"
+      show-arrows
+      v-model="tab"
+    >
+      <v-tab
+        v-for="(groupInfo, tab_id) in getGroups()"
+        :key="groupInfo.title"
+        :text="groupInfo.title"
+        density="compact"
+        slim
+      ></v-tab>
+    </v-tabs>
 
-    <v-row>
-      <v-col cols="4">
-        <v-list-subheader>Suffix for weight</v-list-subheader>
-      </v-col>
+    <template v-if="errors" v-for="error in errors['non_field_errors']">
+      <v-alert
+        :text="error"
+        type="error"
+      ></v-alert>
+    </template>
 
-      <v-col cols="8">
-        <v-text-field
-          label="Weight"
-          model-value="28.00"
-          suffix="lbs"
-        ></v-text-field>
-      </v-col>
-    </v-row>
+    <v-tabs-window v-model="tab">
+      <v-tabs-window-item
+        v-for="(groupInfo, tab_id) in getGroups()"
+        :key="groupInfo.title"
+        :text="groupInfo.title"
+      >
+        <v-card
+          v-for="(field, field_slug) in meta.serializer"
+        >
 
-    <v-row>
-      <v-col cols="4">
-        <v-list-subheader>Suffix for email domain</v-list-subheader>
-      </v-col>
+          <v-row v-if="canBeDisplayed(field, field_slug, tab_id) && !isTranslation(field_slug)">
+            <v-col cols="3">
+              <v-list-subheader>{{ field.label }}</v-list-subheader>
+            </v-col>
 
-      <v-col cols="8">
-        <v-text-field
-          label="Email address"
-          model-value="example"
-          suffix="@gmail.com"
-        ></v-text-field>
-      </v-col>
-    </v-row>
+            <v-col cols="9" class="form-field-container">
 
-    <v-row>
-      <v-col cols="4">
-        <v-list-subheader>Suffix for time zone</v-list-subheader>
-      </v-col>
+              <component
+                v-if="getFieldComponent(field)"
+                :ref='`field_${field_slug}`'
+                :field="field"
+                :field-slug="field_slug"
+                :viewname="viewname"
+                :is="getFieldComponent(field)"
 
-      <v-col cols="8">
-        <v-text-field
-          label="Label Text"
-          model-value="12:30:00"
-          suffix="PST"
-          type="time"
-        ></v-text-field>
-      </v-col>
-    </v-row>
+                @changed="_updateValue"
+              />
+              <template v-else>
+                {{ field }}
+              </template>
+
+            </v-col>
+          </v-row>
+
+        </v-card>
+      </v-tabs-window-item>
+    </v-tabs-window>
+
   </v-container>
 </template>
 
 <script>
+// Contains a list of tabs and a list of fields
+
+import BooleanField from '/src/components/fields/Boolean.vue'
+import StringField from '/src/components/fields/String.vue'
+import NumberField from '/src/components/fields/Number.vue'
+import ChoiceField from '/src/components/fields/Choice.vue'
+import FileField from '/src/components/fields/File.vue'
+import TinyMCEField from '/src/components/fields/TinyMCE.vue'
+import JSONFormsField from '/src/components/fields/JSONForms.vue'
+import CodeMirrorField from '/src/components/fields/CodeMirror.vue'
+import RelatedField from '/src/components/fields/Related.vue'
 
 export default {
   props: {
@@ -75,7 +92,7 @@ export default {
     // Required if no meta was provided
     viewname: {type: String, required: false},
 
-    // Chema of this form, if not provided - it will be used from apiInfo
+    // Schema of this form, if not provided - it will be used from apiInfo
     meta: {
       type: Object,
       required: false,
@@ -96,6 +113,8 @@ export default {
   },
   data() {
     return {
+      tab: null,
+      errors: null,
       formData: {},
       translationsTabs: {},
     }
@@ -111,6 +130,30 @@ export default {
     }
   },
   methods: {
+    getFieldComponent(field) {
+      if (['boolean', 'BooleanFilter'].indexOf(field.type) !== -1) return BooleanField
+      if (['integer', 'decimal'].indexOf(field.type) !== -1) return NumberField
+      if (['list', 'choice'].indexOf(field.type) !== -1) return ChoiceField
+      if (['image upload', 'file upload', 'svgfield'].indexOf(field.type) !== -1) return FileField
+
+      if (['field', 'string', 'email', 'url', 'slug'].indexOf(field.type) !== -1) {
+        if (field.wysiwyg) return TinyMCEField
+        return StringField
+      }
+      if (field.type === 'json') {
+        if (field.wysiwyg) return JSONFormsField
+        return CodeMirrorField
+      }
+
+      if (['primary', 'primarymany'].indexOf(field.type) !== -1) return RelatedField
+
+        //related: ['primary', 'primarymany'],
+        //date: ['date'],
+        //datetime: ['datetime'],
+        //time: ['time'],
+        //field: ['field'],
+      return
+    },
     getGroups() {
       if (this.meta.field_groups) return this.meta.field_groups
       return [{"title": ""}]
@@ -125,6 +168,34 @@ export default {
         }
       }
       return false
+    },
+    canBeDisplayed(field, field_slug, tab_id) {
+      if (this.formType === 'create' && (field.read_only || field.update_only)) {
+        return false
+      }
+      if (this.formType !== 'create' && field.create_only) {
+        return false
+      }
+      if (this.meta.field_groups && this.meta.field_groups !== null) {
+        const currentTabFields = this.meta.field_groups[tab_id].fields
+        if (currentTabFields && !currentTabFields.includes(field_slug)) return false
+      }
+
+      return true
+    },
+    _updateValue(value, field_slug) {
+      this.$set(this.formData, field_slug, value)
+
+      for (const [slug, value] of Object.entries(this.meta.serializer)) {
+        const field = this.$refs[`field_${slug}`]
+        // console.log('field_slug', field_slug, 'value', 'slug', slug, 'field', field)
+        if (field === undefined) continue
+
+        // Update all other fields
+        if (field_slug !== slug) {
+          field[0].updateFormData(this.formData)
+        }
+      }
     },
   },
 }

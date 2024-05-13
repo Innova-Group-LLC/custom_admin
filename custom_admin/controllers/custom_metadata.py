@@ -18,6 +18,8 @@ class CustomMetadata(SimpleMetadata):
         field_info = OrderedDict()
         field_info['type'] = self.label_lookup[field]
         field_info['required'] = getattr(field, 'required', False)
+        field_info['help_text'] = False
+
         attrs = [
             'read_only', 'label', 'help_text',
             'min_length', 'max_length',
@@ -31,14 +33,6 @@ class CustomMetadata(SimpleMetadata):
                 field_info[attr] = value
                 if not isinstance(value, (dict, list)):
                     field_info[attr] = force_str(value, strings_only=True)
-
-        if isinstance(field.label, str):
-            field_info['label'] = field_info['label']
-        else:
-            field_info['label'] = _(field_info['label'])
-
-        if 'help_text' in field_info:
-            field_info['help_text'] = _(field_info['help_text'])
 
         if getattr(field, 'child', None):
             field_info['child'] = self.get_field_info(field.child)

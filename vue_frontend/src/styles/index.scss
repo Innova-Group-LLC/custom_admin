@@ -1,3 +1,6 @@
+$color-light-3:  #dee5ed;
+$color-light-4: #bdcbdb;
+$color-darken-1: #9db0c8;
 $color-darken-2: #5c7ca3;
 $color-darken-3: #304156;
 $color-darken-4: #1f2d3d;
@@ -61,6 +64,23 @@ $header-height: 56px;
     }
     .create-button {
         background-color: $color-darken-2;
+        color: #FFF;
+    }
+    .v-input__control {
+    }
+}
+
+.fields-container {
+    .v-tab {
+        text-transform: none !important;
+    }
+    .container-tabs {
+        margin-bottom: 20px;
+        background-color: $color-light-4;
+        color: #000;
+    }
+    .form-field-container {
+        margin: 10px 0px;
     }
 }
 

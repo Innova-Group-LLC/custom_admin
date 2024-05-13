@@ -43,8 +43,8 @@ export default {
     if (this.sidebarOpen === null) { this.sidebarOpen = true }
 
     getApiInfo().then(apiInfo => {
-      this.apiInfo = apiInfo.data
-      this.langs = apiInfo.langs
+      this.apiInfo = apiInfo.sections
+      this.langs = apiInfo.languages
       this.loading = false
     }).catch(error => {
       this.loading = false

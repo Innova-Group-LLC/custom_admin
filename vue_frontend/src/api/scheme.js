@@ -15,10 +15,10 @@ export async function getApiInfo() {
         'Accept-Language': getLang(),
       },
     }).then(response => {
-      resolve({
-        data: response.data.sections,
-        langs: response.data.languages,
-      })
+      if (import.meta.env.NODE_ENV !== 'production') {
+        console.table(response.data.sections)
+      }
+      resolve(response.data)
     }).catch(error => {
       reject(error)
     })

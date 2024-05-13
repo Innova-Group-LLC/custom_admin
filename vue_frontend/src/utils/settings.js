@@ -9,7 +9,7 @@ var config_dataset = {
   auth_header_prefix: 'Token',
 }
 
-if (import.meta.env.NODE_ENV == 'production') {
+if (import.meta.env.NODE_ENV === 'production') {
   config_dataset = JSON.parse(document.getElementById("settings").dataset.json)
 }
 
