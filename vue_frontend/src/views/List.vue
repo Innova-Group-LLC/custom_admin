@@ -75,7 +75,6 @@
           <v-row justify="end" no-gutters>
             <v-select
               class="list-pagination-per-page"
-              density="compact"
               v-model="pageInfo.limit"
               :items="perPageOptions"
               @update:modelValue="changePagination"

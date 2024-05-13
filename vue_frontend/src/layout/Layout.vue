@@ -12,9 +12,7 @@
       />
 
       <v-main class="d-flex">
-        <div class="page-container">
-          <router-view :key="$route.fullPath" :api-info="apiInfo" :settings="settings"/>
-        </div>
+        <router-view :key="$route.fullPath" :api-info="apiInfo" :settings="settings"/>
 
       </v-main>
 

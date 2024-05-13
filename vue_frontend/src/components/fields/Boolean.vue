@@ -2,7 +2,6 @@
   <div>
 
     <v-switch
-      density="compact"
       :label="field.label"
       :model-value="value"
       :messages="field.help_text || []"

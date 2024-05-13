@@ -2,7 +2,6 @@
   <div>
 
     <v-select
-      density="compact"
       :clearable="true"
       :label="field.label"
       :model-value="value"

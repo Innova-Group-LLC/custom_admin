@@ -1,38 +1,50 @@
 <template>
-  <div>
-
-    JSONForms
-    {{ field }}
-
-  </div>
+  <json-forms
+    :data="data"
+    :renderers="renderers"
+    :schema="field.json_forms.schema"
+    :uischema="field.json_forms.uischema"
+    :readonly="field.read_only"
+    @change="onChange"
+  />
 </template>
 
 <script>
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 
+import { vuetifyRenderers } from '@jsonforms/vue-vuetify';
+
+const renderers = [
+  ...vuetifyRenderers,
+];
+
 const requiredFields = [
+  'json_forms',
 ]
 
 export default {
   props: {
     ...defaultProps,
   },
+  emits: ["changed"],
   data(props) {
     return {
-      value: null,
+      renderers: Object.freeze(renderers),
+      data: {},
     }
   },
   created() {
     validateProps(this, requiredFields)
-    this.value = this.field.initial
   },
   methods: {
-    updateFormData(initFormData) {
-      this.value = initFormData[this.fieldSlug]
+    updateFormData(formData) {
+      this.data = JSON.parse(formData[this.fieldSlug] || '{}')
     },
-    changed(value) {
-      this.$emit('changed', value)
-    },
+    onChange(event) {
+      console.log('event.data', event.data)
+      this.data = event.data;
+      this.$emit('changed', JSON.stringify(this.data))
+    }
   },
 }
 </script>

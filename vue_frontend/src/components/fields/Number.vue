@@ -2,7 +2,6 @@
   <div>
 
     <v-number-input
-      density="compact"
       :clearable="true"
       :label="field.label"
       :model-value="value"
@@ -12,7 +11,6 @@
       :max="field.max_value"
       :min="field.min_value"
 
-      :rules="rules"
       :reverse="false"
       :hideInput="false"
       :inset="false"
@@ -31,6 +29,9 @@ const requiredFields = [
 ]
 
 export default {
+  components: {
+    VNumberInput,
+  },
   props: {
     ...defaultProps,
   },

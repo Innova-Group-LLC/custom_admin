@@ -14,4 +14,17 @@ export default createVuetify({
   locale: {
     adapter: createVueI18nAdapter({ i18n, useI18n }),
   },
+  defaults: {
+    global: {
+      ripple: false,
+      density: 'compact',
+      hideDetails: 'auto',
+    },
+    VDataTable: {
+      density: 'default',
+    },
+    VBtn: {
+      density: 'default',
+    },
+  },
 })

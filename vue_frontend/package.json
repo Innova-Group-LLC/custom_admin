@@ -8,12 +8,16 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@jsonforms/core": "^3.1.0",
+    "@jsonforms/vue": "^3.1.0",
+    "@jsonforms/vue-vuetify": "^3.1.0-preview.0",
     "@mdi/font": "7.0.96",
+    "@tinymce/tinymce-vue": "^5.1.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.6.8",
     "codemirror": "^5.65.16",
-    "core-js": "^3.34.0",
+    "core-js": "^3.37.0",
     "js-cookie": "^3.0.5",
     "jsonlint": "^1.6.3",
     "jsonlint-mod": "^1.7.6",

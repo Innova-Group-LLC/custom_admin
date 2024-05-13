@@ -3,7 +3,6 @@
 
     <v-textarea
       v-if="field.multilined"
-      density="compact"
       :clearable="true"
       :label="field.label"
       :model-value="value"
@@ -13,7 +12,6 @@
 
     <v-text-field
       v-else
-      density="compact"
       :clearable="true"
       :label="field.label"
       :model-value="value"

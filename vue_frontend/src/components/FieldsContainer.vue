@@ -12,7 +12,6 @@
         v-for="(groupInfo, tab_id) in getGroups()"
         :key="groupInfo.title"
         :text="groupInfo.title"
-        density="compact"
         slim
       ></v-tab>
     </v-tabs>
@@ -49,7 +48,7 @@
                 :viewname="viewname"
                 :is="getFieldComponent(field)"
 
-                @changed="_updateValue"
+                @changed="value => _updateValue(value, field_slug)"
               />
               <template v-else>
                 {{ field }}
@@ -73,7 +72,7 @@ import StringField from '/src/components/fields/String.vue'
 import NumberField from '/src/components/fields/Number.vue'
 import ChoiceField from '/src/components/fields/Choice.vue'
 import FileField from '/src/components/fields/File.vue'
-import TinyMCEField from '/src/components/fields/TinyMCE.vue'
+import TinyMCEField from '/src/components/fields/TinyMCE/index.vue'
 import JSONFormsField from '/src/components/fields/JSONForms.vue'
 import CodeMirrorField from '/src/components/fields/CodeMirror.vue'
 import RelatedField from '/src/components/fields/Related.vue'
@@ -141,7 +140,7 @@ export default {
         return StringField
       }
       if (field.type === 'json') {
-        if (field.wysiwyg) return JSONFormsField
+        if (field.json_forms) return JSONFormsField
         return CodeMirrorField
       }
 
@@ -186,14 +185,13 @@ export default {
     _updateValue(value, field_slug) {
       this.formData[field_slug] = value
 
-      for (const [slug, value] of Object.entries(this.meta.serializer)) {
-        const field = this.$refs[`field_${slug}`]
-        // console.log('field_slug', field_slug, 'value', 'slug', slug, 'field', field)
-        if (field === undefined) continue
+      for (const slug of Object.keys(this.meta.serializer)) {
+        const target_field = this.$refs[`field_${slug}`]
+        if (target_field === undefined) continue
 
         // Update all other fields
         if (field_slug !== slug) {
-          field[0].updateFormData(this.formData)
+          target_field[0].updateFormData(this.formData)
         }
       }
     },
