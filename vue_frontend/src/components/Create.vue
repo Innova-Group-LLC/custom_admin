@@ -32,10 +32,10 @@
             text="Close Dialog"
             @click="isActive.value = false"
           ></v-btn>
-        </v-card-actions>
-      </v-card>
-    </template>
-  </v-dialog>
+      </v-card-actions>
+    </v-card>
+  </template>
+</v-dialog>
 </template>
 
 <script>

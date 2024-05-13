@@ -1,34 +1,69 @@
 <template>
-  <div>
-
-    CodeMirror
-    {{ field }}
-
+  <div class="json-editor" :class="{ 'read-only': field.read_only }">
+    <textarea ref="textarea" />
   </div>
 </template>
 
 <script>
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 
+import CodeMirror from 'codemirror'
+import 'codemirror/addon/lint/lint.css'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/theme/rubyblue.css'
+import 'codemirror/mode/javascript/javascript'
+import 'codemirror/addon/lint/lint'
+import 'codemirror/addon/lint/json-lint'
+
+// import '/src/utils/jsonlint'
+// window.jsonlint = jsonlint;
+
+const requiredFields = [
+  'choices',
+  'tag_style',
+]
+
 export default {
+  name: 'jsonfield',
   props: {
     ...defaultProps,
   },
   data(props) {
     return {
-      value: null,
+      jsonEditor: null,
     }
   },
-  created() {
-    validateProps(this)
-    this.value = this.field.initial
+  mounted() {
+    validateProps(this, requiredFields)
+
+    this.$nextTick(function () {
+      this.jsonEditor = CodeMirror.fromTextArea(this.$refs.textarea, {
+        lineNumbers: true,
+        mode: 'application/json',
+        lint: false,
+
+        // https://codemirror.net/5/demo/theme.html#default
+        theme: 'default',
+
+        readOnly: this.field.read_only,
+      })
+
+      this.jsonEditor.on('change', cm => {
+        this.$emit('changed', cm.getValue())
+      })
+    })
   },
   methods: {
     updateFormData(initFormData) {
-      this.value = initFormData[this.fieldSlug]
-    },
-    changed(value) {
-      this.$emit('changed', value)
+      let init = initFormData[this.fieldSlug]
+
+      try {
+        init = JSON.stringify(JSON.parse(init), null, 2)
+      } catch (e) {
+        console.error(`Json "${this.fieldSlug}" error:`, e)
+      }
+
+      this.jsonEditor.setValue(init)
     },
   },
 }

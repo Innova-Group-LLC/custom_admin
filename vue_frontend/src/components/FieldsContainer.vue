@@ -2,7 +2,7 @@
   <v-container fluid class="fields-container">
 
     <v-tabs
-      class="container-tabs"
+      :class="{ 'hide-element': getGroups().length <= 1, 'container-tabs': true }"
       next-icon="mdi-arrow-right-bold-box-outline"
       prev-icon="mdi-arrow-left-bold-box-outline"
       show-arrows

@@ -1,6 +1,5 @@
 import vuetify from './vuetify'
 import i18n from './i18n'
-
 import router from '@/router'
 
 export function registerPlugins (app) {
