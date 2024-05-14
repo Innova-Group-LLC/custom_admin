@@ -20,6 +20,12 @@ export default createVuetify({
       density: 'compact',
       hideDetails: 'auto',
     },
+    VList: {
+      density: 'default',
+    },
+    VTabs: {
+      density: 'default',
+    },
     VDataTable: {
       density: 'default',
     },

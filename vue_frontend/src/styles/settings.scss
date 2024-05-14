@@ -5,8 +5,9 @@
 
 // https://vuetifyjs.com/en/features/sass-variables/#variable-api
 @use 'vuetify/settings' with (
-    $list-item-prepend-size: 20px,
+    $list-item-prepend-size: 10px,
     $list-item-icon-margin-start: 10px,
     $list-item-slim-spacer-width: 10px,
     $table-row-height: 42px,
+    $list-item-padding: 4px 16px,
 );

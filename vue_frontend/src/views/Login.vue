@@ -20,12 +20,18 @@
               <v-card-text class="bg-surface-light pt-4">
                 <form>
                   <v-text-field
+                    density="default"
+                    :hideDetails="false"
+
                     v-model="username"
                     :rules="[rules.required, rules.min]"
                     label="Username"
                     required
                   ></v-text-field>
                   <v-text-field
+                    density="default"
+                    :hideDetails="false"
+
                     v-model="password"
                     :rules="[rules.required, rules.min]"
                     label="Password"

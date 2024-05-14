@@ -147,14 +147,6 @@ class AutoCompeteView(APIView):
                 return Response([])
             qs = qs.filter(filters).order_by('id').distinct('id')
 
-        # TODO: Зарефакторить этот костыль, исправлялось срочно
-        # bonuses/playerbonus/list, KAZ-259
-        if model.__name__ == 'BonusCurrency':
-            try:
-                qs = qs.distinct('currency__code')
-            except Exception as e:
-                log.error(str(e))
-
         if limit:
             qs = qs[:limit]
 

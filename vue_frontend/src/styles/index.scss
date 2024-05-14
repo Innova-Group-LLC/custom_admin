@@ -69,8 +69,6 @@ $header-height: 56px;
         background-color: $color-darken-2;
         color: #FFF;
     }
-    .v-input__control {
-    }
 }
 
 .fields-container {
@@ -134,4 +132,8 @@ $header-height: 56px;
     font-family: Arial, monospace;
     font-size: 14px;
     line-height: 20px;
+}
+
+.dialog-top-position {
+    align-self: flex-start;
 }

@@ -31,9 +31,6 @@ export default {
     updateFormData(initFormData) {
       this.value = initFormData[this.fieldSlug]
     },
-    changed(value) {
-      this.$emit('changed', value)
-    },
   },
 }
 </script>

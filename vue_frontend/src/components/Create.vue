@@ -1,5 +1,5 @@
 <template>
-  <v-dialog max-width="1200">
+  <v-dialog max-width="1200" content-class="dialog-top-position">
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
@@ -9,7 +9,12 @@
     </template>
 
     <template v-slot:default="{ isActive }">
-      <v-card title="Dialog">
+      <v-card>
+
+        <v-card-title>
+          {{ getTitle() }}: {{ $t('creation') }}
+        </v-card-title>
+
         <v-card-text>
 
           <!-- Form for create new model record -->
@@ -52,6 +57,9 @@ export default {
     filterId: {type: Object, required: false},
   },
   methods: {
+    getTitle() {
+      return this.apiInfo[this.viewname].title
+    },
   },
 }
 </script>

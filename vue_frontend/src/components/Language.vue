@@ -47,7 +47,7 @@ export default {
   methods: {
     changeLang(langSlug) {
       setLang(langSlug)
-      document.location.reload()
+      window.location.href = window.location.href;
     },
   },
 }

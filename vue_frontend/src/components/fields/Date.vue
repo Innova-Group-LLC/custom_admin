@@ -1,18 +1,7 @@
 <template>
   <div>
 
-    <v-select
-      :clearable="true"
-      :label="field.label"
-      :model-value="value"
-      :messages="field.help_text || []"
-      :disabled="field.read_only"
-
-      :items="field.choices"
-      item-title="display_name"
-      item-value="value"
-      :return-object="false"
-    />
+    DATE
 
   </div>
 </template>
@@ -21,8 +10,6 @@
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 
 const requiredFields = [
-  'choices',
-  'tag_style',
 ]
 
 export default {
