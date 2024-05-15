@@ -6,6 +6,7 @@ import 'vue3-toastify/dist/index.css';
 import { JsonForms } from "@jsonforms/vue"
 
 import '/src/styles/index.scss'
+import '@vuepic/vue-datepicker/dist/main.css';
 
 const app = createApp(App)
 app.component('JsonForms', JsonForms)

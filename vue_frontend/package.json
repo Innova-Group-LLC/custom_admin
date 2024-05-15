@@ -15,6 +15,7 @@
     "@tinymce/tinymce-vue": "^5.1.1",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
+    "@vuepic/vue-datepicker": "^8.6.0",
     "axios": "^1.6.8",
     "codemirror": "^5.65.16",
     "core-js": "^3.37.0",
