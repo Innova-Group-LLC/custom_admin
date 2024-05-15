@@ -67,10 +67,8 @@ export default {
       this.initTinymce()
     }
   },
-  deactivated() {
-    this.destroyTinymce()
-  },
-  destroyed() {
+  unmounted() {
+    console.log('destory')
     this.destroyTinymce()
   },
   methods: {

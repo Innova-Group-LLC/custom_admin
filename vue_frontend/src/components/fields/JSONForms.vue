@@ -41,10 +41,9 @@ export default {
       this.data = JSON.parse(formData[this.fieldSlug] || '{}')
     },
     onChange(event) {
-      console.log('event.data', event.data)
       this.data = event.data;
       this.$emit('changed', JSON.stringify(this.data))
-    }
+    },
   },
 }
 </script>

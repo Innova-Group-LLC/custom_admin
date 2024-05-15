@@ -53,6 +53,7 @@ export default {
   props: {
     ...defaultProps,
   },
+  emits: ["changed"],
   data(props) {
     return {
       value: null,
@@ -84,7 +85,7 @@ export default {
       getAutocomplete(
         this.field.model_name,
         this.field.app_label,
-        this.search,
+        this.search || '',
         30,
         this.viewname,
         this.fieldSlug,
@@ -92,7 +93,6 @@ export default {
         this.value,
       ).then(response => {
         this.choices = response
-        console.log(this.search, this.choices)
         this.loading = false
       }).catch(error => {
 

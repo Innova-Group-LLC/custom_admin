@@ -1,5 +1,9 @@
 <template>
-  <v-dialog max-width="1200" content-class="dialog-top-position">
+  <v-dialog
+    max-width="1200"
+    content-class="dialog-top-position"
+    persistent
+  >
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
@@ -9,32 +13,35 @@
     </template>
 
     <template v-slot:default="{ isActive }">
-      <v-card>
+      <v-card v-if="isActive.value">
 
-        <v-card-title>
-          {{ getTitle() }}: {{ $t('creation') }}
+        <v-card-title class="d-flex justify-space-between align-center">
+          <span>{{ getTitle() }}: {{ $t('creation') }}</span>
+
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            density="compact"
+            @click="isActive.value = false"
+          ></v-btn>
         </v-card-title>
 
-        <v-card-text>
+        <!-- Form for create new model record -->
+        <FieldsContainer
+          ref="fieldscontainer"
+          formType="create"
+          :api-info="apiInfo"
+          :viewname="viewname"
 
-          <!-- Form for create new model record -->
-          <FieldsContainer
-            ref="fieldscontainer"
-            formType="create"
-            :api-info="apiInfo"
-            :viewname="viewname"
-
-            :relation-name-filter="relationNameFilter"
-            :filter-id="filterId"
-          />
-
-        </v-card-text>
+          :relation-name-filter="relationNameFilter"
+          :filter-id="filterId"
+        />
 
         <v-card-actions>
           <v-spacer></v-spacer>
 
           <v-btn
-            text="Close Dialog"
+            :text="$t('close')"
             @click="isActive.value = false"
           ></v-btn>
       </v-card-actions>

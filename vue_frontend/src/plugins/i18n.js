@@ -8,6 +8,7 @@ const messages = {
     mainPage: 'Main page',
     languageSelection: 'Language selection',
     create: 'Create',
+    close: 'Close',
     creation: 'Creation',
     $vuetify: {
       ...en,
@@ -20,6 +21,7 @@ const messages = {
     mainPage: 'Главная',
     languageSelection: 'Выбор языка',
     create: 'Создать',
+    close: 'Закрыть',
     creation: 'Создание',
     $vuetify: {
       ...ru,

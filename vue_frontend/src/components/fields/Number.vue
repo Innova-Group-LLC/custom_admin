@@ -35,6 +35,7 @@ export default {
   props: {
     ...defaultProps,
   },
+  emits: ["changed"],
   data(props) {
     return {
       value: null,

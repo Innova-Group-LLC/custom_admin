@@ -26,6 +26,7 @@
           inline
           auto-apply
           time-picker-inline
+          :format="format"
 
           :enable-time-picker="['datetime', 'time'].indexOf(field.type) !== -1"
           :time-picker="field.type === 'time'"
@@ -53,6 +54,7 @@ export default {
   props: {
     ...defaultProps,
   },
+  emits: ["changed"],
   data(props) {
     return {
       value: null,
@@ -66,7 +68,7 @@ export default {
   },
   methods: {
     updateFormData(initFormData) {
-      this.value = initFormData[this.fieldSlug]
+      this.value = new Date(moment(initFormData[this.fieldSlug]))
     },
     getFormattedValue() {
       if (!this.value) return ''
@@ -84,12 +86,16 @@ export default {
       if (this.field.type === 'time') return ['mdi-clock-time-eight-outline']
       console.error('DateTime bad type:', field.type)
     },
-    updateDateTime(value) {
-      this.value = value
+    updateDateTime(date) {
       this.displayValue = this.getFormattedValue()
+      this.$emit('changed', this.format(date))
     },
     updateDisplayValue(value) {
+      this.displayValue = value
       this.value = new Date(moment(value))
+    },
+    format(date) {
+      return moment(date).format('yyyy-MM-ddTHH:mm:ss')
     },
   },
 }
