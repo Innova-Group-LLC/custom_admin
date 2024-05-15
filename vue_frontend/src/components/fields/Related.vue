@@ -16,6 +16,8 @@
       persistent-hint
       no-filter
 
+      :append-inner-icon="field.type === 'multiple choice' ? 'mdi-relation-many-to-many' : 'mdi-relation-many-to-one'"
+
       :search="search"
       @update:search="updateSearch"
     >

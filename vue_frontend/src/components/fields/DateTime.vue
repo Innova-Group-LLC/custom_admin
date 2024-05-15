@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog max-width="500">
+  <v-dialog width="auto">
     <template v-slot:activator="{ props: activatorProps }">
       <v-text-field
         v-bind="activatorProps"
@@ -8,30 +8,30 @@
         :model-value="displayValue"
         :messages="field.help_text || []"
         :disabled="field.read_only"
-        append-inner-icon="mdi-calendar-range"
-      />
+      >
+        <template v-slot:append-inner>
+          <v-icon :icon="icon" v-for="icon in getIcons()"/>
+        </template>
+      </v-text-field>
     </template>
 
     <template v-slot:default="{ isActive }">
       <v-card>
-        <v-card-text>
-          {{ getFormattedValue() }}
-          <Datepicker
-            v-model="date"
-            inline
-            auto-apply
-            @update:model-value="updateDateTime"
-          />
-        </v-card-text>
+        <v-text-field
+          :model-value="displayValue"
+          @update:modelValue="updateDisplayValue"
+        />
+        <Datepicker
+          v-model="value"
+          inline
+          auto-apply
+          time-picker-inline
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
+          :enable-time-picker="['datetime', 'time'].indexOf(field.type) !== -1"
+          :time-picker="field.type === 'time'"
 
-          <v-btn
-            text="Close Dialog"
-            @click="isActive.value = false"
-          ></v-btn>
-        </v-card-actions>
+          @update:model-value="updateDateTime"
+        />
       </v-card>
     </template>
   </v-dialog>
@@ -40,6 +40,7 @@
 
 <script>
 import { defaultProps, validateProps } from '/src/utils/fields.js'
+import moment from 'moment'
 import Datepicker from '@vuepic/vue-datepicker';
 
 const requiredFields = [
@@ -56,7 +57,7 @@ export default {
     return {
       value: null,
       date: null,
-      displayValue: null,
+      displayValue: '',
     }
   },
   created() {
@@ -68,11 +69,28 @@ export default {
       this.value = initFormData[this.fieldSlug]
     },
     getFormattedValue() {
-      return moment(this.value).format('YYYY-MM-DD HH:mm')
+      if (!this.value) return ''
+      return moment(this.value).format(this.getFormat())
+    },
+    getFormat() {
+      if (this.field.type === 'datetime') return 'YYYY-MM-DD HH:mm'
+      if (this.field.type === 'date') return 'YYYY-MM-DD'
+      if (this.field.type === 'time') return 'HH:mm'
+      console.error('DateTime bad type:', field.type)
+    },
+    getIcons() {
+      if (this.field.type === 'datetime') return ['mdi-calendar-range', 'mdi-clock-time-eight-outline']
+      if (this.field.type === 'date') return ['mdi-calendar-range']
+      if (this.field.type === 'time') return ['mdi-clock-time-eight-outline']
+      console.error('DateTime bad type:', field.type)
     },
     updateDateTime(value) {
-      this.value()
-    }
+      this.value = value
+      this.displayValue = this.getFormattedValue()
+    },
+    updateDisplayValue(value) {
+      this.value = new Date(moment(value))
+    },
   },
 }
 </script>

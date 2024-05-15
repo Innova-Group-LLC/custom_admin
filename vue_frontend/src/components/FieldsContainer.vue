@@ -75,8 +75,6 @@ import JSONFormsField from '/src/components/fields/JSONForms.vue'
 import CodeMirrorField from '/src/components/fields/CodeMirror.vue'
 import RelatedField from '/src/components/fields/Related.vue'
 import DateTimeField from '/src/components/fields/DateTime.vue'
-import DateField from '/src/components/fields/Date.vue'
-import TimeField from '/src/components/fields/Time.vue'
 
 export default {
   props: {
@@ -135,9 +133,7 @@ export default {
       if (['integer', 'decimal'].indexOf(field.type) !== -1) return NumberField
       if (['list', 'choice'].indexOf(field.type) !== -1) return ChoiceField
       if (['image upload', 'file upload', 'svgfield'].indexOf(field.type) !== -1) return FileField
-      if (['datetime'].indexOf(field.type) !== -1) return DateTimeField
-      if (['date'].indexOf(field.type) !== -1) return DateField
-      if (['time'].indexOf(field.type) !== -1) return TimeField
+      if (['datetime', 'date', 'time'].indexOf(field.type) !== -1) return DateTimeField
       if (['primary', 'primarymany'].indexOf(field.type) !== -1) return RelatedField
 
       if (['field', 'string', 'email', 'url', 'slug'].indexOf(field.type) !== -1) {
