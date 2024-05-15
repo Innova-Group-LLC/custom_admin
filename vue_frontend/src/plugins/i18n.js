@@ -10,6 +10,7 @@ const messages = {
     create: 'Create',
     close: 'Close',
     creation: 'Creation',
+    general: 'General',
     $vuetify: {
       ...en,
       dataIterator: {
@@ -23,6 +24,7 @@ const messages = {
     create: 'Создать',
     close: 'Закрыть',
     creation: 'Создание',
+    general: 'Основное',
     $vuetify: {
       ...ru,
       dataIterator: {

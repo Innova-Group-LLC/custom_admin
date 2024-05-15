@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar class="header-conatainer" :height="56">
+  <v-app-bar>
     <v-app-bar-nav-icon variant="text" @click="toggleDrawer"/>
 
     <v-breadcrumbs :items="path">

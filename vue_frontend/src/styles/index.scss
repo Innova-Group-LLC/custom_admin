@@ -1,3 +1,5 @@
+// https://www.w3schools.com/colors/colors_picker.asp
+$color-light-2:  #eff2f6;
 $color-light-3:  #dee5ed;
 $color-light-4: #bdcbdb;
 $color-darken-1: #9db0c8;
@@ -5,7 +7,7 @@ $color-darken-2: #5c7ca3;
 $color-darken-3: #304156;
 $color-darken-4: #1f2d3d;
 
-$header-height: 56px;
+$header-height: 48px;
 
 :root {
   --toastify-toast-width: 640px;
@@ -32,11 +34,12 @@ $header-height: 56px;
 }
 
 .page-container {
+    display: block !important;
+    width: 100%;
     overflow-x: auto;
 }
 
 .dashboard-page {
-    width: 100%;
     margin-left: 10px;
     margin-top: 10px;
 
@@ -59,8 +62,6 @@ $header-height: 56px;
 }
 
 .list-page {
-    display: block;
-    width: 100%;
     .content-row {
         margin: 10px;
         vertical-align: middle;
@@ -71,19 +72,26 @@ $header-height: 56px;
     }
 }
 
+.edit-page {
+    .v-slide-group.v-slide-group--vertical.v-tabs {
+        background-color: $color-light-2;
+    }
+    .edit-tabs {
+        .v-container {
+            padding: 0px !important;
+        }
+    }
+}
+
 .fields-container {
     .fields-tab {
+        max-width: 1200px;
         padding: 10px;
     }
-    .v-tab {
-        text-transform: none !important;
-    }
     .container-tabs {
-        margin-bottom: 20px;
+        margin-bottom: 10px 15px;
         background-color: $color-light-4;
         color: #000;
-    }
-    .form-field-container {
     }
 }
 
@@ -126,6 +134,9 @@ $header-height: 56px;
 
 .hide-element {
     display: none;
+}
+.v-tab {
+    text-transform: none !important;
 }
 
 .CodeMirror {

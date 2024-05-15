@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="rounded rounded-md">
+  <v-layout>
     <template v-if="apiInfo">
 
       <Navbar ref="navbar" :api-info="apiInfo" :settings="settings"/>
@@ -11,9 +11,8 @@
         @toggle-drawer="toggleDrawer()"
       />
 
-      <v-main class="d-flex">
+      <v-main class="d-flex page-container">
         <router-view :key="$route.fullPath" :api-info="apiInfo" :settings="settings"/>
-
       </v-main>
 
     </template>
