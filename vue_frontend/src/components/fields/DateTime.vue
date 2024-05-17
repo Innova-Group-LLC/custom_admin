@@ -68,7 +68,11 @@ export default {
   },
   methods: {
     updateFormData(initFormData) {
-      this.value = new Date(moment(initFormData[this.fieldSlug]))
+      const value = initFormData[this.fieldSlug]
+      if (value) {
+        this.value = new Date(moment())
+        this.displayValue = this.getFormattedValue()
+      }
     },
     getFormattedValue() {
       if (!this.value) return ''

@@ -15,6 +15,10 @@ $header-height: 48px;
   --toastify-toast-max-height: 800px;
 }
 
+body {
+  --color-darken-2: #5c7ca3;
+}
+
 .login-page {
     background: $color-darken-2;
     background: radial-gradient(circle, $color-darken-2 0%, $color-darken-4 100%);
@@ -70,6 +74,14 @@ $header-height: 48px;
         background-color: $color-darken-2;
         color: #FFF;
     }
+    .cell-string {
+        max-width: 200px;
+        display: block;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
 }
 
 .edit-page {
@@ -92,6 +104,15 @@ $header-height: 48px;
         margin-bottom: 10px 15px;
         background-color: $color-light-4;
         color: #000;
+    }
+    .autocomplete-chip {
+        .v-chip__underlay {
+            background-color: $color-darken-2;
+            opacity: 0.5;
+        }
+        .v-chip__close {
+            color: $color-darken-2;
+        }
     }
 }
 
@@ -148,3 +169,4 @@ $header-height: 48px;
 .dialog-top-position {
     align-self: flex-start;
 }
+

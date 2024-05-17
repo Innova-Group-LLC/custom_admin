@@ -65,7 +65,7 @@
         </template>
 
         <template v-else>
-          {{ item[header.key] }}
+          <span class="cell-string">{{ item[header.key] }}</span>
         </template>
       </template>
 
@@ -102,7 +102,6 @@
 import moment from 'moment'
 import { getMethods } from '/src/api/scheme'
 import { getList } from '/src/api/getList'
-import { getDetailUrl } from '/src/utils/get-breadcrumb'
 import { getSettings, setSettings } from '/src/utils/settings'
 
 import Create from '/src/components/Create.vue'
@@ -316,8 +315,7 @@ export default {
     },
     handleClick(click, row) {
       const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.item.id}/update`
-      const query = getDetailUrl(this.$route, this.relationNameFilter)
-      this.$router.push({ path: edit_url, query: query } )
+      this.$router.push({ path: edit_url } )
     },
   }
 }

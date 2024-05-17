@@ -23,6 +23,7 @@
     >
       <template v-slot:chip="{ props, item }">
         <v-chip
+          class="autocomplete-chip"
           v-bind="props"
           :text="item.raw.text"
         ></v-chip>

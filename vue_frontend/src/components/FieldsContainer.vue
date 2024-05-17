@@ -28,6 +28,7 @@
         v-for="(groupInfo, tab_id) in getGroups()"
         :key="groupInfo.title"
         :text="groupInfo.title"
+        :eager="true"
       >
         <div v-for="(field, field_slug) in meta.serializer">
 
@@ -40,7 +41,7 @@
 
               <component
                 v-if="getFieldComponent(field)"
-                :ref='`field_${field_slug}`'
+                :ref="getRefString(field_slug)"
                 :field="field"
                 :field-slug="field_slug"
                 :viewname="viewname"
@@ -117,16 +118,6 @@ export default {
       translationsTabs: {},
     }
   },
-  watch: {
-    formData: {
-      handler: function(newValue) {
-        if (newValue) {
-          this.$emit('changed', newValue)
-        }
-      },
-      deep: true
-    }
-  },
   methods: {
     getFieldComponent(field) {
       if (['boolean', 'BooleanFilter'].indexOf(field.type) !== -1) return BooleanField
@@ -176,11 +167,30 @@ export default {
 
       return true
     },
+    getRefString(slug) {
+      return `field_${slug}`
+    },
+    updateFormData(newData) {
+      // Update form date from outside
+      this.formData = newData
+
+      for (const [field_slug, value] of Object.entries(this.meta.serializer)) {
+        const ref = this.getRefString(field_slug)
+        const field = this.$refs[ref]
+
+        if (field === undefined) {
+          console.error(`Field with ref "${ref}" is not found`)
+          continue
+        }
+
+        field[0].updateFormData(this.formData)
+      }
+    },
     _updateValue(value, field_slug) {
       this.formData[field_slug] = value
 
       for (const slug of Object.keys(this.meta.serializer)) {
-        const target_field = this.$refs[`field_${slug}`]
+        const target_field = this.$refs[this.getRefString(slug)]
         if (target_field === undefined) continue
 
         // Update all other fields
