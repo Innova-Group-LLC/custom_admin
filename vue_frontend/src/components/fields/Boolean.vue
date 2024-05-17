@@ -7,6 +7,7 @@
       :messages="field.help_text || []"
       :disabled="field.read_only"
       color="var(--color-darken-2)"
+      :loading="loading"
     ></v-switch>
 
   </div>

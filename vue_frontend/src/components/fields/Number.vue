@@ -7,6 +7,7 @@
       :model-value="value"
       :messages="field.help_text || []"
       :disabled="field.read_only"
+      :loading="loading"
 
       :max="field.max_value"
       :min="field.min_value"

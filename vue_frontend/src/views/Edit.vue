@@ -41,6 +41,7 @@
               formType="edit"
               :api-info="apiInfo"
               :viewname="viewname"
+              :loading="loading"
             />
           </v-tabs-window-item>
 
@@ -95,6 +96,7 @@ export default {
       tab: null,
       apiMethods: null,
       sectionData: null,
+      loading: true,
     }
   },
   async created() {
@@ -143,17 +145,17 @@ export default {
       this.$router.replace({name: this.$route.name, query: newQuery})
     },
     retrieveData() {
-      this.loadData = true
+      this.loading = true
       const method = this.apiMethods['retrieve']
       getDetail(method.url.replace("{id}", this.id),
         method.methodHttp,
         this.sectionData
       ).then(response => {
         this.formData = response
-        this.loadData = false
+        this.loading = false
         this.$refs.fieldscontainer.updateFormData(this.formData)
       }).catch(error => {
-        this.loadData = false
+        this.loading = false
         if (error.response && error.response.status === 404) {
           this.$router.push({ path: '/404' })
         }

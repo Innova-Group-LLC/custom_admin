@@ -2,6 +2,7 @@ export const defaultProps = {
   field: {type: Object, required: true},
   fieldSlug: {type: String, required: true},
   viewname: {type: String, required: true},
+  loading: {type: Boolean, required: true},
 }
 
 const baseFields = [

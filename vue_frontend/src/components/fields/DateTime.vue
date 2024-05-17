@@ -8,6 +8,7 @@
         :model-value="displayValue"
         :messages="field.help_text || []"
         :disabled="field.read_only"
+        :loading="loading"
       >
         <template v-slot:append-inner>
           <v-icon :icon="icon" v-for="icon in getIcons()"/>

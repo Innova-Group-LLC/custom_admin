@@ -46,6 +46,7 @@
                 :field-slug="field_slug"
                 :viewname="viewname"
                 :is="getFieldComponent(field)"
+                :loading="loading"
 
                 @changed="value => _updateValue(value, field_slug)"
               />
@@ -80,6 +81,7 @@ import DateTimeField from '/src/components/fields/DateTime.vue'
 export default {
   props: {
     apiInfo: {type: Object, required: true},
+    loading: {type: Boolean, required: true},
     formType: {
       type: String,
       required: true,

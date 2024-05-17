@@ -5,6 +5,7 @@
     :model-value="value"
     :messages="field.help_text || []"
     :disabled="field.read_only"
+    :loading="loading"
     @update:modelValue="changeFile"
   ></v-file-input>
 

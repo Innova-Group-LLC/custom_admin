@@ -10,7 +10,7 @@
 
       :items="choices"
       :multiple="field.type === 'multiple choice'"
-      :loading="loading"
+      :loading="loading || apiLoading"
       chips
       closable-chips
       persistent-hint
@@ -59,7 +59,7 @@ export default {
     return {
       value: null,
       formData: null,
-      loading: false,
+      apiLoading: false,
       choices: [],
       search: '',
     }
@@ -94,10 +94,10 @@ export default {
         this.value,
       ).then(response => {
         this.choices = response
-        this.loading = false
+        this.apiLoading = false
       }).catch(error => {
 
-        this.loading = false
+        this.apiLoading = false
         let error_message = `Autocomplete ${this.field.model_name}.${this.field.app_label} search:"${this.search}" error:"${error}"`
         console.error(error_message)
         toast(error_message, {

@@ -7,6 +7,7 @@
       :model-value="value"
       :messages="field.help_text || []"
       :disabled="field.read_only"
+      :loading="loading"
 
       :items="field.choices"
       item-title="display_name"
@@ -37,11 +38,16 @@ export default {
   },
   created() {
     validateProps(this, requiredFields)
-    this.value = this.field.initial
+    if (this.field.initial) {
+      this.value = this.field.initial.value
+    }
   },
   methods: {
     updateFormData(initFormData) {
-      this.value = initFormData[this.fieldSlug]
+      const value = initFormData[this.fieldSlug]
+      if (value) {
+        this.value = value.value
+      }
     },
   },
 }
