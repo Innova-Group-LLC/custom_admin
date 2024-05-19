@@ -93,18 +93,24 @@ body {
         display: flex;
         height: 100%;
     }
+    .inline-view {
+        .edit-card-container {
+            display: block;
+        }
+    }
     .v-slide-group.v-slide-group--vertical.v-tabs {
         background-color: $color-light-2;
     }
     .edit-page-tabs {
         width: 100%;
+        overflow: auto;
+        white-space: nowrap;
         .v-container {
             padding: 0px !important;
         }
     }
     &.inline-view {
         .v-slide-group {
-            width: 100%;
         }
     }
 }

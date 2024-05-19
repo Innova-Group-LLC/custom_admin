@@ -24,10 +24,10 @@
 import { VNumberInput } from 'vuetify/labs/VNumberInput'
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 
-const requiredFields = [
-  'max_value',
-  'min_value',
-]
+const requiredFields = {
+  max_value: {type: Number, required: false},
+  min_value: {type: Number, required: false},
+}
 
 export default {
   components: {

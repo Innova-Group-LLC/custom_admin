@@ -18,8 +18,6 @@ PLUGINS = {
 class ChartOptions:
     width: int = 400
     height: int = 400
-    responsive: bool = True
-    maintainAspectRatio: bool = False
 
     plugins: typing.Dict[str, dict] = field(default_factory=lambda: PLUGINS)
 

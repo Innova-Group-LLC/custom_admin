@@ -45,8 +45,7 @@ import { defaultProps, validateProps } from '/src/utils/fields.js'
 import moment from 'moment'
 import Datepicker from '@vuepic/vue-datepicker';
 
-const requiredFields = [
-]
+const requiredFields = {}
 
 export default {
   components: {

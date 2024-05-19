@@ -19,10 +19,10 @@ import 'codemirror/theme/rubyblue.css'
 import jsonlint from 'jsonlint-mod'
 window.jsonlint = jsonlint;
 
-const requiredFields = [
-  'choices',
-  'tag_style',
-]
+const requiredFields = {
+  choices: {type: Object, required: true},
+  tag_style: {type: String, required: false},
+}
 
 export default {
   name: 'jsonfield',
@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     updateFormData(initFormData) {
-      let init = initFormData[this.fieldSlug]
+      let init = initFormData[this.fieldSlug] || ''
       this.jsonEditor.setValue(init)
     },
   },

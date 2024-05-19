@@ -180,10 +180,7 @@ export default {
         const ref = this.getRefString(field_slug)
         const field = this.$refs[ref]
 
-        if (field === undefined) {
-          console.error(`Field with ref "${ref}" is not found`)
-          continue
-        }
+        if (field === undefined) continue
 
         field[0].updateFormData(this.formData)
       }

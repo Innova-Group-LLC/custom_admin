@@ -21,10 +21,10 @@
 <script>
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 
-const requiredFields = [
-  'choices',
-  'tag_style',
-]
+const requiredFields = {
+  choices: {type: Array, required: true},
+  tag_style: {type: String, required: true},
+}
 
 export default {
   props: {

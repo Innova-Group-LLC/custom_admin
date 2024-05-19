@@ -68,7 +68,6 @@ export default {
     }
   },
   unmounted() {
-    console.log('destory')
     this.destroyTinymce()
   },
   methods: {

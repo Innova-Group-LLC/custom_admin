@@ -5,13 +5,11 @@
       class="model-table"
       :items="inlineData.data || []"
       :loading="listLoading"
-      :show-select="true"
 
       :items-per-page="pageInfo.limit"
       :page="pageInfo.page"
 
       height="unset"
-      @click:row="handleClick"
     >
 
       <template v-slot:bottom>
@@ -41,12 +39,12 @@
 
     </v-data-table>
 
-
   </div>
 </template>
 
 <script>
-import { toast } from "vue3-toastify";
+import { getSettings, setSettings } from '/src/utils/settings'
+import { toast } from "vue3-toastify"
 import { getList } from '/src/api/getList'
 
 export default {
@@ -58,8 +56,9 @@ export default {
   emits: ["changed"],
   data(props) {
     return {
+      perPageOptions: [25, 50, 100, 150],
       inlineData: {},
-      listLoading: {},
+      listLoading: false,
       count: 0,
       filterInfo: {
         search: null,
@@ -73,11 +72,15 @@ export default {
     }
   },
   async created() {
+    this.pageInfo = {
+      page: 1,
+      limit: getSettings().page_size || 25,
+    }
     this.getInlineData()
   },
   methods: {
     getInlineData() {
-      this.listLoading = {}
+      this.listLoading = false
       this.inlineData = {}
       this.errors = null
 
@@ -106,6 +109,13 @@ export default {
     },
     getLength() {
       return parseInt((this.pageData.count || 0) / this.pageInfo.limit)
+    },
+    changePagination() {
+      let settings = getSettings()
+      settings.page_size = this.pageInfo.limit,
+      setSettings(settings)
+
+      this.getInlineData()
     },
   },
 }

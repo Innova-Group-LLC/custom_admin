@@ -13,7 +13,7 @@
       />
 
       <v-main class="d-flex page-container">
-        <router-view :key="$route.fullPath" :api-info="apiInfo" :settings="settings"/>
+        <router-view :key="$route.path" :api-info="apiInfo" :settings="settings"/>
       </v-main>
 
     </template>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { toast } from "vue3-toastify";
+import { toast } from "vue3-toastify"
 
 import Navbar from '/src/layout/Navbar.vue'
 import Header from '/src/layout/Header.vue'

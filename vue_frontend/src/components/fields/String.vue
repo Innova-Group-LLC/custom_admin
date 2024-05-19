@@ -26,11 +26,11 @@
 <script>
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 
-const requiredFields = [
-  'wysiwyg',
-  'multilined',
-  'tag_style',
-]
+const requiredFields = {
+  wysiwyg: {type: Boolean, required: false},
+  multilined: {type: Boolean, required: false},
+  tag_style: {type: String, required: false},
+}
 
 export default {
   props: {

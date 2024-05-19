@@ -3,8 +3,9 @@
     <v-card>
       <div class="edit-card-container">
         <v-tabs
-          v-model="tab"
+          v-model="currentTab"
           :direction="inline ? 'horizontal' : 'vertical'"
+          @update:modelValue="updateTab"
         >
           <v-tab
             :text="$t('general')"
@@ -32,7 +33,10 @@
           </template>
         </v-tabs>
 
-        <v-tabs-window v-model="tab" class="edit-page-tabs">
+        <v-tabs-window
+          v-model="currentTab"
+          class="edit-page-tabs"
+        >
 
           <!-- Main tab -->
           <v-tabs-window-item
@@ -41,12 +45,11 @@
             transition="fade"
             reverse-transition="fade"
           >
-            <FieldsContainer
-              ref="fieldscontainer"
-              formType="edit"
+            <ModelForm
               :api-info="apiInfo"
               :viewname="viewname"
-              :loading="loading"
+              :id="id"
+              :group="group"
             />
           </v-tabs-window-item>
 
@@ -88,7 +91,6 @@
                 :settings="settings"
                 :relation-name-filter="relationData.back_relation_name"
                 :filterId="id"
-                ref="tab"
               />
               <Edit
                 v-else
@@ -98,7 +100,6 @@
                 :id="id"
                 :inline="true"
                 mode="update"
-                ref="tab"
               />
 
             </v-tabs-window-item>
@@ -112,8 +113,8 @@
 
 <script>
 import { getMethods } from '/src/api/scheme'
-import { getDetail } from '/src/api/getDetail'
 
+import ModelForm from '/src/components/ModelForm.vue'
 import ChartInline from '/src/components/inlines/Chart.vue'
 import TableInline from '/src/components/inlines/Table.vue'
 
@@ -130,26 +131,21 @@ export default {
     id: {type: String, required: false},
     mode: {type: String, required: false},
   },
+  components: {
+    ModelForm,
+  },
   data() {
     return {
-      tab: null,
+      currentTab: null,
       apiMethods: null,
       sectionData: null,
-      loading: true,
     }
   },
-  async created() {
+  created() {
     this.apiMethods = getMethods(this.viewname, this.apiInfo)
-    if (!this.apiMethods) {
-      console.error(`getMethods return null for viewname:"${this.viewname}"`)
-    }
     this.sectionData = this.apiInfo[this.viewname]
 
     this.deserializeQuery()
-
-    if (this.isDisplayMainTab()) {
-      this.retrieveData()
-    }
   },
   methods: {
     getInlineComponent(method) {
@@ -163,51 +159,27 @@ export default {
     deserializeQuery() {
       const tab = this.inline ? this.$route.query.inlineTab : this.$route.query.tab
       if (tab) {
-        this.tab = tab
+        this.currentTab = tab
       }
     },
     serializeQuery() {
       let newQuery = JSON.parse(JSON.stringify(this.$route.query))
 
       delete newQuery.inlineTab
-      if (this.tab) {
+      if (this.currentTab) {
         if (this.inline) {
-          newQuery.inlineTab = this.tab
+          newQuery.inlineTab = this.currentTab
         }
         else {
-          newQuery.tab = this.tab
+          newQuery.tab = this.currentTab
         }
       }
 
       this.$router.replace({name: this.$route.name, query: newQuery})
     },
-    retrieveData() {
-      this.loading = true
-      const method = this.apiMethods['retrieve']
-      if (!method) {
-        console.error(`${this.viewname} apiMethods is not contain retrieve method`)
-      }
-      getDetail(method.url.replace("{id}", this.id),
-        method.methodHttp,
-        this.sectionData
-      ).then(response => {
-        this.formData = response
-        this.loading = false
-        this.$refs.fieldscontainer.updateFormData(this.formData)
-      }).catch(error => {
-        this.loading = false
-        if (error.response && error.response.status === 404) {
-          this.$router.push({ path: '/404' })
-        }
-        console.error('Get detail error:', error)
-        toast(error, {
-          "theme": "auto",
-          "type": "error",
-          "position": "top-center",
-          "dangerouslyHTMLString": true
-        })
-      })
-    }
+    updateTab() {
+      this.serializeQuery()
+    },
   },
 }
 </script>

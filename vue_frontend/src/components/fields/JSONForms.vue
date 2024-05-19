@@ -18,9 +18,9 @@ const renderers = [
   ...vuetifyRenderers,
 ];
 
-const requiredFields = [
-  'json_forms',
-]
+const requiredFields = {
+  json_forms: {type: Object, required: true},
+}
 
 export default {
   props: {

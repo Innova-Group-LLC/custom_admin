@@ -13,10 +13,9 @@
 
 <script>
 import { defaultProps, validateProps } from '/src/utils/fields.js'
-import { toast } from "vue3-toastify";
+import { toast } from "vue3-toastify"
 
-const requiredFields = [
-]
+const requiredFields = {}
 
 export default {
   props: {
