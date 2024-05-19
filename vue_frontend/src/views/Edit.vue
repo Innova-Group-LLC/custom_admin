@@ -1,10 +1,10 @@
 <template>
-  <div class="edit-page">
+  <div :class="{ 'edit-content': true, 'inline-view': inline }">
     <v-card>
-      <div class="d-flex flex-row">
+      <div class="edit-card-container">
         <v-tabs
           v-model="tab"
-          direction="vertical"
+          :direction="inline ? 'horizontal' : 'vertical'"
         >
           <v-tab
             :text="$t('general')"
@@ -32,10 +32,15 @@
           </template>
         </v-tabs>
 
-        <v-tabs-window v-model="tab" class="edit-tabs h-screen w-100">
+        <v-tabs-window v-model="tab" class="edit-page-tabs">
 
           <!-- Main tab -->
-          <v-tabs-window-item value="general">
+          <v-tabs-window-item
+            v-if="isDisplayMainTab()"
+            value="general"
+            transition="fade"
+            reverse-transition="fade"
+          >
             <FieldsContainer
               ref="fieldscontainer"
               formType="edit"
@@ -50,10 +55,20 @@
             <v-tabs-window-item
               v-if="method.inline_type"
               :value="method.name"
+              transition="fade"
+              reverse-transition="fade"
             >
               <component
+                v-if="getInlineComponent(method)"
                 :is="getInlineComponent(method)"
+
+                :id="id"
+                :method="method"
+                :settings="settings"
               />
+              <template v-else>
+                Component not found for {{ method }}
+              </template>
             </v-tabs-window-item>
           </template>
 
@@ -62,8 +77,30 @@
             <v-tabs-window-item
               v-if="relationData.inline_slug"
               :value="relationData.inline_slug"
+              transition="fade"
+              reverse-transition="fade"
             >
-              TODO RELATED
+
+              <List
+                v-if="relationData.back_relation_name"
+                :api-info="apiInfo"
+                :viewname="relationData.viewset_name"
+                :settings="settings"
+                :relation-name-filter="relationData.back_relation_name"
+                :filterId="id"
+                ref="tab"
+              />
+              <Edit
+                v-else
+                :settings="settings"
+                :viewname="relationData.viewset_name"
+                :api-info="apiInfo"
+                :id="id"
+                :inline="true"
+                mode="update"
+                ref="tab"
+              />
+
             </v-tabs-window-item>
           </template>
 
@@ -85,10 +122,12 @@ export default {
     apiInfo: {type: Object, required: true},
     settings: {type: Object, required: true},
 
+    // If its inside inline
+    inline: {type: Boolean, required: false},
+
     group: {type: String, required: false},
     viewname: {type: String, required: false},
     id: {type: String, required: false},
-    inline: {type: Boolean, required: false},
     mode: {type: String, required: false},
   },
   data() {
@@ -108,11 +147,9 @@ export default {
 
     this.deserializeQuery()
 
-    if (!this.isDisplayMainTab() && this.currentTab == null) {
-      const method = Object.keys(this.apiMethods)[0]
-      this.currentTab = method
+    if (this.isDisplayMainTab()) {
+      this.retrieveData()
     }
-    this.retrieveData()
   },
   methods: {
     getInlineComponent(method) {
@@ -126,19 +163,19 @@ export default {
     deserializeQuery() {
       const tab = this.inline ? this.$route.query.inlineTab : this.$route.query.tab
       if (tab) {
-        this.currentTab = tab
+        this.tab = tab
       }
     },
     serializeQuery() {
       let newQuery = JSON.parse(JSON.stringify(this.$route.query))
 
       delete newQuery.inlineTab
-      if (this.currentTab) {
+      if (this.tab) {
         if (this.inline) {
-          newQuery.inlineTab = this.currentTab
+          newQuery.inlineTab = this.tab
         }
         else {
-          newQuery.tab = this.currentTab
+          newQuery.tab = this.tab
         }
       }
 
@@ -147,6 +184,9 @@ export default {
     retrieveData() {
       this.loading = true
       const method = this.apiMethods['retrieve']
+      if (!method) {
+        console.error(`${this.viewname} apiMethods is not contain retrieve method`)
+      }
       getDetail(method.url.replace("{id}", this.id),
         method.methodHttp,
         this.sectionData

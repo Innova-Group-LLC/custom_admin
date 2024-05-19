@@ -84,13 +84,27 @@ body {
     }
 }
 
-.edit-page {
+.edit-content {
+    height: 100%;
+    .v-card {
+        height: 100%;
+    }
+    .edit-card-container {
+        display: flex;
+        height: 100%;
+    }
     .v-slide-group.v-slide-group--vertical.v-tabs {
         background-color: $color-light-2;
     }
-    .edit-tabs {
+    .edit-page-tabs {
+        width: 100%;
         .v-container {
             padding: 0px !important;
+        }
+    }
+    &.inline-view {
+        .v-slide-group {
+            width: 100%;
         }
     }
 }

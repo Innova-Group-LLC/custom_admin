@@ -60,8 +60,8 @@ export default {
     apiInfo: {type: Object, required: true},
 
     viewname: {type: String, required: false},
-    relationNameFilter: {type: Object, required: false},
-    filterId: {type: Object, required: false},
+    relationNameFilter: {type: String, required: false},
+    filterId: {type: String, required: false},
   },
   methods: {
     getTitle() {

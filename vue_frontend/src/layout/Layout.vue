@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <v-layout class="h-screen">
 
     <template v-if="apiInfo">
 
@@ -18,7 +18,7 @@
 
     </template>
 
-    <template v-else>
+    <template v-else-if="loading">
 
       <v-container fluid class="fill-height h-screen">
         <v-row>

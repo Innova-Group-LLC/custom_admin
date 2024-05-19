@@ -10,5 +10,11 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 const app = createApp(App)
 app.component('JsonForms', JsonForms)
+
+import List from '/src/views/List.vue'
+import Edit from '/src/views/Edit.vue'
+app.component('List', List)
+app.component('Edit', Edit)
+
 registerPlugins(app)
 app.mount('#app')
