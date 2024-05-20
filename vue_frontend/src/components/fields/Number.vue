@@ -15,6 +15,8 @@
     :reverse="false"
     :hideInput="false"
     :inset="false"
+
+    @update:modelValue="onChange"
   />
 
 </template>
@@ -48,6 +50,10 @@ export default {
   methods: {
     updateFormData(initFormData) {
       this.value = initFormData[this.fieldSlug]
+    },
+    onChange(newValue) {
+      this.value = newValue
+      this.$emit('changed', this.value)
     },
   },
 }

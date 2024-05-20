@@ -42,7 +42,7 @@ export default {
     },
     onChange(event) {
       this.data = event.data;
-      this.$emit('changed', JSON.stringify(this.data))
+      this.$emit('changed', this.data)
     },
   },
 }

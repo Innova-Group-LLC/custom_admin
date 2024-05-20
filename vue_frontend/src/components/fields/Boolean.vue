@@ -1,20 +1,19 @@
 <template>
-  <div>
 
-    <v-switch
-      :density="density"
-      :variant="variant"
-      :label="field.label"
-      :model-value="value"
-      :messages="field.help_text || []"
-      :disabled="field.read_only"
-      color="var(--color-darken-2)"
-      :loading="loading"
+  <v-switch
+    class="boolean-switch"
+    :density="density"
+    :variant="variant"
+    :label="field.label"
+    :model-value="value"
+    :messages="field.help_text || []"
+    :disabled="field.read_only"
+    color="var(--color-darken-2)"
+    :loading="loading"
 
-      @update:modelValue="onChange"
-    ></v-switch>
+    @update:modelValue="onChange"
+  ></v-switch>
 
-  </div>
 </template>
 
 <script>
@@ -39,7 +38,8 @@ export default {
       this.value = initFormData[this.fieldSlug]
     },
     onChange(newValue) {
-      this.$emit('changed', this.data)
+      this.value = newValue
+      this.$emit('changed', this.value)
     },
   },
 }

@@ -10,6 +10,7 @@ const messages = {
     create: 'Create',
     apply: 'Apply',
     close: 'Close',
+    search: 'Search',
     creation: 'Creation',
     general: 'General',
     $vuetify: {
@@ -23,6 +24,7 @@ const messages = {
     mainPage: 'Главная',
     languageSelection: 'Выбор языка',
     create: 'Создать',
+    search: 'Поиск',
     apply: 'Применить',
     close: 'Закрыть',
     creation: 'Создание',

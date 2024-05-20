@@ -1,6 +1,19 @@
 <template>
 
   <div class="filters-container">
+
+    <div class="filter-element" v-if="searchFields">
+      <v-text-field
+        density="compact"
+        variant="solo"
+        prepend-inner-icon="mdi-magnify"
+
+        v-model="filterInfo.search"
+        :clearable="true"
+        :label="$t('search')"
+      />
+    </div>
+
     <div
       v-for="(filter, filter_name) in filtersetFields" v-if="filtersetFields"
       class="filter-element"

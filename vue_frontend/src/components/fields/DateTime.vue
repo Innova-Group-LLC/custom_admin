@@ -107,6 +107,12 @@ export default {
       this.value = new Date(moment(value))
     },
     format(date) {
+      if (this.isRange()) {
+        return {
+          'from': moment(date[0]).format('yyyy-MM-ddTHH:mm:ss'),
+          'to': moment(date[1]).format('yyyy-MM-ddTHH:mm:ss'),
+        }
+      }
       return moment(date).format('yyyy-MM-ddTHH:mm:ss')
     },
     isRange() {

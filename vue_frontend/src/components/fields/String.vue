@@ -9,6 +9,8 @@
       :messages="field.help_text || []"
       :disabled="field.read_only"
       :loading="loading"
+
+      @update:modelValue="onChange"
     />
 
     <v-text-field
@@ -20,6 +22,8 @@
       :model-value="value"
       :messages="field.help_text || []"
       :disabled="field.read_only"
+
+      @update:modelValue="onChange"
     />
 
   </div>
@@ -51,6 +55,10 @@ export default {
   methods: {
     updateFormData(initFormData) {
       this.value = initFormData[this.fieldSlug]
+    },
+    onChange(newValue) {
+      this.value = newValue
+      this.$emit('changed', this.value)
     },
   },
 }

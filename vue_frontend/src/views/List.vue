@@ -246,6 +246,8 @@ export default {
       })
     },
     getHeaders() {
+      if (!this.sectionData.meta.filds_list) return
+
       let result = []
 
       for (const name of this.sectionData.meta.filds_list) {

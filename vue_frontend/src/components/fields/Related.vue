@@ -21,6 +21,7 @@
 
     :search="search"
     @update:search="updateSearch"
+    @update:modelValue="onChange"
   >
     <template v-slot:chip="{ props, item }">
       <v-chip
@@ -108,6 +109,10 @@ export default {
           "dangerouslyHTMLString": true
         })
       })
+    },
+    onChange(newValue) {
+      this.value = newValue
+      this.$emit('changed', this.value)
     },
   },
 }
