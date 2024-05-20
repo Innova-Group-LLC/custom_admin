@@ -66,7 +66,10 @@ body {
 }
 
 .list-page {
-    .content-row {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .header-row {
         margin: 10px;
         vertical-align: middle;
     }
@@ -81,6 +84,29 @@ body {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+    }
+}
+
+.model-table {
+    flex: 1 0 0;
+    min-height: 0;
+    .table-bottom {
+        .list-pagination-per-page {
+            display: contents;
+            .v-field__field {
+                display: contents;
+                vertical-align: middle;
+            }
+            .v-input__details {
+                display: none;
+            }
+            .v-field__input {
+                vertical-align: middle;
+            }
+        }
+        .list-pagination {
+            vertical-align: middle;
+        }
     }
 }
 
@@ -147,28 +173,6 @@ body {
     .v-data-table__tr:nth-child(2n) {
         .v-data-table__td {
             background-color: #242424;;
-        }
-    }
-}
-
-.model-table {
-    height: calc(100vh - ($header-height)) !important;
-    .table-bottom {
-        .list-pagination-per-page {
-            display: contents;
-            .v-field__field {
-                display: contents;
-                vertical-align: middle;
-            }
-            .v-input__details {
-                display: none;
-            }
-            .v-field__input {
-                vertical-align: middle;
-            }
-        }
-        .list-pagination {
-            vertical-align: middle;
         }
     }
 }

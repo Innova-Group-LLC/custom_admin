@@ -1,6 +1,8 @@
 <template>
 
-  FILTERS
+  <template v-for="(filter, filter_name) in filtersetFields" v-if="filtersetFields">
+    {{ filter.type }}|
+  </template>
 
 </template>
 

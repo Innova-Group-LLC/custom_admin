@@ -2,7 +2,18 @@
   <div class="list-page">
 
     <div class="list-above-block">
-      <v-row class="content-row" justify="end" no-gutters>
+      <v-row class="header-row" no-gutters>
+
+        <Filters
+          :filterset-fields="apiInfo[viewname].meta.filterset_fields"
+          :search-fields="apiInfo[viewname].meta.search_fields"
+          :filter-info-init="filterInfo"
+          :settings="settings"
+          @filtered="handleFilter"
+        />
+
+        <v-spacer></v-spacer>
+
         <Create
           v-if="canAdd()"
           :api-info="apiInfo"
@@ -24,7 +35,6 @@
       :items-per-page="pageInfo.limit"
       :page="pageInfo.page"
 
-      height="unset"
       @click:row="handleClick"
     >
 
@@ -105,10 +115,12 @@ import { getList } from '/src/api/getList'
 import { getSettings, setSettings } from '/src/utils/settings'
 
 import Create from '/src/components/Create.vue'
+import Filters from '/src/components/Filters.vue'
 
 export default {
   components: {
     Create,
+    Filters,
   },
   props: {
     apiInfo: {type: Object, required: true},
@@ -316,6 +328,12 @@ export default {
     handleClick(click, row) {
       const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.item.id}/update`
       this.$router.push({ path: edit_url } )
+    },
+    handleFilter(newFilterInfo) {
+      this.pageInfo.page = 1
+      this.filterInfo = newFilterInfo
+      this.serializeQuery()
+      this.getListData()
     },
   }
 }
