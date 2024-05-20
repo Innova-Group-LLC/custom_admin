@@ -13,6 +13,8 @@
 
     <v-text-field
       v-else
+      :variant="variant"
+      :density="density"
       :clearable="true"
       :label="field.label"
       :model-value="value"

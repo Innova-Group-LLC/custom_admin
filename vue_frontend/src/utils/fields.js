@@ -1,7 +1,9 @@
 export const defaultProps = {
+  variant: {type: String, required: true},
+  density: {type: String, required: true},
   field: {type: Object, required: true},
   fieldSlug: {type: String, required: true},
-  viewname: {type: String, required: true},
+  viewname: {type: String, required: false},
   loading: {type: Boolean, required: true},
 }
 

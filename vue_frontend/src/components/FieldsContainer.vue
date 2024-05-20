@@ -41,11 +41,14 @@
 
               <component
                 v-if="getFieldComponent(field)"
+                :is="getFieldComponent(field)"
+
+                density="comfortable"
+                variant="filled"
                 :ref="getRefString(field_slug)"
                 :field="field"
                 :field-slug="field_slug"
                 :viewname="viewname"
-                :is="getFieldComponent(field)"
                 :loading="loading"
 
                 @changed="value => _updateValue(value, field_slug)"

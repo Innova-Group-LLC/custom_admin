@@ -26,16 +26,19 @@ def get_filters_fields_data(model, filters):
         result[filter_name] = {'type': filter_field.__class__.__name__}
 
         if result[filter_name]['type'] == 'ManyToManyRel':
-            result[filter_name]['name'] = str(_(filter_field.related_model._meta.verbose_name))
+            result[filter_name]['label'] = str(_(filter_field.related_model._meta.verbose_name))
         else:
-            result[filter_name]['name'] = str(_(filter_field.verbose_name))
+            result[filter_name]['label'] = str(_(filter_field.verbose_name))
 
         if result[filter_name]['type'] in ('ForeignKey', 'ManyToManyField', 'OneToOneField', 'ManyToManyRel'):
-            result[filter_name]['model'] = filter_field.related_model.__name__
+            result[filter_name]['model_name'] = filter_field.related_model.__name__
             result[filter_name]['app_label'] = filter_field.related_model._meta.app_label
 
         if hasattr(filter_field, 'choices') and filter_field.choices:
-            choices = tuple((c[0], str(_(c[1]))) for c in filter_field.choices)
+            choices = tuple({
+                'value': c[0],
+                'display_name': str(_(c[1]))
+            } for c in filter_field.choices)
             if choices:
                 result[filter_name]['choices'] = choices
 
@@ -54,7 +57,7 @@ def get_filters_class_data(model, filter_class, request) -> dict:
 
         result[filter_name] = {
             'type': filter_field.__class__.__name__,
-            'name': str(name),
+            'label': str(name),
         }
 
         filter_model = None
@@ -68,13 +71,16 @@ def get_filters_class_data(model, filter_class, request) -> dict:
         if filter_model:
             model_name = filter_model.__name__
             app_label = filter_model._meta.app_label
-            result[filter_name]['model'] = model_name
+            result[filter_name]['model_name'] = model_name
             result[filter_name]['app_label'] = app_label
 
         if isinstance(filter_field, filters.Filter):
             choices = filter_field.extra.get('choices')
             if choices:
-                choices = tuple((c[0], str(_(c[1]))) for c in choices)
+                choices = tuple({
+                    'value': c[0],
+                    'display_name': str(_(c[1]))
+                } for c in choices)
                 if choices:
                     result[filter_name]['choices'] = choices
 

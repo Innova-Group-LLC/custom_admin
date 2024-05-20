@@ -1,6 +1,8 @@
 <template>
 
   <v-file-input
+    :density="density"
+    :variant="variant"
     :label="field.label"
     :model-value="value"
     :messages="field.help_text || []"

@@ -93,7 +93,7 @@ class AdminLogManager:
             title=short_description,
         )
         log.info(
-            'ADMIN %s #%s ACTION "%s" admin_log:%s request.data:%s short_description:%s',
-            self.staff.username, self.staff.id, action_name, admin_log.section, request.data, short_description,
+            'ADMIN %s #%s ACTION "%s" admin_log:%s short_description:%s',
+            self.staff.username, self.staff.id, action_name, admin_log.section, short_description,
         )
         return admin_log

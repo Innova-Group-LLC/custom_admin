@@ -8,7 +8,6 @@
       <v-btn
         v-bind="activatorProps"
         class="create-button"
-        size="small"
       >{{ $t('create') }}</v-btn>
     </template>
 

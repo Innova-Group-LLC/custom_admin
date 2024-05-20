@@ -4,6 +4,8 @@
     <template v-slot:activator="{ props: activatorProps }">
       <v-text-field
         v-bind="activatorProps"
+        :density="density"
+        :variant="variant"
         :label="field.label"
         :model-value="displayValue"
         :messages="field.help_text || []"
@@ -29,8 +31,8 @@
           time-picker-inline
           :format="format"
 
-          :enable-time-picker="['datetime', 'time'].indexOf(field.type) !== -1"
-          :time-picker="field.type === 'time'"
+          :enable-time-picker="isEnableTimePicker()"
+          :time-picker="isTimePicker()"
 
           @update:model-value="updateDateTime"
         />
@@ -79,16 +81,16 @@ export default {
       return moment(this.value).format(this.getFormat())
     },
     getFormat() {
-      if (this.field.type === 'datetime') return 'YYYY-MM-DD HH:mm'
+      if (this.isTimePicker()) return 'HH:mm'
+      if (this.isEnableTimePicker()) return 'YYYY-MM-DD HH:mm'
       if (this.field.type === 'date') return 'YYYY-MM-DD'
-      if (this.field.type === 'time') return 'HH:mm'
-      console.error('DateTime bad type:', field.type)
+      console.error('DateTime bad type:', this.field.type)
     },
     getIcons() {
-      if (this.field.type === 'datetime') return ['mdi-calendar-range', 'mdi-clock-time-eight-outline']
+      if (this.isTimePicker()) return ['mdi-clock-time-eight-outline']
+      if (this.isEnableTimePicker()) return ['mdi-calendar-range', 'mdi-clock-time-eight-outline']
       if (this.field.type === 'date') return ['mdi-calendar-range']
-      if (this.field.type === 'time') return ['mdi-clock-time-eight-outline']
-      console.error('DateTime bad type:', field.type)
+      console.error('DateTime bad type:', this.field.type)
     },
     updateDateTime(date) {
       this.displayValue = this.getFormattedValue()
@@ -100,6 +102,26 @@ export default {
     },
     format(date) {
       return moment(date).format('yyyy-MM-ddTHH:mm:ss')
+    },
+    isEnableTimePicker() {
+      const time = [
+        'datetime',
+        'time',
+        'DateTimeField',
+        'DateFromToRangeFilter',
+        'DateTimeFilter',
+        'TimeField',
+        'TimeFilter',
+      ]
+      return time.indexOf(this.field.type) !== -1
+    },
+    isTimePicker() {
+      const time = [
+        'time',
+        'TimeField',
+        'TimeFilter',
+      ]
+      return time.indexOf(this.field.type) !== -1
     },
   },
 }

@@ -95,6 +95,9 @@ body {
         }
         .header-row-actions {
         }
+        .v-btn {
+            height: 40px;
+        }
     }
 }
 
@@ -118,6 +121,20 @@ body {
         .list-pagination {
             vertical-align: middle;
         }
+    }
+}
+
+.filters-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+
+    .filter-element {
+        display: flex;
+        margin: 2px;
+        width: 300px;
     }
 }
 
@@ -191,7 +208,7 @@ body {
 .hide-element {
     display: none;
 }
-.v-tab {
+.v-tab,.v-btn {
     text-transform: none !important;
 }
 

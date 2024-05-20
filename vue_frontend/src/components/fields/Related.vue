@@ -1,43 +1,43 @@
 <template>
-  <div>
 
-    <v-autocomplete
-      :clearable="true"
-      v-model="value"
-      :label="field.label"
-      :messages="field.help_text || []"
-      :disabled="field.read_only"
+  <v-autocomplete
+    :density="density"
+    :variant="variant"
+    :clearable="true"
+    v-model="value"
+    :label="field.label"
+    :messages="field.help_text || []"
+    :disabled="field.read_only"
 
-      :items="choices"
-      :multiple="field.type === 'multiple choice'"
-      :loading="loading || apiLoading"
-      chips
-      closable-chips
-      persistent-hint
-      no-filter
+    :items="choices"
+    :multiple="field.type === 'multiple choice'"
+    :loading="loading || apiLoading"
+    chips
+    closable-chips
+    persistent-hint
+    no-filter
 
-      :append-inner-icon="field.type === 'multiple choice' ? 'mdi-relation-many-to-many' : 'mdi-relation-many-to-one'"
+    :append-inner-icon="field.type === 'multiple choice' ? 'mdi-relation-many-to-many' : 'mdi-relation-many-to-one'"
 
-      :search="search"
-      @update:search="updateSearch"
-    >
-      <template v-slot:chip="{ props, item }">
-        <v-chip
-          class="autocomplete-chip"
-          v-bind="props"
-          :text="item.raw.text"
-        ></v-chip>
-      </template>
+    :search="search"
+    @update:search="updateSearch"
+  >
+    <template v-slot:chip="{ props, item }">
+      <v-chip
+        class="autocomplete-chip"
+        v-bind="props"
+        :text="item.raw.text"
+      ></v-chip>
+    </template>
 
-      <template v-slot:item="{ props, item }">
-        <v-list-item
-          v-bind="props"
-          :title="item.raw.text"
-        ></v-list-item>
-      </template>
-    </v-autocomplete>
+    <template v-slot:item="{ props, item }">
+      <v-list-item
+        v-bind="props"
+        :title="item.raw.text"
+      ></v-list-item>
+    </template>
+  </v-autocomplete>
 
-  </div>
 </template>
 
 <script>

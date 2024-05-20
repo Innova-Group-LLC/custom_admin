@@ -16,8 +16,8 @@ PLUGINS = {
 
 @dataclass
 class ChartOptions:
-    width: int = 400
-    height: int = 400
+    width: typing.Optional[int] = None
+    height: typing.Optional[int] = 100
 
     plugins: typing.Dict[str, dict] = field(default_factory=lambda: PLUGINS)
 

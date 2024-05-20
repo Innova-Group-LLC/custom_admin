@@ -26,6 +26,8 @@
 
           :options="chart.options"
           :data="chart"
+          :width="chart.options.width"
+          :height="chart.options.height"
 
           :fill="chart.fill"
           :pointBorderColor="chart.pointBorderColor"

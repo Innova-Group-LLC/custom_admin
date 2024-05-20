@@ -1,23 +1,22 @@
 <template>
-  <div>
+  <v-number-input
+    :density="density"
+    :variant="variant"
+    :clearable="true"
+    :label="field.label"
+    :model-value="value"
+    :messages="field.help_text || []"
+    :disabled="field.read_only"
+    :loading="loading"
 
-    <v-number-input
-      :clearable="true"
-      :label="field.label"
-      :model-value="value"
-      :messages="field.help_text || []"
-      :disabled="field.read_only"
-      :loading="loading"
+    :max="field.max_value"
+    :min="field.min_value"
 
-      :max="field.max_value"
-      :min="field.min_value"
+    :reverse="false"
+    :hideInput="false"
+    :inset="false"
+  />
 
-      :reverse="false"
-      :hideInput="false"
-      :inset="false"
-    />
-
-  </div>
 </template>
 
 <script>
