@@ -2,8 +2,8 @@
   <div class="list-page">
 
     <div class="list-above-block">
-      <v-row class="header-row" no-gutters>
 
+      <div class="header-row-filters">
         <Filters
           :filterset-fields="apiInfo[viewname].meta.filterset_fields"
           :search-fields="apiInfo[viewname].meta.search_fields"
@@ -11,9 +11,9 @@
           :settings="settings"
           @filtered="handleFilter"
         />
+      </div>
 
-        <v-spacer></v-spacer>
-
+      <div class="header-row-actions">
         <Create
           v-if="canAdd()"
           :api-info="apiInfo"
@@ -22,7 +22,8 @@
           :relation-name-filter="relationNameFilter"
           :filter-id="filterId"
         />
-      </v-row>
+      </div>
+
     </div>
 
     <v-data-table

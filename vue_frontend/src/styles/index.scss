@@ -85,6 +85,17 @@ body {
         overflow: hidden;
         white-space: nowrap;
     }
+
+    .list-above-block {
+        margin: 10px;
+        display: flex;
+        flex-direction: row;
+        .header-row-filters {
+            flex: 1 0 0;
+        }
+        .header-row-actions {
+        }
+    }
 }
 
 .model-table {

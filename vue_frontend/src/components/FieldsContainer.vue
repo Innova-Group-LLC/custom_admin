@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     getFieldComponent(field) {
-      if (['boolean', 'BooleanFilter'].indexOf(field.type) !== -1) return BooleanField
+      if (['boolean'].indexOf(field.type) !== -1) return BooleanField
       if (['integer', 'decimal'].indexOf(field.type) !== -1) return NumberField
       if (['list', 'choice'].indexOf(field.type) !== -1) return ChoiceField
       if (['image upload', 'file upload', 'svgfield'].indexOf(field.type) !== -1) return FileField
