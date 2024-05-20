@@ -31,6 +31,7 @@
           time-picker-inline
           :format="format"
 
+          :range="isRange()"
           :enable-time-picker="isEnableTimePicker()"
           :time-picker="isTimePicker()"
 
@@ -78,18 +79,23 @@ export default {
     },
     getFormattedValue() {
       if (!this.value) return ''
+      if (this.isRange()) {
+        const _from = moment(this.value[0]).format(this.getFormat())
+        const to = moment(this.value[1]).format(this.getFormat())
+        return `${_from} - ${to}`
+      }
       return moment(this.value).format(this.getFormat())
     },
     getFormat() {
       if (this.isTimePicker()) return 'HH:mm'
       if (this.isEnableTimePicker()) return 'YYYY-MM-DD HH:mm'
-      if (this.field.type === 'date') return 'YYYY-MM-DD'
+      if (this.isDate()) return 'YYYY-MM-DD'
       console.error('DateTime bad type:', this.field.type)
     },
     getIcons() {
       if (this.isTimePicker()) return ['mdi-clock-time-eight-outline']
       if (this.isEnableTimePicker()) return ['mdi-calendar-range', 'mdi-clock-time-eight-outline']
-      if (this.field.type === 'date') return ['mdi-calendar-range']
+      if (this.isDate()) return ['mdi-calendar-range']
       console.error('DateTime bad type:', this.field.type)
     },
     updateDateTime(date) {
@@ -103,12 +109,24 @@ export default {
     format(date) {
       return moment(date).format('yyyy-MM-ddTHH:mm:ss')
     },
+    isRange() {
+      const dates = [
+        'DateFromToRangeFilter',
+      ]
+      return dates.indexOf(this.field.type) !== -1
+    },
+    isDate() {
+      const date = [
+        'DateFromToRangeFilter',
+        'date',
+      ]
+      return date.indexOf(this.field.type) !== -1
+    },
     isEnableTimePicker() {
       const time = [
         'datetime',
         'time',
         'DateTimeField',
-        'DateFromToRangeFilter',
         'DateTimeFilter',
         'TimeField',
         'TimeFilter',

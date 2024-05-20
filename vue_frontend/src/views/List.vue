@@ -198,20 +198,9 @@ export default {
       if (search) this.filterInfo.search = search
 
       for (const [filter_name, filter] of Object.entries(this.apiInfo[this.viewname].meta.filterset_fields)) {
-        if (['DateTimeField', 'DateFromToRangeFilter'].indexOf(filter.type) >= 0) {
-          const filter_after = this.$route.query[`${filter_name}_after`]
-          if (filter_after)
-            this.filterInfo.filters[`${filter_name}_after`] = filter_after
-
-          const filter_before = this.$route.query[`${filter_name}_before`]
-          if (filter_before)
-            this.filterInfo.filters[`${filter_name}_before`] = filter_before
-        }
-        else {
-          const filter_value = this.$route.query[filter_name]
-          if (filter_value != null && filter_value != undefined)
-            this.$set(this.filterInfo.filters, filter_name, filter_value)
-        }
+        const filter_value = this.$route.query[filter_name]
+        if (filter_value != null && filter_value != undefined)
+          this.filterInfo.filters[filter_name] = filter_value
       }
     },
     serializeQuery() {

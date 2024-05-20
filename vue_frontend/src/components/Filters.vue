@@ -25,6 +25,7 @@
 
     <div class="filter-element">
       <v-btn
+        @click="applyFilter"
         prepend-icon="mdi-magnify"
       >{{ $t('apply') }}</v-btn>
     </div>
@@ -49,6 +50,16 @@ export default {
     viewname: {type: String, required: false},
   },
   emits: ["filtered"],
+  data() {
+    return {
+      filterInfo: {},
+    }
+  },
+  created() {
+    if (this.filterInfoInit) {
+      this.filterInfo = this.filterInfoInit
+    }
+  },
   methods: {
     getFieldComponent(filter) {
       const related = [
@@ -86,6 +97,10 @@ export default {
       if (['BooleanField', 'BooleanFilter'].indexOf(filter.type) !== -1) return BooleanField
     },
     _updateValue(value, filter_name) {
+      this.filterInfo[filter_name] = value
+    },
+    applyFilter() {
+      this.$emit('filtered', this.filterInfo)
     },
   },
 }

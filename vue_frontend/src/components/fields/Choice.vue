@@ -13,7 +13,9 @@
     :items="field.choices"
     item-title="display_name"
     item-value="value"
-    :return-object="false"
+    :return-object="true"
+
+    @update:modelValue="onChange"
   />
 
 </template>
@@ -39,15 +41,19 @@ export default {
   created() {
     validateProps(this, requiredFields)
     if (this.field.initial) {
-      this.value = this.field.initial.value
+      this.value = this.field.initial
     }
   },
   methods: {
     updateFormData(initFormData) {
       const value = initFormData[this.fieldSlug]
       if (value) {
-        this.value = value.value
+        this.value = value
       }
+    },
+    onChange(newValue) {
+      this.value = newValue
+      this.$emit('changed', this.value)
     },
   },
 }

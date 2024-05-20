@@ -10,6 +10,8 @@
       :disabled="field.read_only"
       color="var(--color-darken-2)"
       :loading="loading"
+
+      @update:modelValue="onChange"
     ></v-switch>
 
   </div>
@@ -35,6 +37,9 @@ export default {
   methods: {
     updateFormData(initFormData) {
       this.value = initFormData[this.fieldSlug]
+    },
+    onChange(newValue) {
+      this.$emit('changed', this.data)
     },
   },
 }
