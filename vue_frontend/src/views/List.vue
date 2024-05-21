@@ -38,10 +38,14 @@
 
       @click:row="handleClick"
     >
+      <template v-slot:loading>
+        <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
+      </template>
 
       <template
         v-for="header in headers"
-        v-slot:[`item.${header.key}`]="{ item }">
+        v-slot:[`item.${header.key}`]="{ item }"
+      >
 
         <template v-if="header.field.type === 'primary'">
           <v-tooltip v-if="item[header.key]">
@@ -50,6 +54,12 @@
               <v-chip size="small" v-bind="props">{{ item[header.key].text }}</v-chip>
             </template>
           </v-tooltip>
+        </template>
+
+        <template v-else-if="header.field.type === 'primarymany'">
+          <template v-if="item[header.key]">
+            <v-chip v-for="tag in item[header.key]" size="small">{{ tag.text }}</v-chip>
+          </template>
         </template>
 
         <template v-else-if="header.field.type === 'boolean'">
