@@ -39,6 +39,16 @@
         />
       </template>
     </div>
+
+    <template v-if="loadData">
+      <div class="chart-loader">
+        <v-progress-circular
+          :size="50"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+      </div>
+    </template>
   </div>
 </template>
 

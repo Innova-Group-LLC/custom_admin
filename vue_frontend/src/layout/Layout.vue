@@ -15,7 +15,7 @@
       <v-main class="d-flex page-container">
 
         <router-view v-slot="{ Component }">
-          <v-fade-transition mode="out-in">
+          <v-fade-transition>
             <component :is="Component" :key="$route.path" :api-info="apiInfo" :settings="settings"/>
           </v-fade-transition>
         </router-view>

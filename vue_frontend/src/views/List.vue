@@ -35,59 +35,60 @@
 
       :items-per-page="pageInfo.limit"
       :page="pageInfo.page"
-
-      @click:row="handleClick"
     >
       <template v-slot:loading>
         <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
       </template>
 
       <template
-        v-for="header in headers"
+        v-for="(header, index) in headers"
         v-slot:[`item.${header.key}`]="{ item }"
       >
 
-        <template v-if="header.field.type === 'primary'">
-          <v-tooltip v-if="item[header.key]">
-            #{{ item[header.key].id }}
-            <template v-slot:activator="{ props }">
-              <v-chip size="small" v-bind="props">{{ item[header.key].text }}</v-chip>
-            </template>
-          </v-tooltip>
-        </template>
+        <div @click="handleClick(index, item)" :class="{ 'table-cell': true, 'table-link': index === 0 }">
 
-        <template v-else-if="header.field.type === 'primarymany'">
-          <template v-if="item[header.key]">
-            <v-chip v-for="tag in item[header.key]" size="small">{{ tag.text }}</v-chip>
+          <template v-if="header.field.type === 'primary'">
+            <v-tooltip v-if="item[header.key]">
+              #{{ item[header.key].id }}
+              <template v-slot:activator="{ props }">
+                <v-chip size="small" v-bind="props">{{ item[header.key].text }}</v-chip>
+              </template>
+            </v-tooltip>
           </template>
-        </template>
 
-        <template v-else-if="header.field.type === 'boolean'">
-          <v-icon color="green-darken-2" icon="mdi-check" size="small" v-if="item[header.key]"/>
-          <v-icon color="red-darken-2" icon="mdi-close" size="small" v-else/>
-        </template>
-
-        <template v-else-if="header.field.type === 'choice'">
-          <template v-if="item[header.key]">
-            <template v-if="Object.keys(header.field.tag_style || {}).length > 0">
-              <v-chip
-                size="small"
-                :color="header.field.tag_style[item[header.key].value]"
-              >{{ item[header.key].text }}</v-chip>
-            </template>
-            <template v-else>
-              {{ item[header.key].text }}
+          <template v-else-if="header.field.type === 'primarymany'">
+            <template v-if="item[header.key]">
+              <v-chip v-for="tag in item[header.key]" size="small">{{ tag.text }}</v-chip>
             </template>
           </template>
-        </template>
 
-        <template v-else-if="header.field.type === 'datetime'">
-          {{ formatDateTime(item[header.key]) }}
-        </template>
+          <template v-else-if="header.field.type === 'boolean'">
+            <v-icon color="green-darken-2" icon="mdi-check" size="small" v-if="item[header.key]"/>
+            <v-icon color="red-darken-2" icon="mdi-close" size="small" v-else/>
+          </template>
 
-        <template v-else>
-          <span class="cell-string">{{ item[header.key] }}</span>
-        </template>
+          <template v-else-if="header.field.type === 'choice'">
+            <template v-if="item[header.key]">
+              <template v-if="Object.keys(header.field.tag_style || {}).length > 0">
+                <v-chip
+                  size="small"
+                  :color="header.field.tag_style[item[header.key].value]"
+                >{{ item[header.key].text }}</v-chip>
+              </template>
+              <template v-else>
+                {{ item[header.key].text }}
+              </template>
+            </template>
+          </template>
+
+          <template v-else-if="header.field.type === 'datetime'">
+            <span class="cell-string">{{ formatDateTime(item[header.key]) }}</span>
+          </template>
+
+          <template v-else>
+            <span class="cell-string">{{ item[header.key] }}</span>
+          </template>
+        </div>
       </template>
 
       <template v-slot:bottom>
@@ -208,10 +209,8 @@ export default {
       if (search) this.filterInfo.search = search
 
       // Deserialize filters
-      for (const [filter_name, filter] of Object.entries(this.apiInfo[this.viewname].meta.filterset_fields)) {
-        const filter_value = this.$route.query[filter_name]
-        if (filter_value != null && filter_value != undefined)
-          this.filterInfo.filters[filter_name] = filter_value
+      if (this.$route.query.filters) {
+        this.filterInfo.filters = JSON.parse(this.$route.query.filters)
       }
     },
     serializeQuery() {
@@ -226,9 +225,8 @@ export default {
       if (this.filterInfo.search) newQuery.search = this.filterInfo.search
 
       // Serialize filters
-      for (const [filter_name, filter_value] of Object.entries(this.filterInfo.filters)) {
-        if (filter_value)
-          newQuery[filter_name] = filter_value
+      if (Object.keys(this.filterInfo.filters).length > 0) {
+        newQuery.filters = JSON.stringify(this.filterInfo.filters)
       }
 
       this.$router.push({name: this.$route.name, query: newQuery})
@@ -329,8 +327,10 @@ export default {
           this.openDetail(this.viewname, row.id)
       }
     },
-    handleClick(click, row) {
-      const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.item.id}/update`
+    handleClick(index, row) {
+      if (index !== 0) return
+
+      const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.id}/update`
       this.$router.push({ path: edit_url } )
     },
     handleFilter(newFilterInfo) {
