@@ -13,7 +13,13 @@
       />
 
       <v-main class="d-flex page-container">
-        <router-view :key="$route.path" :api-info="apiInfo" :settings="settings"/>
+
+        <router-view v-slot="{ Component }">
+          <v-fade-transition mode="out-in">
+            <component :is="Component" :key="$route.path" :api-info="apiInfo" :settings="settings"/>
+          </v-fade-transition>
+        </router-view>
+
       </v-main>
 
     </template>

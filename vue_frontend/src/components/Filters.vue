@@ -110,7 +110,7 @@ export default {
       if (['BooleanField', 'BooleanFilter'].indexOf(filter.type) !== -1) return BooleanField
     },
     _updateValue(value, filter_name) {
-      this.filterInfo[filter_name] = value
+      this.filterInfo.filters[filter_name] = value
     },
     applyFilter() {
       this.$emit('filtered', this.filterInfo)

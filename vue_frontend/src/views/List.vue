@@ -197,6 +197,7 @@ export default {
       const search = this.$route.query.search
       if (search) this.filterInfo.search = search
 
+      // Deserialize filters
       for (const [filter_name, filter] of Object.entries(this.apiInfo[this.viewname].meta.filterset_fields)) {
         const filter_value = this.$route.query[filter_name]
         if (filter_value != null && filter_value != undefined)
@@ -214,6 +215,7 @@ export default {
       if (this.ordering) newQuery.ordering = this.ordering
       if (this.filterInfo.search) newQuery.search = this.filterInfo.search
 
+      // Serialize filters
       for (const [filter_name, filter_value] of Object.entries(this.filterInfo.filters)) {
         if (filter_value)
           newQuery[filter_name] = filter_value
