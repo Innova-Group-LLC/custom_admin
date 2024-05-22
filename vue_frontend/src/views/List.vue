@@ -45,7 +45,7 @@
         v-slot:[`item.${header.key}`]="{ item }"
       >
 
-        <div @click="handleClick(index, item)" :class="{ 'table-cell': true, 'table-link': index === 0 }">
+        <div @click="handleClick(index, item)" :class="{ 'table-cell': true, 'table-link': index === 0 && canRetrieve() }">
 
           <template v-if="header.field.type === 'primary'">
             <v-tooltip v-if="item[header.key]">
@@ -205,12 +205,9 @@ export default {
       const ordering = this.$route.query.ordering
       if (ordering) this.ordering = ordering
 
-      const search = this.$route.query.search
-      if (search) this.filterInfo.search = search
-
       // Deserialize filters
-      if (this.$route.query.filters) {
-        this.filterInfo.filters = JSON.parse(this.$route.query.filters)
+      if (this.$route.query.filter_info) {
+        this.filterInfo = JSON.parse(decodeURIComponent(this.$route.query.filter_info))
       }
     },
     serializeQuery() {
@@ -222,11 +219,10 @@ export default {
       if (this.pageInfo.limit) newQuery.limit = this.pageInfo.limit
 
       if (this.ordering) newQuery.ordering = this.ordering
-      if (this.filterInfo.search) newQuery.search = this.filterInfo.search
 
       // Serialize filters
-      if (Object.keys(this.filterInfo.filters).length > 0) {
-        newQuery.filters = JSON.stringify(this.filterInfo.filters)
+      if (Object.keys(this.filterInfo).length > 0) {
+        newQuery.filter_info = encodeURIComponent(JSON.stringify(this.filterInfo))
       }
 
       this.$router.push({name: this.$route.name, query: newQuery})
@@ -237,8 +233,7 @@ export default {
         url: this.apiMethods['list'].url,
         method: this.apiMethods['list'].methodHttp,
         pageInfo: this.pageInfo,
-        filters: this.filterInfo.filters,
-        search: this.filterInfo.search,
+        filter_info: this.filterInfo,
         ordering: this.ordering,
 
         relationNameFilter: this.relationNameFilter,
@@ -255,10 +250,37 @@ export default {
         // Message({ message: error, type: 'error', duration: 5 * 1000 })
       })
     },
-    getHeaders() {
-      if (!this.sectionData.meta.filds_list) return
+    getHeader(field, name) {
+      if (! this.canDisplayInList(field, name)) return
 
+      let headerData = {
+        title: field.label,
+        align: field.align || 'start',
+        minWidth: field.min_width || '150',
+        sortable: this.sectionData.meta.ordering_fields.indexOf(name) >= 0,
+        key: name,
+        field: field,
+      }
+      if (this.isColumnFixed(name)) {
+        headerData['fixed'] = true
+        headerData['width'] = field.width || '150'
+      }
+      if (name === 'id') {
+        headerData['minWidth'] = field.width || '50'
+        headerData['width'] = field.width || '50'
+      }
+      return headerData
+    },
+    getHeaders() {
       let result = []
+
+      if (!this.sectionData.meta.filds_list) {
+        for (const [name, field] of Object.entries(this.sectionData.meta.serializer)) {
+          const headerData = this.getHeader(field, name)
+          if (headerData) result.push(headerData)
+        }
+        return result
+      }
 
       for (const name of this.sectionData.meta.filds_list) {
 
@@ -268,25 +290,8 @@ export default {
           return
         }
 
-        if (this.canDisplayInList(field, name)) {
-          let headerData = {
-            title: field.label,
-            align: field.align || 'start',
-            minWidth: field.min_width || '150',
-            sortable: this.sectionData.meta.ordering_fields.indexOf(name) >= 0,
-            key: name,
-            field: field,
-          }
-          if (this.isColumnFixed(name)) {
-            headerData['fixed'] = true
-            headerData['width'] = field.width || '150'
-          }
-          if (name === 'id') {
-            headerData['minWidth'] = field.width || '50'
-            headerData['width'] = field.width || '50'
-          }
-          result.push(headerData)
-        }
+        const headerData = this.getHeader(field, name)
+        if (headerData) result.push(headerData)
       }
       return result
     },
@@ -322,13 +327,12 @@ export default {
       return 'retrieve' in this.apiMethods
     },
     clickRow(row, column, event) {
-      if (column.label && column.label.toLowerCase() === 'id') {
-        if (this.canRetrieve())
-          this.openDetail(this.viewname, row.id)
+      if (this.canRetrieve() && column.label && column.label.toLowerCase() === 'id') {
+        this.openDetail(this.viewname, row.id)
       }
     },
     handleClick(index, row) {
-      if (index !== 0) return
+      if (index !== 0 && this.canRetrieve()) return
 
       const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.id}/update`
       this.$router.push({ path: edit_url } )

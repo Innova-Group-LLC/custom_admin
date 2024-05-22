@@ -39,6 +39,7 @@
     <div class="filter-element">
       <v-btn
         @click="applyFilter"
+        class="filter-apply-button"
         prepend-icon="mdi-magnify"
       >{{ $t('apply') }}</v-btn>
     </div>
@@ -88,6 +89,7 @@ export default {
       const datetime = [
         'DateTimeField',
         'DateFromToRangeFilter',
+        'AdminDateFromToRangeFilter',
         'DateTimeFilter',
         'TimeField',
         'TimeFilter',

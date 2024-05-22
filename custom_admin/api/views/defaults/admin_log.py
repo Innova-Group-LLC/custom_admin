@@ -24,7 +24,10 @@ class AdminLogFilterSet(admin_filters.BaseAdminFilterSet):
     class Meta:
         model = AdminLog
         fields = (
-            'section', 'staff', 'action_type', 'created_at',
+            'section',
+            'staff',
+            'action_type',
+            'created_at',
         )
 
 
@@ -35,7 +38,12 @@ class AdminLogAdminSerializer(AdminModelSerializer):
         model = AdminLog
         fields = '__all__'
         read_only_fields = (
-            'content', 'created_at', 'section', 'action_type', 'staff', 'title',
+            'content',
+            'created_at',
+            'section',
+            'action_type',
+            'staff',
+            'title',
         )
 
     def get_section(self, obj):

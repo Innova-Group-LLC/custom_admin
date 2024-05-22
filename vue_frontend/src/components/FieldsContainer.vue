@@ -32,7 +32,7 @@
       >
         <div v-for="(field, field_slug) in meta.serializer">
 
-          <v-row class="fields-tab" v-if="canBeDisplayed(field, field_slug, tab_id) && !isTranslation(field_slug)">
+          <v-row class="fields-cell" v-if="canBeDisplayed(field, field_slug, tab_id) && !isTranslation(field_slug)">
             <v-col cols="3">
               <v-list-subheader>{{ field.label }}</v-list-subheader>
             </v-col>

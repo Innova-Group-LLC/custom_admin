@@ -1,9 +1,11 @@
 from collections import OrderedDict
 
 from django.db import models
-from django_filters import fields, filters, filterset
+from django_filters import filters, filterset
 from django_filters import rest_framework as drf_filters
 from rest_framework import fields as drf_fields
+
+from custom_admin.api.filters.date_range import AdminDateFromToRangeFilter
 
 
 class AdminFilterSetMetaclass(filterset.FilterSetMetaclass):
@@ -43,5 +45,5 @@ class BaseAdminFilterSet(drf_filters.FilterSet, metaclass=AdminFilterSetMetaclas
         }
     }
     FILTER_DEFAULTS[models.DateTimeField] = {
-        'filter_class': filters.DateFromToRangeFilter,
+        'filter_class': AdminDateFromToRangeFilter,
     }

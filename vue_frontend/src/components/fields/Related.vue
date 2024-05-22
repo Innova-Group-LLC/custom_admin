@@ -10,14 +10,18 @@
     :disabled="field.read_only"
 
     :items="choices"
-    :multiple="field.type === 'multiple choice'"
+    :multiple="isMany()"
     :loading="loading || apiLoading"
     chips
     closable-chips
     persistent-hint
     no-filter
 
-    :append-inner-icon="field.type === 'multiple choice' ? 'mdi-relation-many-to-many' : 'mdi-relation-many-to-one'"
+    :return-object="false"
+    item-value="id"
+    item-title="text"
+
+    :append-inner-icon="isMany() ? 'mdi-relation-many-to-many' : 'mdi-relation-many-to-one'"
 
     :search="search"
     @update:search="updateSearch"
@@ -79,7 +83,6 @@ export default {
       this.value = initFormData[this.fieldSlug]
     },
     updateSearch(search) {
-      console.log('search', search)
       this.search = search
       this.updateChoices()
     },
@@ -112,8 +115,17 @@ export default {
     },
     onChange(newValue) {
       this.value = newValue
+      console.log('newValue', newValue)
       this.$emit('changed', this.value)
     },
+    isMany() {
+      const many = [
+        'primarymany',
+        'multiple choice',
+        'ModelMultipleChoiceFilter',
+      ]
+      return many.indexOf(this.field.type) !== -1
+    }
   },
 }
 </script>

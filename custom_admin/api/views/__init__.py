@@ -6,4 +6,3 @@ from .base_admin_viewset import WithoutUpdateBaseAdminViewSet
 from .base_admin_viewset import ReadOnlyBaseAdminViewSet
 from .get_sections import GetAdminSectionsAPIView
 from .token_auth import AdminAuthToken
-from .admin_log import AdminLogAdminViewSet

@@ -13,7 +13,7 @@
     :items="field.choices"
     item-title="display_name"
     item-value="value"
-    :return-object="true"
+    :return-object="false"
 
     @update:modelValue="onChange"
   />

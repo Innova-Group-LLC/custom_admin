@@ -154,9 +154,7 @@ class AutoCompeteView(APIView):
         if existed_choices:
             # Добавляет в результат уже выбранные варианты
 
-            existed_choices_ids = [i['id'] for i in existed_choices]
-
-            filter_ids = view_queryset.filter(id__in=existed_choices_ids)
+            filter_ids = view_queryset.filter(id__in=existed_choices)
             if qs:
                 qs = qs.union(filter_ids)
             else:

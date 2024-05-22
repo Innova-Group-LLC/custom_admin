@@ -135,7 +135,7 @@ export default {
     },
     getInlineData() {
       this.loadData = true
-      this.chartData = null
+      this.responseData = null
       const url = this.method.url.replace("{id}", this.id)
       getList({
         url: url,

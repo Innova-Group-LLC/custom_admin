@@ -11,6 +11,9 @@
         :messages="field.help_text || []"
         :disabled="field.read_only"
         :loading="loading"
+        :clearable="true"
+
+        @update:modelValue="updateDisplayValue"
       >
         <template v-slot:append-inner>
           <v-icon :icon="icon" v-for="icon in getIcons()"/>
@@ -104,26 +107,43 @@ export default {
     },
     updateDisplayValue(value) {
       this.displayValue = value
+      if (!value) {
+        this.value = value
+        this.$emit('changed', this.format(this.value))
+        return
+      }
+
+      if (this.isRange()) {
+        const values = value.split(' - ')
+        this.value = [new Date(moment(values[0])), new Date(moment(values[1]))]
+        this.$emit('changed', this.format(this.value))
+        return
+      }
       this.value = new Date(moment(value))
+      this.$emit('changed', this.format(this.value))
     },
     format(date) {
+      if (!date) return
+
       if (this.isRange()) {
         return {
-          'from': moment(date[0]).format('yyyy-MM-ddTHH:mm:ss'),
-          'to': moment(date[1]).format('yyyy-MM-ddTHH:mm:ss'),
+          'from': moment(date[0]).format('yyyy-MM-DDTHH:mm:ss'),
+          'to': moment(date[1]).format('yyyy-MM-DDTHH:mm:ss'),
         }
       }
-      return moment(date).format('yyyy-MM-ddTHH:mm:ss')
+      return moment(date).format('yyyy-MM-DDTHH:mm:ss')
     },
     isRange() {
       const dates = [
         'DateFromToRangeFilter',
+        'AdminDateFromToRangeFilter',
       ]
       return dates.indexOf(this.field.type) !== -1
     },
     isDate() {
       const date = [
         'DateFromToRangeFilter',
+        'AdminDateFromToRangeFilter',
         'date',
       ]
       return date.indexOf(this.field.type) !== -1

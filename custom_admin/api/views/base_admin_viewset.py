@@ -4,16 +4,14 @@ import typing
 
 from asgiref.sync import sync_to_async
 from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor, ManyToManyDescriptor
-from django.http import QueryDict
 from django.utils.decorators import classonlymethod
 from django.utils.translation import gettext as _
-from django_filters import rest_framework
-from rest_framework import filters, mixins, serializers, viewsets
+from rest_framework import mixins, serializers, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import JSONParser, MultiPartParser
 
 from custom_admin.api.actions import AdminActionMixIn, export_csv_action
-from custom_admin.api.filters.base_admin_filter import BaseAdminFilterSet
+from custom_admin.api.backends import CustomFilterBackend, CustomOrderingFilter, CustomSearchFilter
 from custom_admin.api.inline_relation import RelatedInline
 from custom_admin.api.inlines import ViewActionsInlineMixIn
 from custom_admin.api.permissions import AdminPermission
@@ -21,50 +19,6 @@ from custom_admin.controllers.custom_metadata import CustomMetadata
 from custom_admin.utils.async_mixin import AsyncMixin
 
 log = logging.getLogger('admin')
-
-
-class CustomSearchFilter(filters.SearchFilter):
-    def get_search_terms(self, request):
-        search = super().get_search_terms(request)
-
-        if request.data and 'filter_info' in request.data:
-            search = request.data['filter_info'].get('search')
-            if search:
-                return [search]
-
-        return search
-
-
-class CustomOrderingFilter(filters.OrderingFilter):
-    def get_ordering(self, request, queryset, view):
-        ordering = super().get_ordering(request, queryset, view)
-
-        if request.data and 'filter_info' in request.data:
-            ordering = request.data['filter_info'].get('ordering')
-            if ordering:
-                return [ordering]
-
-        return ordering
-
-
-class CustomFilterBackend(rest_framework.DjangoFilterBackend):
-    filterset_base = BaseAdminFilterSet
-
-    def get_filterset_kwargs(self, request, queryset, view):
-        data = request.query_params
-
-        if request.data and 'filter_info' in request.data:
-            _filters = request.data['filter_info'].get('filters')
-            if _filters:
-                data = QueryDict('', mutable=True)
-                for k, v in _filters.items():
-                    data.setlist(k, v)
-
-        return {
-            'data': data,
-            'queryset': queryset,
-            'request': request,
-        }
 
 
 class AdminPaginator(PageNumberPagination):
