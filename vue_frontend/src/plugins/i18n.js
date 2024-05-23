@@ -7,6 +7,7 @@ const messages = {
   en: {
     mainPage: 'Main page',
     languageSelection: 'Language selection',
+    itemsPerPage: 'Items per page',
     create: 'Create',
     apply: 'Apply',
     close: 'Close',
@@ -23,6 +24,7 @@ const messages = {
   ru: {
     mainPage: 'Главная',
     languageSelection: 'Выбор языка',
+    itemsPerPage: 'Записей на странице',
     create: 'Создать',
     search: 'Поиск',
     apply: 'Применить',

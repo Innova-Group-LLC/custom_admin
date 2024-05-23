@@ -50,6 +50,7 @@ import Navbar from '/src/layout/Navbar.vue'
 import Header from '/src/layout/Header.vue'
 
 import { getApiInfo } from '/src/api/scheme'
+import { getToken } from '/src/utils/auth'
 import { getSettings } from '/src/utils/settings'
 import { removeToken } from '/src/utils/auth'
 
@@ -69,9 +70,14 @@ export default {
   async created() {
     this.settings = getSettings()
 
-    getApiInfo().then(apiInfo => {
-      this.apiInfo = apiInfo.sections
-      this.langs = apiInfo.languages
+    if (!getToken()) {
+      this.$router.push({ path: '/login' })
+      return
+    }
+
+    getApiInfo().then(response => {
+      this.apiInfo = response.data.sections
+      this.langs = response.data.languages
       this.loading = false
     }).catch(error => {
       this.loading = false

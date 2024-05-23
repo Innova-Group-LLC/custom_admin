@@ -6,7 +6,10 @@ const schemeUrl = config_dataset.backend_prefix + 'get_sections/'
 
 export async function getApiInfo() {
   return await new Promise((resolve, reject) => {
-    if (!getToken()) return
+    if (!getToken()) {
+      console.error('getApiInfo error: getToken is empty')
+      return
+    }
 
     request({
       url: schemeUrl,
@@ -14,11 +17,12 @@ export async function getApiInfo() {
       headers: {
         'Accept-Language': getLang(),
       },
+      timeout: 1000 * 5,
     }).then(response => {
       if (import.meta.env.NODE_ENV !== 'production') {
         console.table(response.data.sections)
       }
-      resolve(response.data)
+      resolve(response)
     }).catch(error => {
       reject(error)
     })

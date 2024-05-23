@@ -35,6 +35,8 @@
 
       :items-per-page="pageInfo.limit"
       :page="pageInfo.page"
+
+      @update:sortBy="updateSortBy"
     >
       <template v-slot:loading>
         <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
@@ -95,6 +97,7 @@
         <div class="table-bottom">
 
           <v-row justify="end" no-gutters>
+            {{ $t('itemsPerPage')  }}
             <v-select
               class="list-pagination-per-page"
               v-model="pageInfo.limit"
@@ -343,6 +346,18 @@ export default {
       this.serializeQuery()
       this.getListData()
     },
+    updateSortBy(options) {
+      if (!options[0]) {
+        this.ordering = null
+      } else {
+        const desc = options[0].order === 'desc'? '-' : ''
+        const field_slug = options[0].key
+        this.ordering = `${desc}${field_slug}`
+      }
+
+      this.serializeQuery()
+      this.getListData()
+    }
   }
 }
 </script>
