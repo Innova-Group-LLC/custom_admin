@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { getLang } from '/src/utils/auth'
 
 import request from '/src/utils/request'
 
@@ -23,7 +24,7 @@ export async function sendData(url, method, formData, relationNameFilter, filter
       method: method,
       data: formData,
       headers: {
-        // 'Content-Type': 'multipart/form-data'
+        'Accept-Language': getLang(),
       }
     }).then(response => resolve(response.data)).catch(error => reject(error))
   })

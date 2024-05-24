@@ -4,6 +4,7 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 from django_filters.utils import get_model_field
 
+from custom_admin.api.action_functions import ACTION_ATTRIBUTES
 from custom_admin.api.serializers.base_serializer import AdminModelSerializer
 from custom_admin.api.viewset_info import AdminViewSetInfo
 from custom_admin.controllers.filters_schema import (
@@ -161,10 +162,8 @@ class ViewSetSchemaGenerator:
             name = getattr(action, 'short_description', action.__name__)
             actions[action.__name__] = {'name': name}
 
-            actions[action.__name__]['icon'] = getattr(action, 'icon', None)
-            actions[action.__name__]['description'] = getattr(action, 'description', None)
-            actions[action.__name__]['inline_type'] = getattr(action, 'inline_type', None)
-            actions[action.__name__]['inline_only'] = getattr(action, 'inline_only', None)
+            for attr in ACTION_ATTRIBUTES:
+                actions[action.__name__][attr] = getattr(action, attr, None)
 
             form_serializer = getattr(action, 'form_serializer', None)
             if form_serializer:

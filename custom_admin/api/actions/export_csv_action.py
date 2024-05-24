@@ -5,6 +5,8 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
 
+from custom_admin.api.action_functions import admin_action
+
 
 def get_list_display(view):
     list_display = getattr(view, 'list_display', None)
@@ -55,6 +57,10 @@ def base_export_csv(filename: str, columns: typing.List, lines: typing.List):
     return response
 
 
+@admin_action(
+    short_description=_("Выгрузить в csv"),
+    icon='mdi-application-export',
+)
 def export_csv_action(view, request, queryset, *args, **kwargs):
     serializer_class = view.get_serializer_class()
     serializer = serializer_class(queryset, many=True, context={'request': request})
@@ -76,6 +82,3 @@ def export_csv_action(view, request, queryset, *args, **kwargs):
         lines.append(line_data)
 
     return base_export_csv(filename, columns, lines)
-
-
-export_csv_action.short_description = _("Выгрузить в csv (кодировка UTF-8)")

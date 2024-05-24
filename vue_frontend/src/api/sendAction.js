@@ -1,4 +1,5 @@
 import { toast } from "vue3-toastify"
+import { getLang } from '/src/utils/auth'
 import moment from 'moment'
 
 import request from '/src/utils/request'
@@ -31,17 +32,21 @@ export async function sendAction(viewname, action, ids, sendToAll, formData) {
         form_data: formData,
       },
       headers: {
-        // 'Content-Type': 'multipart/form-data'
-      }
+        'Accept-Language': getLang(),
+      },
     }).then(response => {
-      if(response.headers['content-type'] === 'text/csv') {
+      if(response.headers['content-type'] !== 'application/json') {
         const fileName = response.headers['pragma'] || `${moment().format('DD.MM.YYYY_HH:MM')}.csv`
         downloadContent(
           response.data, fileName, response.headers['content-type']
         )
       }
       else {
-        ElMessage({ message: response.data.action_messages.join('<br>'), type: 'success', duration: 5 * 1000 , dangerouslyUseHTMLString: true,})
+        toast(response.data.action_messages.join('<br>'), {
+          "type": "success",
+          "position": "top-center",
+          "dangerouslyHTMLString": true
+        })
       }
       resolve(response)
     }).catch(error => {
@@ -50,16 +55,19 @@ export async function sendAction(viewname, action, ids, sendToAll, formData) {
 
           if (error.response.data.action_messages) {
             toast(error.response.data.action_messages.join('<br>'), {
-              "theme": "auto",
               "type": "error",
               "position": "top-center",
               "dangerouslyHTMLString": true
             })
           }
-          reject(error.response.data)
+          reject(error.response)
         }
         else if (error.response.status == 500) {
-          ElMessage({ message: `Error; Status code: ${error.response.status}`, type: 'error', duration: 5 * 1000 })
+          toast(`Error! Code: ${error.response.status}</br>Text: ${error.response.data}`, {
+            "type": "error",
+            "position": "top-center",
+            "dangerouslyHTMLString": true
+          })
           reject(null)
         }
       }

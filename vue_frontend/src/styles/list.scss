@@ -1,0 +1,128 @@
+.list-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .header-row {
+        margin: 10px;
+        vertical-align: middle;
+    }
+    .create-button {
+        background-color: $color-darken-2;
+        color: #FFF;
+    }
+
+    .list-above-block {
+        margin: 10px;
+        display: flex;
+        flex-direction: row;
+        .header-row-filters {
+            flex: 1 0 0;
+        }
+        .header-row-actions {
+        }
+        .v-btn {
+            height: 40px;
+        }
+    }
+}
+
+.model-table {
+    flex: 1 0 0;
+    min-height: 0;
+    tbody {
+        .v-data-table__td:not(:first-child) {
+            padding: 0px !important;
+        }
+    }
+    .table-cell {
+        display: flex;
+        padding: 0px 16px;
+    }
+    .table-link {
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+        color: $color-darken-2;
+        height: 100%;
+        width: 100%;
+        &:hover {
+            color: $color-darken-1;
+            text-decoration: underline;
+        }
+    }
+
+    .cell-string {
+        max-width: 200px;
+        display: block;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
+
+.table-bottom {
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .info {
+        margin: 0px 5px;
+        text-align: center;
+    }
+    .selected-count {
+        min-width: 80px;
+    }
+    .actions-cell {
+        flex: 1 0 0;
+        flex-wrap: wrap;
+        min-width: 0;
+
+        .action-button {
+            max-width: 200px;
+            margin: 2px;
+            display: flex;
+            justify-content: start;
+            .v-btn__content {
+                pointer-events: none;
+                background-color: inherit;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                display: block;
+            }
+        }
+        .action-button:hover {
+            .v-btn__content {
+                overflow: visible;
+                z-index: 100;
+                background-color: inherit;
+                text-shadow: 1px 1px 2px #fff;
+            }
+        }
+    }
+    .table-bottom-cell {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    .list-pagination-per-page {
+        display: contents;
+        .v-field__field {
+            display: contents;
+            vertical-align: middle;
+        }
+        .v-input__details {
+            display: none;
+        }
+        .v-field__input {
+            vertical-align: middle;
+        }
+    }
+    .list-pagination {
+        vertical-align: middle;
+    }
+}

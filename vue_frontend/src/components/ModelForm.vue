@@ -6,6 +6,8 @@
     :api-info="apiInfo"
     :viewname="viewname"
     :loading="loading"
+
+    @changed="value => formData = value"
   />
 
 </template>
@@ -26,6 +28,7 @@ export default {
     return {
       apiMethods: null,
       loading: true,
+      formData: {},
     }
   },
   async created() {

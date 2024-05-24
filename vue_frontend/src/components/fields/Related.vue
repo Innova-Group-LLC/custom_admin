@@ -115,7 +115,6 @@ export default {
     },
     onChange(newValue) {
       this.value = newValue
-      console.log('newValue', newValue)
       this.$emit('changed', this.value)
     },
     isMany() {

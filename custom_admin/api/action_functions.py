@@ -1,26 +1,37 @@
 import functools
 import typing
 
+ACTION_ATTRIBUTES = [
+    'description',
+    'short_description',
+    'confirmation_text',
+    'icon',
+    'variant',
+    'base_color',
+    'allow_empty_selection',
+]
 
 def admin_action(
         description: typing.Optional[str] = None,
         short_description: typing.Optional[str] = None,
+        confirmation_text: typing.Optional[str] = None,
 
         # https://pictogrammers.com/library/mdi/
         icon: typing.Optional[str] = None,
+        variant: typing.Optional[str] = None,
+        base_color: typing.Optional[str] = None,
 
-        # https://element.eleme.io/#/en-US/component/button
-        inline_type: typing.Optional[str] = None,
-        inline_only: bool = False,
+        allow_empty_selection: bool = False,
 
         form_serializer=None,
 ):
     def decorator(func):
         func.description = description
         func.short_description = short_description
+        func.confirmation_text = confirmation_text
         func.icon = icon
-        func.inline_type = inline_type
-        func.inline_only = inline_only
+        func.base_color = base_color
+        func.allow_empty_selection = allow_empty_selection
 
         if form_serializer:
             from custom_admin.api.serializers import AdminSerializer

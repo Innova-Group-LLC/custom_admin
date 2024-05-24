@@ -3,6 +3,7 @@ import logging
 
 from asgiref.sync import sync_to_async
 from django.http import HttpResponse
+from rest_framework import serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -13,6 +14,13 @@ from custom_admin.controllers import AdminLogManager
 log = logging.getLogger('admin')
 
 
+class ActionSerializer(serializers.Serializer):
+    action = serializers.CharField(required=True)
+    ids = serializers.ListField(child=serializers.CharField(), required=False)
+    send_to_all = serializers.BooleanField(default=False)
+    form_data = serializers.JSONField(required=False, allow_null=True)
+
+
 class AdminActionMixIn:
 
     actions = [
@@ -21,10 +29,13 @@ class AdminActionMixIn:
 
     @action(detail=False, methods=['post'])
     async def send_action(self, request, pk=None):
-        action_name = request.data['action']
-        ids = request.data['ids']
-        send_to_all = request.data['send_to_all']
-        form_data = request.data['form_data']
+        serializer = ActionSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        action_name = serializer.validated_data['action']
+        ids = serializer.validated_data['ids']
+        send_to_all = serializer.validated_data['send_to_all']
+        form_data = serializer.validated_data['form_data']
 
         actions_dict = {
             action.__name__: action

@@ -28,6 +28,8 @@
 
     <v-data-table
       class="model-table"
+      color="var(--color-darken-2)"
+      v-model="selected"
       :items="pageData.data || []"
       :headers="headers"
       :loading="listLoading"
@@ -93,41 +95,149 @@
         </div>
       </template>
 
-      <template v-slot:bottom>
-        <div class="table-bottom">
+      <template v-slot:bottom></template>
 
-          <v-row justify="end" no-gutters>
-            {{ $t('itemsPerPage')  }}
-            <v-select
-              class="list-pagination-per-page"
-              v-model="pageInfo.limit"
-              :items="perPageOptions"
-              @update:modelValue="changePagination"
-            ></v-select>
-
-            <v-pagination
-              class="list-pagination"
-              v-model="pageInfo.page"
-              :length="getLength()"
-              :total-visible="6"
-              size="40"
-              @update:modelValue="changePagination"
-            ></v-pagination>
-          </v-row>
-
-        </div>
+      <template v-slot:header.data-table-select="{ on, props }">
+        <v-tooltip :text="$t('applyToAllRecords')">
+          <template v-slot:activator="{ props }">
+            <div v-bind="props">
+              <v-checkbox
+                v-model="actionToAll"
+                color="var(--color-darken-2)"
+                density="compact"
+              />
+            </div>
+          </template>
+        </v-tooltip>
       </template>
 
     </v-data-table>
+
+    <div class="table-bottom">
+
+      <div class="table-bottom-cell" v-if="hasActons()">
+        <v-label class="info">{{ $t('selected') }} <p class="selected-count">{{ getSelectedCount()}}/{{ getTotalCount() }}</p></v-label>
+      </div>
+
+      <div class="table-bottom-cell actions-cell">
+        <template
+          v-for="(action_info, key) in this.sectionData.meta.actions"
+        >
+          <v-btn
+            size="small"
+            class="action-button"
+            :variant="action_info.variant || 'flat'"
+            :prepend-icon="action_info.icon"
+            :base-color="action_info.base_color || 'var(--color-light-3)'"
+            @click="pressAction(action_info, key)"
+          >
+            {{ action_info.name }}
+          </v-btn>
+        </template>
+      </div>
+
+      <div class="table-bottom-cell">
+
+        <v-tooltip location="start" :text="$t('itemsPerPage')">
+          <template v-slot:activator="{ props }">
+            <div v-bind="props">
+              <v-select
+                class="list-pagination-per-page"
+                v-model="pageInfo.limit"
+                :items="perPageOptions"
+                @update:modelValue="changePagination"
+              ></v-select>
+            </div>
+          </template>
+        </v-tooltip>
+
+        <v-label class="info">{{ getTotalCount() }}</v-label>
+
+        <v-pagination
+          class="list-pagination"
+          v-model="pageInfo.page"
+          :length="getLength()"
+          :total-visible="5"
+          size="40"
+          @update:modelValue="changePagination"
+        ></v-pagination>
+      </div>
+
+    </div>
+
+    <v-dialog v-model="actionDialogConfirmation" max-width="500">
+      <v-card>
+
+        <v-card-title class="d-flex justify-space-between align-center">
+          <span>{{ $t('confirmation') }}: {{ getActionInfo().name }}</span>
+
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            density="compact"
+            @click="actionDialogConfirmation = false"
+          ></v-btn>
+        </v-card-title>
+
+        <v-card-text>
+          <p>{{ getActionInfo().confirmation_text }}</p>
+          <v-label class="info">{{ $t('selected') }} <p class="selected-count">{{ getSelectedCount()}}/{{ getTotalCount() }}</p></v-label>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn :text="$t('cancel')" variant="elevated" @click="actionDialogConfirmation = false"></v-btn>
+          <v-btn :text="$t('confirm')" variant="tonal" color="primary" @click="applyAction"></v-btn>
+        </v-card-actions>
+
+      </v-card>
+    </v-dialog>
+
+    <v-dialog persistent v-model="actionFormDialogOpen" max-width="1200">
+      <v-card>
+
+        <v-card-title class="d-flex justify-space-between align-center">
+          <span>{{ getActionInfo().name }}</span>
+
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            density="compact"
+            @click="actionFormDialogOpen = false"
+          ></v-btn>
+        </v-card-title>
+
+        <FieldsContainer
+          ref="fieldscontainer"
+          formType="create"
+          :api-info="apiInfo"
+          :form-serializer="getActionInfo().form_serializer"
+          :loading="actionLoading"
+
+          @changed="value => actionFormData = value"
+        />
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn :text="$t('cancel')" variant="elevated" @click="actionFormDialogOpen = false"></v-btn>
+          <v-btn :text="$t('send')" variant="tonal" color="primary" @click="applyAction"></v-btn>
+        </v-card-actions>
+
+      </v-card>
+    </v-dialog>
 
   </div>
 </template>
 
 <script>
 import moment from 'moment'
+import { toast } from "vue3-toastify"
 import { getMethods } from '/src/api/scheme'
 import { getList } from '/src/api/getList'
 import { getSettings, setSettings } from '/src/utils/settings'
+import { sendAction } from '/src/api/sendAction'
 
 import Create from '/src/components/Create.vue'
 import Filters from '/src/components/Filters.vue'
@@ -148,6 +258,7 @@ export default {
   },
   data() {
     return {
+      selected: [],
       headers: {},
       perPageOptions: [25, 50, 100, 150],
       listLoading: true,
@@ -164,16 +275,12 @@ export default {
       sectionData: null,
       apiMethods: null,
 
-      selectedAction: null,
       actionToAll: false,
-      actionDialog: {
-        visible: false,
-        formData: {},
-        actionInfo: {},
-        meta: {},
-        title: null,
-        loading: false,
-      },
+      actionFormData: null,
+      actionDialogConfirmation: false,
+      actionFormDialogOpen: false,
+      actionSelected: null,
+      actionLoading: false,
     }
   },
   created() {
@@ -312,6 +419,7 @@ export default {
       settings.page_size = this.pageInfo.limit,
       setSettings(settings)
 
+      this.selected = []
       this.serializeQuery()
       this.getListData()
     },
@@ -357,7 +465,61 @@ export default {
 
       this.serializeQuery()
       this.getListData()
-    }
+    },
+    hasActons() {
+      return Object.keys(this.sectionData.meta.actions).length > 0
+    },
+    getSelectedCount() {
+      if (this.actionToAll) return this.getTotalCount()
+      return this.selected ? this.selected.length : 0
+    },
+    getTotalCount() {
+      return this.pageData.count || 0
+    },
+    pressAction(actionInfo, actionKey) {
+      if (!actionInfo.allow_empty_selection && !this.actionToAll && this.selected.length === 0) {
+        toast(this.$t('actionNotAllowEmptySelection'), {
+          "limit": 3, "theme": "auto", "type": "warning", "position": "top-center",
+        })
+        return
+      }
+
+      this.actionFormData = null
+      this.actionMeta = null
+      this.actionSelected = actionKey
+
+      // Action form
+      if (actionInfo.form_serializer) {
+        this.actionFormDialogOpen = true
+      } else {
+        // Confirmation window
+        if (actionInfo.confirmation_text) {
+          this.actionDialogConfirmation = true
+        }
+        else {
+          this.applyAction()
+        }
+      }
+    },
+    getActionInfo() {
+      return this.sectionData.meta.actions[this.actionSelected]
+    },
+    applyAction() {
+      this.actionLoading = false
+      sendAction(
+        this.viewname, this.actionSelected, this.selected, this.actionToAll, this.actionFormData || {},
+      ).then(response => {
+        this.actionDialogConfirmation = false
+        this.actionFormDialogOpen = false
+        this.actionLoading = false
+        this.getListData()
+      }).catch(response => {
+        this.actionLoading = false
+        if (response.data) {
+          this.$refs.fieldscontainer.updateErrors(response.data)
+        }
+      })
+    },
   }
 }
 </script>

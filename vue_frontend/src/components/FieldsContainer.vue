@@ -30,11 +30,13 @@
         :text="groupInfo.title"
         :eager="true"
       >
-        <div v-for="(field, field_slug) in meta.serializer">
+        <div v-for="(field, field_slug) in serializer">
 
           <v-row class="fields-cell" v-if="canBeDisplayed(field, field_slug, tab_id) && !isTranslation(field_slug)">
             <v-col cols="3">
-              <v-list-subheader>{{ field.label }}</v-list-subheader>
+              <v-list-subheader>
+                <p class="title">{{ field.label }}</p> <p v-if="field.required" class="required-title">*</p>
+              </v-list-subheader>
             </v-col>
 
             <v-col cols="9" class="form-field-container">
@@ -55,6 +57,10 @@
               />
               <template v-else>
                 {{ field }}
+              </template>
+
+              <template v-if="errors && errors[field_slug]">
+                <p class="form-error" v-for="error in errors[field_slug]">{{ error }}</p>
               </template>
 
             </v-col>
@@ -95,32 +101,35 @@ export default {
 
     // Required if no meta was provided
     viewname: {type: String, required: false},
-
-    // Schema of this form, if not provided - it will be used from apiInfo
-    meta: {
-      type: Object,
-      required: false,
-      validator: function (value) {
-        if (value.serializer == null) {
-          console.error('fields-container meta must contain serializer')
-          return false
-        }
-        return true
-      },
-      default(rawProps) {
-        return rawProps.apiInfo[rawProps.viewname].meta
-      }
-    },
+    formSerializer: {type: Object, required: false},
 
     relationNameFilter: {type: Object, required: false},
     filterId: {type: Object, required: false},
   },
+  emits: ["changed"],
   data() {
     return {
       tab: null,
-      errors: null,
+      errors: {},
       formData: {},
       translationsTabs: {},
+      fieldGroups: null,
+      serializer: null,
+      translations: {},
+    }
+  },
+  created() {
+    if (this.viewname) {
+      const meta = this.apiInfo[this.viewname].meta
+      this.serializer = meta.serializer
+      this.fieldGroups = meta.field_groups
+      this.translations = meta.translations || {}
+    }
+    else if (this.formSerializer) {
+      this.serializer = this.formSerializer
+    }
+    else {
+      console.log('viewname or formSerializer required')
     }
   },
   methods: {
@@ -144,14 +153,11 @@ export default {
       return
     },
     getGroups() {
-      if (this.meta.field_groups) return this.meta.field_groups
+      if (this.fieldGroups) return this.fieldGroups
       return [{"title": ""}]
     },
-    getTranslations() {
-      return this.meta.translations || {}
-    },
     isTranslation(field_slug) {
-      for (const [slug, translations] of Object.entries(this.getTranslations())) {
+      for (const [slug, translations] of Object.entries(this.translations)) {
         for (var i = 0; i < translations.length; i++) {
           if (translations[i].slug === field_slug) return true
         }
@@ -165,8 +171,8 @@ export default {
       if (this.formType !== 'create' && field.create_only) {
         return false
       }
-      if (this.meta.field_groups && this.meta.field_groups !== null) {
-        const currentTabFields = this.meta.field_groups[tab_id].fields
+      if (this.fieldGroups && this.fieldGroups !== null) {
+        const currentTabFields = this.fieldGroups[tab_id].fields
         if (currentTabFields && !currentTabFields.includes(field_slug)) return false
       }
 
@@ -175,11 +181,14 @@ export default {
     getRefString(slug) {
       return `field_${slug}`
     },
+    updateErrors(newErrors) {
+      this.errors = newErrors
+    },
     updateFormData(newData) {
       // Update form date from outside
       this.formData = newData
 
-      for (const [field_slug, value] of Object.entries(this.meta.serializer)) {
+      for (const [field_slug, value] of Object.entries(this.serializer)) {
         const ref = this.getRefString(field_slug)
         const field = this.$refs[ref]
 
@@ -191,7 +200,7 @@ export default {
     _updateValue(value, field_slug) {
       this.formData[field_slug] = value
 
-      for (const slug of Object.keys(this.meta.serializer)) {
+      for (const slug of Object.keys(this.serializer)) {
         const target_field = this.$refs[this.getRefString(slug)]
         if (target_field === undefined) continue
 
@@ -200,6 +209,7 @@ export default {
           target_field[0].updateFormData(this.formData)
         }
       }
+      this.$emit('changed', this.formData)
     },
   },
 }
