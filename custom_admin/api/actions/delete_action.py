@@ -7,7 +7,8 @@ from custom_admin.api.action_functions import admin_action
 @admin_action(
     short_description=_("Удалить"),
     icon='mdi-delete-forever',
-    base_color='red',
+    base_color='#ff3333',
+    variant='outlined',
     confirmation_text=_('Вы уверены, что хотите удалить выбранные записи?'),
 )
 def delete_action(view, request, queryset, *args, **kwargs):

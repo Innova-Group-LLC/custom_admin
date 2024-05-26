@@ -25,7 +25,8 @@ export async function sendData(url, method, formData, relationNameFilter, filter
       data: formData,
       headers: {
         'Accept-Language': getLang(),
-      }
+      },
+      timeout: 1000 * 5,
     }).then(response => resolve(response.data)).catch(error => reject(error))
   })
 }

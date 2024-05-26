@@ -1,8 +1,7 @@
 import request from '/src/utils/request'
 import { getToken } from '/src/utils/auth'
 import { config_dataset } from '/src/utils/settings'
-
-const completeUrl = config_dataset.backend_prefix + 'autocompete/'
+import { getLang } from '/src/utils/auth'
 
 export async function getAutocomplete(
   model_name,
@@ -26,12 +25,11 @@ export async function getAutocomplete(
   }
 
   return await new Promise((resolve, reject) => {
+    const url = `${config_dataset.backend_prefix}autocompete/${app_label}/${model_name}/`
     request({
-      url: completeUrl,
+      url: url,
       method: 'post',
       data: {
-        model_name: model_name,
-        app_label: app_label,
         search_string: search_string,
         limit: limit,
         viewname: viewname,
@@ -39,6 +37,10 @@ export async function getAutocomplete(
         form_data: newFormData,
         existed_choices: existed_choices,
       },
+      headers: {
+        'Accept-Language': getLang(),
+      },
+      timeout: 1000 * 5,
     }).then(response => {
       if (response.data === undefined)
         reject('response.data is undefined')

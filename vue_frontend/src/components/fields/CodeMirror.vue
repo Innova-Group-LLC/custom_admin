@@ -20,8 +20,6 @@ import jsonlint from 'jsonlint-mod'
 window.jsonlint = jsonlint;
 
 const requiredFields = {
-  choices: {type: Object, required: true},
-  tag_style: {type: String, required: false},
 }
 
 export default {

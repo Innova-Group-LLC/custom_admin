@@ -40,10 +40,6 @@
 
       @update:sortBy="updateSortBy"
     >
-      <template v-slot:loading>
-        <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
-      </template>
-
       <template
         v-for="(header, index) in headers"
         v-slot:[`item.${header.key}`]="{ item }"
@@ -89,6 +85,17 @@
             <span class="cell-string">{{ formatDateTime(item[header.key]) }}</span>
           </template>
 
+          <template v-else-if="header.field.type === 'image upload' && header.field.list_preview">
+            <v-img
+              v-if="item[header.key] && item[header.key].url"
+              class="image-preview"
+              width="100"
+              max-height="100"
+              cover
+              :src="item[header.key].url"
+            />
+          </template>
+
           <template v-else>
             <span class="cell-string">{{ item[header.key] }}</span>
           </template>
@@ -100,7 +107,7 @@
       <template v-slot:header.data-table-select="{ on, props }">
         <v-tooltip :text="$t('applyToAllRecords')">
           <template v-slot:activator="{ props }">
-            <div v-bind="props">
+            <div v-bind="props" class="select-to-all">
               <v-checkbox
                 v-model="actionToAll"
                 color="var(--color-darken-2)"
@@ -438,8 +445,10 @@ export default {
       return 'retrieve' in this.apiMethods
     },
     clickRow(row, column, event) {
-      if (this.canRetrieve() && column.label && column.label.toLowerCase() === 'id') {
-        this.openDetail(this.viewname, row.id)
+      if (column.label && column.label.toLowerCase() === 'id') {
+        if (this.canRetrieve()) {
+          this.openDetail(this.viewname, row.id)
+        }
       }
     },
     handleClick(index, row) {

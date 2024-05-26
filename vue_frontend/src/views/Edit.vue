@@ -50,6 +50,8 @@
               :viewname="viewname"
               :id="id"
               :group="group"
+
+              @closed="modelFormClosed"
             />
           </v-tabs-window-item>
 
@@ -179,6 +181,10 @@ export default {
     },
     updateTab() {
       this.serializeQuery()
+    },
+    modelFormClosed() {
+      const list_url = `/${this.group}/${this.viewname}/list`
+      this.$router.push({ path: list_url })
     },
   },
 }

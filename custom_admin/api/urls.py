@@ -9,7 +9,7 @@ admin_router = routers.SimpleRouter()
 register_admin_viewsets(admin_router)
 
 urlpatterns = [
-    path('autocompete/', views.AutoCompeteView.as_view()),
+    path('autocompete/<str:app_label>/<str:model_name>/', views.AutoCompeteView.as_view()),
     path('token-auth/', views.AdminAuthToken.as_view()),
 
     path(

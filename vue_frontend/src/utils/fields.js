@@ -30,7 +30,7 @@ export function validateProps(comp, compReqFields) {
     const setting = comp.field[fieldName]
 
     if (!setting && fieldSettings.required) {
-      console.error(`Field ${comp.viewname}.${comp.fieldSlug} field attribute not found: "${fieldName}"`)
+      console.error(`Field ${comp.viewname}.${comp.fieldSlug} field ${comp.field.type} attribute not found: "${fieldName}"`)
     }
 
     if (setting && setting.type && !(fieldSettings instanceof setting.type)) {

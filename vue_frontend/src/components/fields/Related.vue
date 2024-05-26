@@ -51,8 +51,8 @@ import { toast } from "vue3-toastify"
 import { getAutocomplete } from '/src/api/getAutocomplete'
 
 const requiredFields = {
-  model_name: {type: String, required: true},
-  app_label: {type: String, required: true},
+  model_name: {type: String, required: false},
+  app_label: {type: String, required: false},
 }
 
 export default {
@@ -95,7 +95,7 @@ export default {
         this.viewname,
         this.fieldSlug,
         this.formData,
-        this.value,
+        this.isMany() ? this.value : null,
       ).then(response => {
         this.choices = response
         this.apiLoading = false

@@ -11,28 +11,51 @@ from django.utils.translation import gettext as _
 from rest_framework import fields, serializers
 
 
-class Base64FileField(fields.FileField):
-    def to_internal_value(self, data):
-        if not isinstance(data, str):
-            return super().to_internal_value(data)
+class Base64Serializer(serializers.Serializer):
+    name = serializers.CharField(required=False)
+    file = serializers.CharField(required=False)
 
-        file_name, content_type, base64_str = data.split(",")
+    def validate_file(self, file):
+        if not file.startswith('data:image'):
+            raise ValidationError('Bad base64 format')
+        return file
+
+
+class Base64FileField(fields.FileField):
+    list_preview: bool = False
+
+    def __init__(self, *args, **kwargs):
+        self.list_preview = kwargs.pop('list_preview', False)
+        super().__init__(*args, **kwargs)
+
+    def to_internal_value(self, data):
+        if not data:
+            return
+
+        serializer = Base64Serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        content_type, base64_str = serializer.validated_data['file'].split(",")
         upload_file = io.BytesIO(base64.b64decode(base64_str))
         file_object = UploadedFile(
             file=upload_file,
-            name=file_name,
+            name=serializer.validated_data['name'],
             content_type=content_type,
             size=sys.getsizeof(upload_file),
         )
         return super().to_internal_value(file_object)
 
-    def to_representation(self, value):
-        url = super().to_representation(value)
+    def to_representation(self, file):
+        url = super().to_representation(file)
         if not url:
             return url
+
         request = self.context['request']
-        url = request.build_absolute_uri(url)
-        return urllib.parse.unquote(url)
+        url = urllib.parse.unquote(request.build_absolute_uri(url))
+        return {
+            'name': file.name,
+            'url': url,
+        }
 
 
 def validate_image_file_extension(value):

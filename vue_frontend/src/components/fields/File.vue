@@ -1,15 +1,35 @@
 <template>
 
-  <v-file-input
-    :density="density"
-    :variant="variant"
-    :label="field.label"
-    :model-value="value"
-    :messages="field.help_text || []"
-    :disabled="field.read_only"
-    :loading="loading"
-    @update:modelValue="changeFile"
-  ></v-file-input>
+  <div>
+    <v-file-input
+      :density="density"
+      :variant="variant"
+      :label="field.label"
+      :model-value="value"
+      :messages="field.help_text || []"
+      :disabled="field.read_only"
+      :loading="loading"
+
+      :prepend-icon="null"
+      :append-inner-icon="isImage() ? 'mdi-image' : 'mdi-file'"
+
+      @update:modelValue="changeFile"
+    ></v-file-input>
+
+    <template v-if="isImage()">
+      <v-img
+        v-if="url"
+        class="editor-image-preview"
+        width="200"
+        max-height="200"
+        cover
+        :src="url"
+      />
+    </template>
+    <template v-else>
+      <v-label>{{ url }}</v-label>
+    </template>
+  </div>
 
 </template>
 
@@ -26,7 +46,9 @@ export default {
   emits: ["changed"],
   data(props) {
     return {
-      temp: null,
+      url: null,
+
+      // File object
       value: null,
     }
   },
@@ -35,9 +57,15 @@ export default {
   },
   methods: {
     updateFormData(initFormData) {
-      let file_info = initFormData[this.fieldSlug]
-      if (file_info) {
-        this.value = this.dataURLtoFile(file_info.file, file_info.name)
+      let fileInfo = initFormData[this.fieldSlug] || {}
+      this.url = fileInfo.url
+
+      if (fileInfo && fileInfo.file) {
+        this.value = this.dataURLtoFile(fileInfo.file, fileInfo.name)
+        this.url = URL.createObjectURL(this.value)
+      }
+      else if (fileInfo.name) {
+        this.value = new File([""], fileInfo.name);
       }
     },
     dataURLtoFile(dataurl, filename) {
@@ -60,6 +88,15 @@ export default {
       })
     },
     changeFile(file) {
+      this.value = file
+      this.url = null
+      if (!file) {
+        this.$emit('changed', null)
+        return
+      }
+
+      this.url = URL.createObjectURL(this.value)
+
       const name = file.name.replaceAll(",", "").slice(0, 100);
       this.toDataUrl(file).then(result => {
         const newVal = {
@@ -79,6 +116,12 @@ export default {
         })
       })
     },
+    isImage() {
+      const many = [
+        'image upload',
+      ]
+      return many.indexOf(this.field.type) !== -1
+    }
   },
 }
 </script>

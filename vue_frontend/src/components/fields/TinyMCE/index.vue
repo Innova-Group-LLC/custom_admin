@@ -24,7 +24,7 @@ const tinymceCDN = `${config_dataset.static_prefix}/tinymce/tinymce.min.js`
 // https://github.com/cdnjs/cdnjs/tree/master/ajax/libs/tinymce/4.1.6/skins/lightgray/fonts
 
 export default {
-  name: 'wysiwyg',
+  name: 'TinyMCE',
   props: {
     ...defaultProps,
   },

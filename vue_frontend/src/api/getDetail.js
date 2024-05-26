@@ -5,7 +5,7 @@ export function getDetail(url, method, sectionData) {
     request({
       url: url, method: method
     }).then(response => {
-      resolve(response.data)
+      resolve(response)
     }).catch(error => reject(error))
   })
 }

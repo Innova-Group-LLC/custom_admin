@@ -77,7 +77,7 @@ export default {
         this.apiMethods['retrieve'].methodHttp,
         this.sectionData
       ).then(response => {
-        this.formData = response
+        this.formData = response.data
         for (const [field_slug, field] of Object.entries(this.sectionData.meta.serializer)) {
           if (field.type === 'datetime' && this.formData[field_slug]) {
             this.$set(this.formData, field_slug, new Date(this.formData[field_slug]))

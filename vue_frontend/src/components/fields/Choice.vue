@@ -24,7 +24,7 @@
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 
 const requiredFields = {
-  choices: {type: Array, required: true},
+  choices: {type: Array, required: false},
   tag_style: {type: String, required: false},
 }
 
@@ -48,7 +48,7 @@ export default {
     updateFormData(initFormData) {
       const value = initFormData[this.fieldSlug]
       if (value) {
-        this.value = value
+        this.value = value.value
       }
     },
     onChange(newValue) {

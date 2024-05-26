@@ -60,6 +60,9 @@
         overflow: hidden;
         white-space: nowrap;
     }
+    .select-to-all {
+        width: 32px;
+    }
 }
 
 .table-bottom {
@@ -125,4 +128,8 @@
     .list-pagination {
         vertical-align: middle;
     }
+}
+
+.image-preview {
+    margin: 2px;
 }

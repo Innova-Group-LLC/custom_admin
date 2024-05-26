@@ -1,4 +1,5 @@
 import request from '/src/utils/request'
+import { getLang } from '/src/utils/auth'
 
 export function getList(kwargs) {
   return new Promise((resolve, reject) => {
@@ -30,7 +31,11 @@ export function getList(kwargs) {
 
     const fillUrl = `${kwargs.url}?${params.toString()}`
     request({
-      url: fillUrl, method: kwargs.method
+      url: fillUrl,
+      method: kwargs.method,
+      headers: {
+        'Accept-Language': getLang(),
+      },
     }).then(response => {
       if (kwargs.inline_action) {
         resolve(response)

@@ -1,20 +1,27 @@
 <template>
 
-  <FieldsContainer
-    ref="fieldscontainer"
-    formType="edit"
-    :api-info="apiInfo"
-    :viewname="viewname"
-    :loading="loading"
+  <div>
+    <FieldsContainer
+      ref="fieldscontainer"
+      formType="edit"
+      :api-info="apiInfo"
+      :viewname="viewname"
+      :loading="loading"
 
-    @changed="value => formData = value"
-  />
+      @changed="value => formData = value"
+    />
+
+    <div class="model-form-bottom-actions">
+      <v-btn :text="$t('update')" variant="tonal" color="primary" @click="updateModel"></v-btn>
+    </div>
+  </div>
 
 </template>
 
 <script>
 import { getMethods } from '/src/api/scheme'
 import { getDetail } from '/src/api/getDetail'
+import { sendData } from '/src/api/sendData'
 import { toast } from "vue3-toastify"
 
 export default {
@@ -24,6 +31,7 @@ export default {
     group: {type: String, required: false},
     id: {type: String, required: true},
   },
+  emits: ["closed"],
   data() {
     return {
       apiMethods: null,
@@ -47,7 +55,8 @@ export default {
         this.sectionData
       ).then(response => {
         this.loading = false
-        this.$refs.fieldscontainer.updateFormData(response)
+        this.formData = response.data
+        this.$refs.fieldscontainer.updateFormData(response.data)
       }).catch(error => {
         this.loading = false
         if (error.response && error.response.status === 404) {
@@ -61,7 +70,33 @@ export default {
           "dangerouslyHTMLString": true
         })
       })
-    }
+    },
+    updateModel() {
+      this.$refs.fieldscontainer.updateErrors({})
+      this.loading = true
+
+      let method = 'partial_update'
+      sendData(
+        this.apiMethods[method].url.replace("{id}", this.id),
+        this.apiMethods[method].methodHttp,
+        this.formData,
+      ).then(response => {
+        this.loading = false
+        if (response) {
+          let message = this.$t('modelUpdated').replace('{id}', response.id)
+          toast(message, {"theme": "auto", "type": "success", "position": "top-center"})
+        }
+        this.$emit('closed')
+      }).catch(error => {
+        this.loading = false
+        if (error.response) {
+          this.$refs.fieldscontainer.updateErrors(error.response.data)
+          toast(this.$t('fixErrors'), {"theme": "auto", "type": "error", "position": "top-center"})
+          return
+        }
+        toast(error, {"theme": "auto", "type": "error", "position": "top-center"})
+      })
+    },
   },
 }
 </script>

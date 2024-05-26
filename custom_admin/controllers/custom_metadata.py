@@ -24,7 +24,7 @@ class CustomMetadata(SimpleMetadata):
             'read_only', 'label', 'help_text',
             'min_length', 'max_length',
             'min_value', 'max_value', 'write_only', 'max_width', 'initial',
-            'wysiwyg', 'multilined', 'tag_style', 'json_forms',
+            'wysiwyg', 'multilined', 'tag_style', 'json_forms', 'list_preview',
         ]
 
         for attr in attrs:

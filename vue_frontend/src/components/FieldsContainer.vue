@@ -41,22 +41,66 @@
 
             <v-col cols="9" class="form-field-container">
 
-              <component
-                v-if="getFieldComponent(field)"
-                :is="getFieldComponent(field)"
+              <!-- Translations -->
+              <template v-if="Object.keys(translations).indexOf(field_slug) !== -1">
+                <v-tabs v-model="translationsTabs[field_slug]">
+                  <v-tab
+                    v-for="translation in translations[field_slug]"
+                    :key="translation.lang_slug"
+                    :text="translation.lang_translation"
+                    :value="translation.lang_slug"
+                  ></v-tab>
+                </v-tabs>
 
-                density="comfortable"
-                variant="filled"
-                :ref="getRefString(field_slug)"
-                :field="field"
-                :field-slug="field_slug"
-                :viewname="viewname"
-                :loading="loading"
+                <v-tabs-window v-model="translationsTabs[field_slug]">
+                  <v-tabs-window-item
+                    v-for="translation in translations[field_slug]"
+                    :key="translation.lang_slug"
+                    :value="translation.lang_slug"
+                    transition="fade"
+                    reverse-transition="fade"
+                  >
+                    <v-card flat>
+                      <component
+                        v-if="getFieldComponent(field)"
+                        :is="getFieldComponent(field)"
 
-                @changed="value => _updateValue(value, field_slug)"
-              />
+                        density="comfortable"
+                        variant="filled"
+                        :ref="getRefString(translation.slug)"
+                        :field="field"
+                        :field-slug="translation.slug"
+                        :viewname="viewname"
+                        :loading="loading"
+
+                        @changed="value => _updateValue(value, translation.slug)"
+                      />
+                      <template v-else>
+                        {{ field }}
+                      </template>
+                    </v-card>
+                  </v-tabs-window-item>
+                </v-tabs-window>
+              </template>
+
               <template v-else>
-                {{ field }}
+                <component
+                  v-if="getFieldComponent(field)"
+                  :is="getFieldComponent(field)"
+
+                  density="comfortable"
+                  variant="filled"
+                  :ref="getRefString(field_slug)"
+                  :field="field"
+                  :field-slug="field_slug"
+                  :viewname="viewname"
+                  :loading="loading"
+
+                  @changed="value => _updateValue(value, field_slug)"
+                />
+                <template v-else>
+                  {{ field }}
+                </template>
               </template>
 
               <template v-if="errors && errors[field_slug]">
@@ -90,7 +134,7 @@ import DateTimeField from '/src/components/fields/DateTime.vue'
 export default {
   props: {
     apiInfo: {type: Object, required: true},
-    loading: {type: Boolean, required: true},
+    loading: {type: Boolean, required: false},
     formType: {
       type: String,
       required: true,
@@ -185,6 +229,7 @@ export default {
       this.errors = newErrors
     },
     updateFormData(newData) {
+      updateFormData('updateFormData', newData)
       // Update form date from outside
       this.formData = newData
 
@@ -198,6 +243,8 @@ export default {
       }
     },
     _updateValue(value, field_slug) {
+      if (this.formData[field_slug] === value) return
+
       this.formData[field_slug] = value
 
       for (const slug of Object.keys(this.serializer)) {

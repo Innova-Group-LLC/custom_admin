@@ -18,7 +18,10 @@ def admin_action(
 
         # https://pictogrammers.com/library/mdi/
         icon: typing.Optional[str] = None,
+
+        # elevated, flat, tonal, outlined, text, and plain.
         variant: typing.Optional[str] = None,
+
         base_color: typing.Optional[str] = None,
 
         allow_empty_selection: bool = False,
@@ -30,6 +33,7 @@ def admin_action(
         func.short_description = short_description
         func.confirmation_text = confirmation_text
         func.icon = icon
+        func.variant = variant
         func.base_color = base_color
         func.allow_empty_selection = allow_empty_selection
 
