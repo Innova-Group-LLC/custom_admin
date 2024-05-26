@@ -45,7 +45,7 @@
             transition="fade"
             reverse-transition="fade"
           >
-            <ModelForm
+            <ModelFormUpdate
               :api-info="apiInfo"
               :viewname="viewname"
               :id="id"
@@ -116,7 +116,7 @@
 <script>
 import { getMethods } from '/src/api/scheme'
 
-import ModelForm from '/src/components/ModelForm.vue'
+import ModelFormUpdate from '/src/components/ModelFormUpdate.vue'
 import ChartInline from '/src/components/inlines/Chart.vue'
 import TableInline from '/src/components/inlines/Table.vue'
 
@@ -134,7 +134,7 @@ export default {
     mode: {type: String, required: false},
   },
   components: {
-    ModelForm,
+    ModelFormUpdate,
   },
   data() {
     return {

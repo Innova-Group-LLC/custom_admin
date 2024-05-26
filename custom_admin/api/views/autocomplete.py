@@ -92,28 +92,30 @@ class AutoCompeteView(APIView):
         serializer = view.get_serializer_class()()
 
         field = serializer.fields.get(field_slug)
+        if not field:
+            raise serializers.ValidationError(f'Model {self.app_label}.{self.model_name} view "{viewname}" field slug "{field_slug}" is not found')
 
-        if field:
+        if isinstance(field, serializers.ManyRelatedField):
+            field = field.child_relation
 
-            if isinstance(field, serializers.ManyRelatedField):
-                field = field.child_relation
+        filter_queryset = getattr(field, 'filter_queryset', None)
+        qs = getattr(field, 'queryset')
 
-            filter_queryset = getattr(field, 'filter_queryset', None)
-            qs = getattr(field, 'queryset')
+        if form_data is None:
+            form_data = {}
 
-            if form_data is None:
-                form_data = {}
+        if filter_queryset:
+            filtered_qs = filter_queryset(qs, form_data, self.request)
+            log.debug(
+                'AUTOCOMPLETE view:%s using:%s init form_data.keys:%s result:%s',
+                viewname, filter_queryset.__name__, form_data.keys(), filtered_qs,
+            )
+            return filtered_qs
 
-            if filter_queryset:
-                filtered_qs = filter_queryset(qs, form_data, self.request)
-                log.debug(
-                    'AUTOCOMPLETE view:%s using:%s init form_data.keys:%s result:%s',
-                    viewname, filter_queryset.__name__, form_data.keys(), filtered_qs,
-                )
-                return filtered_qs
+        if not isinstance(qs, (QuerySet, Manager)):
+            raise serializers.ValidationError(f'Model {self.app_label}.{self.model_name} view "{viewname}" autocomplete for {field_slug}')
 
-            if qs and isinstance(qs, (QuerySet, Manager)):
-                return qs.all()
+        return qs.all()
 
     @staticmethod
     def _get_str_value(obj):
@@ -127,6 +129,9 @@ class AutoCompeteView(APIView):
             return str(obj.id)
 
     def post(self, request, model_name, app_label, *args, **kwargs):
+        self.app_label = app_label
+        self.model_name = model_name
+
         serializer = AutoCompeteSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -135,7 +140,7 @@ class AutoCompeteView(APIView):
 
         model = apps.get_model(app_label=app_label, model_name=model_name)
         if not model:
-            raise serializers.ValidationError(f'Model {app_label}.{model_name} not found')
+            raise serializers.ValidationError(f'Model {self.app_label}.{self.model_name} not found')
 
         view_queryset = self.get_queryset_by_view(
             model,

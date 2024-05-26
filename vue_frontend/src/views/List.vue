@@ -14,7 +14,7 @@
       </div>
 
       <div class="header-row-actions">
-        <Create
+        <ModelFormCreate
           v-if="canAdd()"
           :api-info="apiInfo"
 
@@ -246,12 +246,12 @@ import { getList } from '/src/api/getList'
 import { getSettings, setSettings } from '/src/utils/settings'
 import { sendAction } from '/src/api/sendAction'
 
-import Create from '/src/components/Create.vue'
+import ModelFormCreate from '/src/components/ModelFormCreate.vue'
 import Filters from '/src/components/Filters.vue'
 
 export default {
   components: {
-    Create,
+    ModelFormCreate,
     Filters,
   },
   props: {

@@ -13,6 +13,7 @@
         :key="groupInfo.title"
         :text="groupInfo.title"
         slim
+        :class="{'tab-error': isTabError(groupInfo)}"
       ></v-tab>
     </v-tabs>
 
@@ -35,7 +36,7 @@
           <v-row class="fields-cell" v-if="canBeDisplayed(field, field_slug, tab_id) && !isTranslation(field_slug)">
             <v-col cols="3">
               <v-list-subheader>
-                <p class="title">{{ field.label }}</p> <p v-if="field.required" class="required-title">*</p>
+                <p>{{ field.label }}</p> <p v-if="field.required" class="required-title">*</p>
               </v-list-subheader>
             </v-col>
 
@@ -257,6 +258,14 @@ export default {
         }
       }
       this.$emit('changed', this.formData)
+    },
+    isTabError(groupInfo) {
+      for (const error_field of Object.keys(this.errors)) {
+        if (groupInfo.fields.indexOf(error_field) !== -1) {
+          return true
+        }
+      }
+      return false
     },
   },
 }

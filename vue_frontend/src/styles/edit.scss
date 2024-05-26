@@ -58,19 +58,19 @@
         }
     }
     .form-error {
-        color: #AA4A44;
+        color: $color-error;
     }
     .title {
         display: inline;
     }
     .required-title {
         display: inline;
-        color: #AA4A44;
+        color: $color-error;
     }
 }
 
 .model-form-bottom-actions {
-    margin-top: 10px;
+    margin: 10px;
     width: 100%;
     max-width: 1200px;
     display: flex;
@@ -81,4 +81,7 @@
 
 .editor-image-preview {
     margin: 5px;
+}
+.tab-error {
+    color: $color-error;
 }
