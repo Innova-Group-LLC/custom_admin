@@ -25,14 +25,8 @@ class CustomAdminView(View):
     def get(self, request):
         custom_admin = getattr(settings, 'CUSTOM_ADMIN', {})
 
-        static_prefix = custom_admin.get('static_prefix') or '/static/custom_admin'
-
         admin_settings = {
             'title': custom_admin.get('title', 'Admin'),
-            'base_admin_url': custom_admin.get('base_admin_url') or 'admin/',
-            'static_prefix': static_prefix,
-            'favicon_path': custom_admin.get('favicon_path') or os.path.join(static_prefix, 'favicon.ico'),
-            'logo_image_path': custom_admin.get('logo_image_path') or os.path.join(static_prefix, 'default-logo.png'),
             'auth_header_prefix': custom_admin.get('auth_header_prefix') or 'Token',
         }
 

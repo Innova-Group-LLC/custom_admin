@@ -3,13 +3,14 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="/favicon.ico" />
+  <link rel="icon" href="/custom_admin/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Vuetify 3</title>
+  <title>{{ SETTINGS.title }}</title>
 </head>
 
 <body>
   <div id="app"></div>
+  <span id="settings" data-json="{{ SETTINGS_JSON }}"></span>
   <script type="module" src="/src/main.js"></script>
 </body>
 

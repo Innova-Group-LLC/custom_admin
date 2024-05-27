@@ -3,8 +3,8 @@ Django Custom Admin
 
 |logo|
 
-A custom admin interface providing backend via DRF and frontend via Vue
-and Element UI that tries to Keep It Simple.
+A custom admin interface providing backend via DRF and frontend via Vue3
+and Vuetify that tries to Keep It Simple.
 
 |PyPI version| |GitHub stars|
 
@@ -13,7 +13,7 @@ and Element UI that tries to Keep It Simple.
 Features
 --------
 
--  The web view runs on **Vue 2** using **Element UI**
+-  The web view runs on **Vue 3** using **Vuetify**
 -  Pre-builded Vue SPA front page provided through html template and
    static files
 -  All endpoints run on Django Rest Framework view-set’s (supports both
@@ -45,10 +45,12 @@ Build
 
    npm run build --prefix vue_frontend
    rm -r custom_admin/static/custom_admin/*
-   cp vue_frontend/dist/favicon.ico custom_admin/static/custom_admin/favicon.ico
-   cp vue_frontend/dist/manifest.json custom_admin/static/custom_admin/manifest.json
-   cp -r vue_frontend/dist/tinymce/ custom_admin/static/custom_admin/tinymce/
-   cp -r vue_frontend/dist/static/ custom_admin/
+   rm -r custom_admin/templates/custom_admin/admin_index.html
+   cp vue_frontend/dist/index.html custom_admin/templates/custom_admin/admin_index.html
+   cp -r vue_frontend/dist/static/custom_admin/ custom_admin/static/
+
+   python -m build
+   python3 -m twine upload --repository pypi dist/*
 
 .. |logo| image:: https://github.com/Innova-Group-LLC/custom_admin/blob/master/logo.png?raw=true
    :target: https://innova-group-llc.github.io/custom_admin_docs/
