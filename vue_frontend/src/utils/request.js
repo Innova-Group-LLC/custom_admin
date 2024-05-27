@@ -12,7 +12,8 @@ service.interceptors.request.use(
   config => {
     let token = getToken()
     if (token !== null && token !== undefined) {
-      config.headers['Authorization'] = config_dataset.auth_header_prefix + ' ' + token
+      const prefix = config_dataset.auth_header_prefix || 'Token';
+      config.headers['Authorization'] = `${prefix} ${token}`
     }
     config.headers['Accept'] = 'application/json'
     return config

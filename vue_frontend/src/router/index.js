@@ -43,6 +43,6 @@ const routes = [
 ]
 
 export default createRouter({
-  history: createWebHistory(config_dataset.base_admin_url),
+  history: createWebHistory(config_dataset.base_admin_url || 'admin/'),
   routes,
 })

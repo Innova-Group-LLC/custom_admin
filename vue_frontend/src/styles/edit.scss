@@ -44,9 +44,9 @@
         padding: 2px 10px;
     }
     .container-tabs {
-        margin-bottom: 10px 15px;
         background-color: $color-light-4;
         color: #000;
+        margin-bottom: 10px;
     }
     .autocomplete-chip {
         .v-chip__underlay {
@@ -60,7 +60,7 @@
     .form-error {
         color: $color-error;
     }
-    .title {
+    .form-title {
         display: inline;
     }
     .required-title {

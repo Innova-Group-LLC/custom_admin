@@ -15,8 +15,8 @@ export async function sendData(url, method, formData, relationNameFilter, filter
     let params = new URLSearchParams(urlsParams)
     const fillUrl = `${url}?${params}`
 
-    for (const [fieldName, field] of Object.entries(formData)) {
-      if (field instanceof Date) field = moment(field).format('YYYY-MM-DDTHH:mm')
+    for (const [fieldName, _field] of Object.entries(formData)) {
+      if (_field instanceof Date) field = moment(_field).format('YYYY-MM-DDTHH:mm')
     }
 
     request({

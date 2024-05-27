@@ -1,5 +1,6 @@
 <template>
-  <json-forms
+  <div>
+  <JsonForms
     :data="data"
     :renderers="renderers"
     :schema="field.json_forms.schema"
@@ -7,6 +8,8 @@
     :readonly="field.read_only"
     @change="onChange"
   />
+    {{ data }}
+  </div>
 </template>
 
 <script>
@@ -38,7 +41,7 @@ export default {
   },
   methods: {
     updateFormData(formData) {
-      this.data = JSON.parse(formData[this.fieldSlug] || '{}')
+      this.data = formData[this.fieldSlug] || {}
     },
     onChange(event) {
       this.data = event.data;

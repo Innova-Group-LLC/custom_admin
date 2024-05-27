@@ -8,16 +8,16 @@
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 
 import CodeMirror from 'codemirror'
-import 'codemirror/addon/lint/lint.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/javascript/javascript'
-import 'codemirror/addon/lint/lint'
-import 'codemirror/addon/lint/json-lint'
+
+// import 'codemirror/addon/lint/lint.css'
+// import 'codemirror/addon/lint/lint'
+// import 'codemirror/addon/lint/json-lint'
 
 import 'codemirror/theme/rubyblue.css'
 
-import jsonlint from 'jsonlint-mod'
-window.jsonlint = jsonlint;
+// window.jsonlint = jsonlint;
 
 const requiredFields = {
 }
@@ -40,7 +40,7 @@ export default {
       this.jsonEditor = CodeMirror.fromTextArea(this.$refs.textarea, {
         lineNumbers: true,
         mode: 'application/json',
-        lint: true,
+        lint: false,
 
         // https://codemirror.net/5/demo/theme.html#default
         theme: 'rubyblue',

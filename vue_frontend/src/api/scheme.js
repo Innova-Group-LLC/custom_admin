@@ -19,7 +19,7 @@ export async function getApiInfo() {
       },
       timeout: 1000 * 5,
     }).then(response => {
-      if (import.meta.env.NODE_ENV !== 'production') {
+      if (!import.meta.env.PROD) {
         console.table(response.data.sections)
       }
       resolve(response)

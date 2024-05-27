@@ -36,7 +36,7 @@
           <v-row class="fields-cell" v-if="canBeDisplayed(field, field_slug, tab_id) && !isTranslation(field_slug)">
             <v-col cols="3">
               <v-list-subheader>
-                <p>{{ field.label }}</p> <p v-if="field.required" class="required-title">*</p>
+                <p class="form-title">{{ field.label }}</p> <p v-if="field.required" class="required-title">*</p>
               </v-list-subheader>
             </v-col>
 
@@ -44,7 +44,10 @@
 
               <!-- Translations -->
               <template v-if="Object.keys(translations).indexOf(field_slug) !== -1">
-                <v-tabs v-model="translationsTabs[field_slug]">
+                <v-tabs
+                  v-model="translationsTabs[field_slug]"
+                  bg-color="var(--color-light-3)"
+                >
                   <v-tab
                     v-for="translation in translations[field_slug]"
                     :key="translation.lang_slug"
@@ -60,6 +63,7 @@
                     :value="translation.lang_slug"
                     transition="fade"
                     reverse-transition="fade"
+                    :eager="true"
                   >
                     <v-card flat>
                       <component
@@ -230,7 +234,6 @@ export default {
       this.errors = newErrors
     },
     updateFormData(newData) {
-      updateFormData('updateFormData', newData)
       // Update form date from outside
       this.formData = newData
 

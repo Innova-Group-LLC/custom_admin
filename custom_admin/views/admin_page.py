@@ -27,7 +27,7 @@ class CustomAdminView(View):
 
         admin_settings = {
             'title': custom_admin.get('title', 'Admin'),
-            'auth_header_prefix': custom_admin.get('auth_header_prefix') or 'Token',
+            'backend_prefix': custom_admin.get('backend_prefix'),
         }
 
         if not admin_settings.get('backend_prefix'):

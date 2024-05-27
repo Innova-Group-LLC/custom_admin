@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { toast } from "vue3-toastify"
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 import load from './dynamicLoadScript'
 import { wysiwygTypes } from '@/utils/settings'
@@ -56,7 +57,8 @@ export default {
     // dynamic load tinymce from cdn
     load(tinymceCDN, (err) => {
       if (err) {
-        this.$message.error(err.message)
+        console.error(err.message)
+        toast(err.message, {"theme": "auto", "type": "error", "position": "top-center"})
         return
       }
       this.initTinymce()
@@ -72,12 +74,12 @@ export default {
   },
   methods: {
     updateFormData(initFormData) {
-      const init = initFormData[this.fieldSlug]
+      const value = initFormData[this.fieldSlug]
+      this.init_value = value || ""
 
       if (window.tinymce) {
-        window.tinymce.get(this.tinymceId).setContent(init || "")
-      } else {
-        this.init_value = init || ""
+        if (value === window.tinymce.get(this.tinymceId).getContent()) return
+        window.tinymce.get(this.tinymceId).setContent(value || "")
       }
     },
     init() {
@@ -131,43 +133,7 @@ export default {
             _this.fullscreen = e.state
           })
         },
-        // it will try to keep these URLs intact
-        // https://www.tiny.cloud/docs-3x/reference/configuration/Configuration3x@convert_urls/
-        // https://stackoverflow.com/questions/5196205/disable-tinymce-absolute-to-relative-url-conversions
         convert_urls: false
-        // 整合七牛上传
-        // images_dataimg_filter(img) {
-        //   setTimeout(() => {
-        //     const $image = $(img);
-        //     $image.removeAttr('width');
-        //     $image.removeAttr('height');
-        //     if ($image[0].height && $image[0].width) {
-        //       $image.attr('data-wscntype', 'image');
-        //       $image.attr('data-wscnh', $image[0].height);
-        //       $image.attr('data-wscnw', $image[0].width);
-        //       $image.addClass('wscnph');
-        //     }
-        //   }, 0);
-        //   return img
-        // },
-        // images_upload_handler(blobInfo, success, failure, progress) {
-        //   progress(0);
-        //   const token = _this.$store.getters.token;
-        //   getToken(token).then(response => {
-        //     const url = response.data.qiniu_url;
-        //     const formData = new FormData();
-        //     formData.append('token', response.data.qiniu_token);
-        //     formData.append('key', response.data.qiniu_key);
-        //     formData.append('file', blobInfo.blob(), url);
-        //     upload(formData).then(() => {
-        //       success(url);
-        //       progress(100);
-        //     })
-        //   }).catch(err => {
-        //     failure('出现未知问题，刷新页面，或者联系程序员')
-        //     console.log(err);
-        //   });
-        // },
       })
     },
     destroyTinymce() {
