@@ -10,10 +10,12 @@
         :settings="settings"
         :profile="profile"
         :langs="langs"
-        @toggle-drawer="toggleDrawer()"
+        @toggle-drawer="$refs.navbar.toggleDrawer()"
+        @toggle-settings="$refs.settings.toggle()"
       />
 
       <v-main class="d-flex page-container">
+        <Settings ref="settings"/>
 
         <router-view v-slot="{ Component }">
           <v-fade-transition>
@@ -49,6 +51,7 @@ import { toast } from "vue3-toastify"
 
 import Navbar from '/src/layout/Navbar.vue'
 import Header from '/src/layout/Header.vue'
+import Settings from '/src/components/Settings.vue'
 
 import { getApiInfo } from '/src/api/scheme'
 import { getToken } from '/src/utils/auth'
@@ -59,6 +62,7 @@ export default {
   components: {
     Navbar,
     Header,
+    Settings,
   },
   data() {
     return {
@@ -98,9 +102,6 @@ export default {
     })
   },
   methods: {
-    toggleDrawer() {
-      this.$refs.navbar.toggleDrawer()
-    },
   }
 }
 </script>

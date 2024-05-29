@@ -115,7 +115,6 @@ export default {
       this.updateChoices()
     },
     updateChoices() {
-      console.log('getAutocomplete', this.value)
       getAutocomplete(
         this.field.model_name,
         this.field.app_label,

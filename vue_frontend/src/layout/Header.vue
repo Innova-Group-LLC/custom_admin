@@ -1,6 +1,6 @@
 <template>
   <v-app-bar>
-    <v-app-bar-nav-icon variant="text" @click="toggleDrawer"/>
+    <v-app-bar-nav-icon variant="text" @click="$emit('toggleDrawer')"/>
 
     <v-breadcrumbs :items="path">
       <template v-slot:divider>
@@ -10,7 +10,7 @@
 
     <v-spacer></v-spacer>
 
-    <Theme/>
+    <v-btn icon @click.native="$emit('toggleSettings')"><v-icon>mdi-cog-outline</v-icon></v-btn>
 
     <Language :langs="langs"/>
 
@@ -23,7 +23,6 @@
 
 <script>
 import Language from '/src/components/Language.vue'
-import Theme from '/src/components/Theme.vue'
 import { getBreadcrumbs } from '/src/utils/get-breadcrumb'
 import { setLang, removeToken } from '/src/utils/auth'
 
@@ -36,7 +35,6 @@ export default {
   },
   components: {
     Language,
-    Theme,
   },
   data() {
     return {
@@ -53,9 +51,6 @@ export default {
     this.getBreadcrumbInfo()
   },
   methods: {
-    toggleDrawer() {
-      this.$emit("toggleDrawer");
-    },
     getBreadcrumbInfo() {
       this.path = getBreadcrumbs(this.apiInfo, this.$router, this.$route)
     },

@@ -1,5 +1,11 @@
 <template>
-  <v-btn icon @click.native="toggleTheme"><v-icon>mdi-palette</v-icon></v-btn>
+
+  <v-col>
+    <v-row>
+        <v-switch :label="$t('darkTheme')" v-model="dark" @click="toggleTheme" color="primary"></v-switch>
+    </v-row>
+  </v-col>
+
 </template>
 
 <script setup>
@@ -9,7 +15,9 @@ import { getSettings, setSettings } from '/src/utils/settings'
 
 const theme = useTheme()
 
-function toggleTheme () {
+const dark = ref(theme.global.current.value.dark)
+
+function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
   let settings = getSettings()
   settings.theme = theme.global.name.value

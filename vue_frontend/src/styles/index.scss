@@ -118,3 +118,9 @@ body {
 .v-label {
     white-space: normal;
 }
+
+.settings-container {
+    .v-navigation-drawer__content {
+        padding: 25px;
+    }
+}

@@ -25,6 +25,7 @@ const messages = {
     search: 'Search',
     creation: 'Creation',
     general: 'General',
+    darkTheme: 'Dark theme',
     $vuetify: {
       ...en,
       dataIterator: {
@@ -53,6 +54,7 @@ const messages = {
     close: 'Закрыть',
     creation: 'Создание',
     general: 'Основное',
+    darkTheme: 'Темная тема',
     $vuetify: {
       ...ru,
       dataIterator: {
