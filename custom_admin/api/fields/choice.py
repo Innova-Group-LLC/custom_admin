@@ -19,9 +19,9 @@ class AdminChoiceField(serializers.ChoiceField):
             return value
 
         if value in self._choices:
-            return {"value": value, "text": self._translate_value(self._choices[value])}
+            return value
 
-        return {"value": value, "text": self._translate_value(value)}
+        return value
 
     def _translate_value(self, value):
         if isinstance(value, int):

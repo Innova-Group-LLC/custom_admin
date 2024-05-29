@@ -24,7 +24,7 @@
       ></v-alert>
     </template>
 
-    <v-tabs-window v-model="tab">
+    <v-tabs-window v-model="tab" class="fields-content">
       <v-tabs-window-item
         v-for="(groupInfo, tab_id) in getGroups()"
         :key="groupInfo.title"
@@ -132,7 +132,7 @@ import ChoiceField from '/src/components/fields/Choice.vue'
 import FileField from '/src/components/fields/File.vue'
 import TinyMCEField from '/src/components/fields/TinyMCE/index.vue'
 import JSONFormsField from '/src/components/fields/JSONForms.vue'
-import CodeMirrorField from '/src/components/fields/CodeMirror.vue'
+import JSONEditorField from '/src/components/fields/JSONEditor.vue'
 import RelatedField from '/src/components/fields/Related.vue'
 import DateTimeField from '/src/components/fields/DateTime.vue'
 
@@ -184,7 +184,7 @@ export default {
   methods: {
     getFieldComponent(field) {
       if (['boolean'].indexOf(field.type) !== -1) return BooleanField
-      if (['integer', 'decimal'].indexOf(field.type) !== -1) return NumberField
+      if (['integer', 'decimal', 'float'].indexOf(field.type) !== -1) return NumberField
       if (['list', 'choice'].indexOf(field.type) !== -1) return ChoiceField
       if (['image upload', 'file upload', 'svgfield'].indexOf(field.type) !== -1) return FileField
       if (['datetime', 'date', 'time'].indexOf(field.type) !== -1) return DateTimeField
@@ -196,7 +196,7 @@ export default {
       }
       if (field.type === 'json') {
         if (field.json_forms) return JSONFormsField
-        return CodeMirrorField
+        return JSONEditorField
       }
 
       return
@@ -263,6 +263,8 @@ export default {
       this.$emit('changed', this.formData)
     },
     isTabError(groupInfo) {
+      if (!groupInfo.fields) return false
+
       for (const error_field of Object.keys(this.errors)) {
         if (groupInfo.fields.indexOf(error_field) !== -1) {
           return true

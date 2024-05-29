@@ -14,7 +14,7 @@ from custom_admin.api.actions import AdminActionMixIn, export_csv_action
 from custom_admin.api.backends import CustomFilterBackend, CustomOrderingFilter, CustomSearchFilter
 from custom_admin.api.inline_relation import RelatedInline
 from custom_admin.api.inlines import ViewActionsInlineMixIn
-from custom_admin.api.permissions import AdminPermission
+from custom_admin.api.permissions import AdminPermission, AdminViewsPermission
 from custom_admin.controllers.custom_metadata import CustomMetadata
 from custom_admin.utils.async_mixin import AsyncMixin
 
@@ -33,7 +33,7 @@ class BaseAdminDataViewSet(ViewActionsInlineMixIn, viewsets.ViewSet):
     throttle_classes = []
     parser_classes = (MultiPartParser, JSONParser)
     metadata_class = CustomMetadata
-    permission_classes = (AdminPermission, )
+    permission_classes = (AdminPermission, AdminViewsPermission)
 
     viewname = None
     title = None
@@ -217,23 +217,24 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
 
 
 class WithoutCreateBaseAdminViewSet(
-    mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.ListModelMixin,
-    viewsets.GenericViewSet,
-    BaseAdmin
+        mixins.RetrieveModelMixin,
+        mixins.UpdateModelMixin,
+        mixins.DestroyModelMixin,
+        mixins.ListModelMixin,
+        BaseAdmin,
+        viewsets.GenericViewSet,
+
 ):
     pass
 
 
 class WithoutUpdateBaseAdminViewSet(
-    mixins.RetrieveModelMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.ListModelMixin,
-    viewsets.GenericViewSet,
-    BaseAdmin
+        mixins.RetrieveModelMixin,
+        mixins.CreateModelMixin,
+        mixins.DestroyModelMixin,
+        mixins.ListModelMixin,
+        BaseAdmin,
+        viewsets.GenericViewSet,
 ):
     pass
 
@@ -243,17 +244,17 @@ class BaseAdminViewSet(mixins.CreateModelMixin, WithoutCreateBaseAdminViewSet):
 
 
 class ReadOnlyBaseAdminViewSet(
-    mixins.RetrieveModelMixin,
-    mixins.ListModelMixin,
-    viewsets.GenericViewSet,
-    BaseAdmin
+        mixins.RetrieveModelMixin,
+        mixins.ListModelMixin,
+        BaseAdmin,
+        viewsets.GenericViewSet,
 ):
     actions = [export_csv_action]
 
 
 class ListBaseAdminViewSet(
-    mixins.ListModelMixin,
-    viewsets.GenericViewSet,
-    BaseAdmin
+        mixins.ListModelMixin,
+        BaseAdmin,
+        viewsets.GenericViewSet,
 ):
     actions = [export_csv_action]

@@ -39,7 +39,7 @@
     <div class="filter-element">
       <v-btn
         @click="applyFilter"
-        class="filter-apply-button"
+        color="secondary"
         prepend-icon="mdi-magnify"
       >{{ $t('apply') }}</v-btn>
     </div>

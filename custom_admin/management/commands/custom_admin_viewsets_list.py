@@ -1,6 +1,8 @@
 from django.core.management.base import BaseCommand
 
-VIEWSET_INFO = '''- {title: <35} {view_slug: <25} model:{model}'''
+from custom_admin.controllers.permissions import CheckPermissions
+
+VIEWSET_INFO = '''- {title: <35} name:{view_slug: <25} model:{model}'''
 
 
 class Command(BaseCommand):
@@ -17,6 +19,7 @@ class Command(BaseCommand):
             groups[viewset._info.group_slug] = viewset._info.title
 
         for group_slug, group_title in groups.items():
+
             self.stdout.write(f'\n"{group_title}" {group_slug}')
 
             for view_slug, viewset in _ADMIN_VIEWS.items():
@@ -30,11 +33,13 @@ class Command(BaseCommand):
                 if model:
                     model = model.__name__
 
+                permissions = CheckPermissions.get_all_permissions(viewset)
+
                 line = VIEWSET_INFO.format(
                     view_slug=view_slug,
                     model=model,
                     title=str(viewset.get_view_title()),
                 )
-                self.stdout.write(
-                    self.style.SUCCESS(line)
-                )
+                self.stdout.write(self.style.SUCCESS(line))
+                permissions = ', '.join(permissions)
+                self.stdout.write(self.style.WARNING(f'  permissions: {permissions}'))

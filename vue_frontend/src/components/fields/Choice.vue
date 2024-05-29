@@ -48,7 +48,7 @@ export default {
     updateFormData(initFormData) {
       const value = initFormData[this.fieldSlug]
       if (value) {
-        this.value = value.value
+        this.value = value
       }
     },
     onChange(newValue) {

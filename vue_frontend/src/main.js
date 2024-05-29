@@ -8,6 +8,8 @@ import { JsonForms } from "@jsonforms/vue"
 import '/src/styles/index.scss'
 import '@vuepic/vue-datepicker/dist/main.css';
 
+import '@jsonforms/vue-vanilla/vanilla.css';
+
 const app = createApp(App)
 app.component('JsonForms', JsonForms)
 

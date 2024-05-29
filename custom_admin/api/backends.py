@@ -1,10 +1,10 @@
 import json
 import typing
+from json.decoder import JSONDecodeError
 from urllib.parse import unquote
 
-from django.http import QueryDict
 from django_filters import rest_framework
-from rest_framework import filters
+from rest_framework import filters, serializers
 
 from custom_admin.api.filters.base_admin_filter import BaseAdminFilterSet
 
@@ -17,7 +17,10 @@ def get_filter_info(request) -> typing.Optional[dict]:
     if not filter_info:
         return
 
-    return json.loads(unquote(filter_info))
+    try:
+        return json.loads(unquote(filter_info))
+    except JSONDecodeError as e:
+        raise serializers.ValidationError(f'Error filter decode; {filter_info=} {e=}')
 
 
 class CustomSearchFilter(filters.SearchFilter):
@@ -26,22 +29,23 @@ class CustomSearchFilter(filters.SearchFilter):
 
         filter_info = get_filter_info(request)
         if filter_info:
-            search = filter_info.get('search')
-            if search:
-                return search
+            _search = filter_info.get('search')
+            if _search:
+                return [_search]
 
         return search
 
 
 class CustomOrderingFilter(filters.OrderingFilter):
+
     def get_ordering(self, request, queryset, view):
         ordering = super().get_ordering(request, queryset, view)
 
         filter_info = get_filter_info(request)
         if filter_info:
-            ordering = filter_info.get('ordering')
-            if ordering:
-                return ordering
+            _ordering = filter_info.get('ordering')
+            if _ordering:
+                return [_ordering]
 
         return ordering
 

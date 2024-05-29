@@ -6,10 +6,6 @@
         margin: 10px;
         vertical-align: middle;
     }
-    .create-button {
-        background-color: $color-darken-2;
-        color: #FFF;
-    }
 
     .list-above-block {
         margin: 10px;
@@ -43,11 +39,11 @@
         align-items: center;
 
         cursor: pointer;
-        color: $color-darken-2;
+        color: rgb(var(--v-theme-primary));
         height: 100%;
         width: 100%;
         &:hover {
-            color: $color-darken-1;
+            color: rgb(var(--v-theme-secondary));
             text-decoration: underline;
         }
     }

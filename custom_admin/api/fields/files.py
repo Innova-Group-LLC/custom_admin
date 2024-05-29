@@ -29,13 +29,14 @@ class Base64FileField(fields.FileField):
         super().__init__(*args, **kwargs)
 
     def to_internal_value(self, data):
-        if not data:
-            return
-
         serializer = Base64Serializer(data=data)
         serializer.is_valid(raise_exception=True)
 
-        content_type, base64_str = serializer.validated_data['file'].split(",")
+        file_base64 = serializer.validated_data.get('file')
+        if not file_base64:
+            return
+
+        content_type, base64_str = file_base64.split(",")
         upload_file = io.BytesIO(base64.b64decode(base64_str))
         file_object = UploadedFile(
             file=upload_file,

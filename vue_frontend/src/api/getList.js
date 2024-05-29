@@ -6,6 +6,7 @@ export function getList(kwargs) {
     let urlsParams = JSON.parse(JSON.stringify(kwargs.pageInfo || {}))
 
     if (kwargs.search) urlsParams.search = kwargs.search
+    if (kwargs.ordering) urlsParams.ordering = kwargs.ordering
 
     if (kwargs.relationNameFilter) {
       urlsParams.relfilter = kwargs.relationNameFilter
@@ -16,7 +17,9 @@ export function getList(kwargs) {
       urlsParams.inline_action = kwargs.inline_action
     }
 
-    urlsParams.filter_info = encodeURIComponent(JSON.stringify(kwargs.filter_info))
+    if (kwargs.filter_info) {
+      urlsParams.filter_info = encodeURIComponent(JSON.stringify(kwargs.filter_info))
+    }
 
     let params = new URLSearchParams()
     for(const [k, v]  of Object.entries(urlsParams)){

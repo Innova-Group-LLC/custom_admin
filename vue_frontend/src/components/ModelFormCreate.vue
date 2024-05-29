@@ -8,7 +8,7 @@
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
         v-bind="activatorProps"
-        class="create-button"
+        color="primary"
         @click="open = true"
       >{{ $t('create') }}</v-btn>
     </template>
@@ -50,7 +50,7 @@
           />
           <v-btn
             :text="$t('create')"
-            variant="tonal"
+            variant="elevated"
             color="primary"
             @click="createModel"
           />
@@ -77,6 +77,7 @@ export default {
     relationNameFilter: {type: String, required: false},
     filterId: {type: String, required: false},
   },
+  emits: ["created"],
   data() {
     return {
       open: false,
@@ -108,6 +109,7 @@ export default {
           toast(message, {"theme": "auto", "type": "success", "position": "top-center"})
         }
         this.open = false
+        this.$emit('created')
       }).catch(error => {
         this.loading = false
         if (error.response) {

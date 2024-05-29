@@ -12,7 +12,13 @@
     />
 
     <div class="model-form-bottom-actions">
-      <v-btn :text="$t('update')" variant="tonal" color="primary" @click="updateModel"></v-btn>
+      <v-btn
+        v-if="canUpdate()"
+        :text="$t('update')"
+        variant="elevated"
+        color="primary"
+        @click="updateModel"
+      />
     </div>
   </div>
 
@@ -70,6 +76,9 @@ export default {
           "dangerouslyHTMLString": true
         })
       })
+    },
+    canUpdate() {
+      return this.apiMethods['partial_update'] !== undefined
     },
     updateModel() {
       this.$refs.fieldscontainer.updateErrors({})

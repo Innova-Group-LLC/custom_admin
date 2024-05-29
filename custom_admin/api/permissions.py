@@ -1,6 +1,6 @@
 import logging
 
-from django.contrib.contenttypes.models import ContentType
+from custom_admin.controllers.permissions import CheckPermissions, PermissioinType
 from rest_framework.permissions import BasePermission
 
 logger = logging.getLogger('custom_admin')
@@ -10,18 +10,16 @@ class AdminPermission(BasePermission):
     def has_permission(self, request, view):
         user = request.user
 
-        if not user.is_staff and not user.is_superuser:
-            logger.info('ADMIN BYPASS User #%s: User is not saff or superuser', user.id)
+        if not user.is_staff or not user.is_active:
+            logger.info(
+                'ADMIN BYPASS User #%s username:%s is_staff:%s is_active:%s',
+                user.id, user.username, user.is_staff, user.is_active,
+            )
             return False
 
-        if not user.is_superuser and view and hasattr(view, 'get_model'):
-            model = view.get_model()
-            if model is not None:
-                content_type = ContentType.objects.get_for_model(model)
-                has_perm = user.user_permissions.filter(
-                    content_type=content_type
-                ).exists()
-                if not has_perm:
-                    return False
-
         return True
+
+
+class AdminViewsPermission(BasePermission):
+    def has_permission(self, request, view):
+        return CheckPermissions(request.user).has_view_perm(view)

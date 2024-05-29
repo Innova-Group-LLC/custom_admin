@@ -21,6 +21,8 @@
           :viewname="viewname"
           :relation-name-filter="relationNameFilter"
           :filter-id="filterId"
+
+          @created="createdEvent"
         />
       </div>
 
@@ -28,7 +30,7 @@
 
     <v-data-table
       class="model-table"
-      color="var(--color-darken-2)"
+      color="primary"
       v-model="selected"
       :items="pageData.data || []"
       :headers="headers"
@@ -72,11 +74,11 @@
               <template v-if="Object.keys(header.field.tag_style || {}).length > 0">
                 <v-chip
                   size="small"
-                  :color="header.field.tag_style[item[header.key].value]"
-                >{{ item[header.key].text }}</v-chip>
+                  :color="header.field.tag_style[item[header.key]]"
+                >{{ item[header.key] }}</v-chip>
               </template>
               <template v-else>
-                {{ item[header.key].text }}
+                {{ item[header.key] }}
               </template>
             </template>
           </template>
@@ -135,7 +137,7 @@
             class="action-button"
             :variant="action_info.variant || 'flat'"
             :prepend-icon="action_info.icon"
-            :base-color="action_info.base_color || 'var(--color-light-3)'"
+            :base-color="action_info.base_color || 'secondary'"
             @click="pressAction(action_info, key)"
           >
             {{ action_info.name }}
@@ -528,6 +530,10 @@ export default {
           this.$refs.fieldscontainer.updateErrors(response.data)
         }
       })
+    },
+    createdEvent() {
+      this.deserializeQuery()
+      this.getListData()
     },
   }
 }
