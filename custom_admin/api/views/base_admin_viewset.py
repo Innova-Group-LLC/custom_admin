@@ -208,9 +208,13 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
 
         class GenericAdminSerializer(AdminModelSerializer):
             class Meta:
-                model = cls.queryset.model
+                queryset = getattr(cls, 'queryset')
+                if not queryset:
+                    raise Exception(f'{cls.__name__}: To create a generic serializer, you need to specify a queryset')
+
+                model = queryset.model
                 fields = getattr(cls, 'serializer_fields', '__all__')
-                ref_name = cls.queryset.model.__name__
+                ref_name = model.__name__
 
         cls.serializer_class = GenericAdminSerializer
         return cls.serializer_class

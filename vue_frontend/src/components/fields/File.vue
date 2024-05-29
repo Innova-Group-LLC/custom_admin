@@ -64,7 +64,7 @@ export default {
         this.value = this.dataURLtoFile(fileInfo.file, fileInfo.name)
         this.url = URL.createObjectURL(this.value)
       }
-      else if (fileInfo.name) {
+      else if (fileInfo.url) {
         this.value = new File([""], fileInfo.name);
       }
     },

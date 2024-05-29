@@ -1,6 +1,6 @@
 <template>
 
-  <v-dialog max-width="500">
+  <v-dialog max-width="300">
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn icon v-bind="activatorProps"><v-icon>mdi-translate</v-icon></v-btn>
     </template>
@@ -19,6 +19,8 @@
             @click="isActive.value = false"
           ></v-btn>
         </v-card-title>
+
+        <v-divider></v-divider>
 
         <v-card-text>
           <v-list>

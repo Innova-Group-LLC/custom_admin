@@ -45,7 +45,8 @@ class AdminActionMixIn:
         if action_name not in actions_dict:
             return Response(f'View {self.get_view_viewname()} doesnt have action "{action_name}"', status=400)
 
-        qs = self.filter_queryset(self.get_queryset())
+        qs = await sync_to_async(self.get_queryset)()
+        qs = await sync_to_async(self.filter_queryset)(qs)
 
         if not send_to_all:
             qs = qs.filter(id__in=ids)

@@ -372,7 +372,9 @@ export default {
       }).catch(error => {
         this.listLoading = false
         console.error('Get list error:' + error)
-        // Message({ message: error, type: 'error', duration: 5 * 1000 })
+        toast(`Error: ${error}`, {
+          "limit": 3, "theme": "auto", "type": "warning", "position": "top-center",
+        })
       })
     },
     getHeader(field, name) {
@@ -529,6 +531,7 @@ export default {
         this.actionDialogConfirmation = false
         this.actionFormDialogOpen = false
         this.actionLoading = false
+        this.selected = []
         this.getListData()
       }).catch(response => {
         this.actionLoading = false

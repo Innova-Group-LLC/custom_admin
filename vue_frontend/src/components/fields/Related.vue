@@ -80,13 +80,42 @@ export default {
   methods: {
     updateFormData(initFormData) {
       this.formData = initFormData
-      this.value = initFormData[this.fieldSlug]
+      const value = initFormData[this.fieldSlug]
+
+      if (this.isMany()) {
+        let newValue = []
+        for (const v of value || []) {
+          if (typeof v === 'object') {
+            if (this.field.read_only) {
+              this.choices = [v]
+            }
+            newValue.push(v.id)
+          } else {
+            newValue.push(v)
+          }
+        }
+        this.value = newValue
+      } else {
+        if (typeof value === 'object') {
+          if (this.field.read_only) {
+            this.choices = [value]
+          }
+          this.value = value.id
+        } else {
+          this.value = value
+        }
+      }
+
+      if (!this.field.read_only) {
+        this.updateChoices()
+      }
     },
     updateSearch(search) {
       this.search = search
       this.updateChoices()
     },
     updateChoices() {
+      console.log('getAutocomplete', this.value)
       getAutocomplete(
         this.field.model_name,
         this.field.app_label,
@@ -95,7 +124,7 @@ export default {
         this.viewname,
         this.fieldSlug,
         this.formData,
-        this.isMany() ? this.value : null,
+        this.isMany() ? this.value : this.value ? [this.value] : [],
       ).then(response => {
         this.choices = response
         this.apiLoading = false
@@ -124,7 +153,7 @@ export default {
         'ModelMultipleChoiceFilter',
       ]
       return many.indexOf(this.field.type) !== -1
-    }
+    },
   },
 }
 </script>

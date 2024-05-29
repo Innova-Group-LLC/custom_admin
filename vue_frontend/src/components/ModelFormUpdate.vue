@@ -105,9 +105,12 @@ export default {
       }).catch(error => {
         this.loading = false
         if (error.response) {
-          this.$refs.fieldscontainer.updateErrors(error.response.data)
-          toast(this.$t('fixErrors'), {"theme": "auto", "type": "error", "position": "top-center"})
-          return
+          if (error.response.status === 400) {
+            this.$refs.fieldscontainer.updateErrors(error.response.data)
+            toast(this.$t('fixErrors'), {"theme": "auto", "type": "error", "position": "top-center"})
+            return
+          }
+          toast(`Error: ${error.response.data}`, {"theme": "auto", "type": "error", "position": "top-center"})
         }
         toast(error, {"theme": "auto", "type": "error", "position": "top-center"})
       })
