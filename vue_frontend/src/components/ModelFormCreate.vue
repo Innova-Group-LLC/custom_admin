@@ -93,13 +93,17 @@ export default {
       return this.apiInfo[this.viewname].title
     },
     createModel() {
+      let method = this.apiMethods['create']
+      if (!method) {
+        console.error(`create method is not found in the list of available methods`)
+        return
+      }
+
       this.loading = true
       this.$refs.fieldscontainer.updateErrors({})
-
-      let method = 'create'
       sendData(
-        this.apiMethods[method].url.replace("{id}", this.id),
-        this.apiMethods[method].methodHttp,
+        method.url.replace("{id}", this.id),
+        method.methodHttp,
         this.formData,
       ).then(response => {
         this.loading = false

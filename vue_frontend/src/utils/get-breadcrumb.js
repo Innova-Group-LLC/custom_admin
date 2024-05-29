@@ -8,8 +8,10 @@ export function getBreadcrumbs(apiInfo, router, route) {
     to: '/dashboard',
   })
 
+  let sectionData = apiInfo[route.params.viewname]
+  if (!sectionData) return path
+
   if (['edit', 'list'].indexOf(route.name) !== -1) {
-    let sectionData = apiInfo[route.params.viewname]
     const list_url = `/${sectionData.group}/${route.params.viewname}/list`
     path.push({
       to: list_url,
@@ -19,7 +21,6 @@ export function getBreadcrumbs(apiInfo, router, route) {
   }
 
   if (route.name === 'edit') {
-    let sectionData = apiInfo[route.params.viewname]
     const edit_url = `/${sectionData.group}/${route.params.viewname}/${route.params.id}/update`
     path.push({
       to: edit_url,

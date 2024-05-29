@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from custom_admin.api.permissions import AdminPermission
+from custom_admin.api.serializers import ProfileSerializer
 from custom_admin.utils import get_schema
 
 log = logging.getLogger("request")
@@ -26,5 +27,6 @@ class GetAdminSectionsAPIView(APIView):
             'sections': get_schema(self.router, request),
             'language': lang,
             'languages': {lang[0]: lang[1] for lang in settings.LANGUAGES},
+            'profile': ProfileSerializer(request.user).data,
         })
         return response

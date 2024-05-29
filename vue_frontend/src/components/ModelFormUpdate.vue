@@ -51,11 +51,13 @@ export default {
   },
   methods: {
     retrieveData() {
-      this.loading = true
       const method = this.apiMethods['retrieve']
       if (!method) {
-        console.error(`${this.viewname} apiMethods is not contain retrieve method`)
+        console.error(`retrieve method is not found in the list of available methods`)
+        return
       }
+
+      this.loading = true
       getDetail(method.url.replace("{id}", this.id),
         method.methodHttp,
         this.sectionData
@@ -81,13 +83,17 @@ export default {
       return this.apiMethods['partial_update'] !== undefined
     },
     updateModel() {
+      let method = this.apiMethods['partial_update']
+      if (!method) {
+        console.error(`partial_update method is not found in the list of available methods`)
+        return
+      }
+
       this.$refs.fieldscontainer.updateErrors({})
       this.loading = true
-
-      let method = 'partial_update'
       sendData(
-        this.apiMethods[method].url.replace("{id}", this.id),
-        this.apiMethods[method].methodHttp,
+        method.url.replace("{id}", this.id),
+        method.methodHttp,
         this.formData,
       ).then(response => {
         this.loading = false

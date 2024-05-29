@@ -16,12 +16,8 @@ class AdminAuthResponseSerializer(AdminModelSerializer):
             'pk',
             'username',
             'token',
-            'language',
         ]
 
     def get_token(self, user):
         token, _ = Token.objects.get_or_create(user=user)
         return token.key
-
-    def get_language(self, user):
-        return getattr(user, 'language', 'en')

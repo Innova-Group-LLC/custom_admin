@@ -20,6 +20,6 @@ class AdminPermission(BasePermission):
         return True
 
 
-class AdminViewsPermission(BasePermission):
+class AdminViewPermission(BasePermission):
     def has_permission(self, request, view):
-        return CheckPermissions(request.user).has_view_perm(view)
+        return CheckPermissions(request.user).has_action_perm(view, view.action)

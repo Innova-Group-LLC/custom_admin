@@ -8,6 +8,7 @@
       <Header
         :api-info="apiInfo"
         :settings="settings"
+        :profile="profile"
         :langs="langs"
         @toggle-drawer="toggleDrawer()"
       />
@@ -61,6 +62,7 @@ export default {
   },
   data() {
     return {
+      profile: {},
       apiInfo: null,
       settings: null,
       loading: true,
@@ -77,6 +79,7 @@ export default {
 
     getApiInfo().then(response => {
       this.apiInfo = response.data.sections
+      this.profile = response.data.profile
       this.langs = response.data.languages
       this.loading = false
     }).catch(error => {

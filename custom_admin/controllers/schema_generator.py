@@ -12,6 +12,7 @@ from custom_admin.controllers.filters_schema import (
     get_filters_class_data,
     get_filters_fields_data,
 )
+from custom_admin.controllers.permissions import CheckPermissions, PermissioinType
 
 
 class ViewSetSchemaGenerator:
@@ -50,7 +51,7 @@ class ViewSetSchemaGenerator:
     def _generate_view_data(self, route, lookup) -> typing.Union[str, dict]:
         'Its for spicific method: user-detail or user-list'
 
-        mapping = self.router.get_method_map(self.viewset, route.mapping)
+        mappings = self.router.get_method_map(self.viewset, route.mapping)
 
         regex = route.url.format(
             prefix=self.basename,
@@ -69,8 +70,15 @@ class ViewSetSchemaGenerator:
         name = initkwargs.get('name', route.name.format(basename=self.basename))
         name = _(name)
 
+        mappings_info = {}
+        for method, method_name in mappings.items():
+            has_perm = CheckPermissions(self.request.user).has_action_perm(self.viewset, method_name)
+            if has_perm:
+                mappings_info[method] = method_name
+
         url_data = {
-            'mapping': mapping,
+            'slug': route.name.format(basename=self.basename),
+            'mapping': mappings_info,
             'name': name,
             'detail': route.detail,
         }
@@ -158,6 +166,11 @@ class ViewSetSchemaGenerator:
 
     def _get_actions_info(self, view_actions) -> dict:
         actions = {}
+
+        has_perm = CheckPermissions(self.request.user).has_perm(self.viewset, PermissioinType.ACTIONS)
+        if not has_perm:
+            return actions
+
         for action in view_actions:
             name = getattr(action, 'short_description', action.__name__)
             actions[action.__name__] = {'name': name}
@@ -204,9 +217,6 @@ class ViewSetSchemaGenerator:
     def get_viewset_urls(self) -> dict:
         viewset_urls = {}
 
-        lookup = self.router.get_lookup_regex(self.viewset)
-        routes = self.router.get_routes(self.viewset)
-
         title = str(_(self.viewset.get_view_title()))
         filters_data = self._get_filters_data()
         serializer, serializer_info = self._get_serializer_info()
@@ -215,7 +225,13 @@ class ViewSetSchemaGenerator:
 
         related_inlines = []
         if hasattr(self.viewset, 'get_related_inlines'):
-            related_inlines = self.viewset.get_related_inlines()
+            for related_inline in self.viewset.get_related_inlines():
+                has_perm = CheckPermissions(self.request.user).has_perm_viewname(
+                    viewname=related_inline.viewset_name,
+                    perm_type=PermissioinType.VIEW,
+                )
+                if has_perm:
+                    related_inlines.append(related_inline.asdict())
 
         meta_data = {
             'serializer': serializer_info,
@@ -230,6 +246,7 @@ class ViewSetSchemaGenerator:
             'translations': self._get_translations_info(serializer),
         }
 
+        lookup = self.router.get_lookup_regex(self.viewset)
         viewset_urls = {
             'viewname': self.viewset.get_view_viewname(),
             'lookup': lookup,
@@ -243,6 +260,7 @@ class ViewSetSchemaGenerator:
         viewset_info: AdminViewSetInfo = self.viewset._info
         viewset_urls.update(viewset_info.asdict())
 
+        routes = self.router.get_routes(self.viewset)
         for route in routes:
             route_name, url_data = self._generate_view_data(route, lookup)
             viewset_urls['routers'][route_name] = url_data

@@ -14,7 +14,7 @@ from custom_admin.api.actions import AdminActionMixIn, export_csv_action
 from custom_admin.api.backends import CustomFilterBackend, CustomOrderingFilter, CustomSearchFilter
 from custom_admin.api.inline_relation import RelatedInline
 from custom_admin.api.inlines import ViewActionsInlineMixIn
-from custom_admin.api.permissions import AdminPermission, AdminViewsPermission
+from custom_admin.api.permissions import AdminPermission, AdminViewPermission
 from custom_admin.controllers.custom_metadata import CustomMetadata
 from custom_admin.utils.async_mixin import AsyncMixin
 
@@ -33,7 +33,7 @@ class BaseAdminDataViewSet(ViewActionsInlineMixIn, viewsets.ViewSet):
     throttle_classes = []
     parser_classes = (MultiPartParser, JSONParser)
     metadata_class = CustomMetadata
-    permission_classes = (AdminPermission, AdminViewsPermission)
+    permission_classes = (AdminPermission, AdminViewPermission)
 
     viewname = None
     title = None
@@ -145,7 +145,7 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
     related_inlines: typing.List[RelatedInline] = []
 
     @classmethod
-    def get_related_inlines(cls) -> typing.List[dict]:
+    def get_related_inlines(cls) -> typing.List[RelatedInline]:
         result = []
         for i, inline in enumerate(cls.related_inlines):
 
@@ -153,7 +153,7 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
                 raise serializers.ValidationError(f'View {cls.__name__}.related_inlines[{i}] error: is not an instance of RelatedInline')
 
             inline.validate(cls, i)
-            result.append(inline.asdict())
+            result.append(inline)
 
         return result
 
@@ -219,7 +219,6 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
 class WithoutCreateBaseAdminViewSet(
         mixins.RetrieveModelMixin,
         mixins.UpdateModelMixin,
-        mixins.DestroyModelMixin,
         mixins.ListModelMixin,
         BaseAdmin,
         viewsets.GenericViewSet,
@@ -231,7 +230,6 @@ class WithoutCreateBaseAdminViewSet(
 class WithoutUpdateBaseAdminViewSet(
         mixins.RetrieveModelMixin,
         mixins.CreateModelMixin,
-        mixins.DestroyModelMixin,
         mixins.ListModelMixin,
         BaseAdmin,
         viewsets.GenericViewSet,

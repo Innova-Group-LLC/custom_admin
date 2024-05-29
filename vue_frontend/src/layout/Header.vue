@@ -14,6 +14,8 @@
 
     <Language :langs="langs"/>
 
+    {{ profile.username }}
+
     <v-btn icon @click.native="logout"><v-icon>mdi-logout</v-icon></v-btn>
 
   </v-app-bar>
@@ -30,6 +32,7 @@ export default {
     apiInfo: {type: Object, required: true},
     settings: {type: Object, required: true},
     langs: {type: Object, required: true},
+    profile: {type: Object, required: true},
   },
   components: {
     Language,

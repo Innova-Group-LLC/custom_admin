@@ -1,12 +1,12 @@
 <template>
-  <div class="list-page">
+  <div class="list-page" v-if="sectionData">
 
     <div class="list-above-block">
 
       <div class="header-row-filters">
         <Filters
-          :filterset-fields="apiInfo[viewname].meta.filterset_fields"
-          :search-fields="apiInfo[viewname].meta.search_fields"
+          :filterset-fields="sectionData.meta.filterset_fields"
+          :search-fields="sectionData.meta.search_fields"
           :filter-info-init="filterInfo"
           :settings="settings"
           @filtered="handleFilter"
@@ -270,7 +270,7 @@ export default {
       selected: [],
       headers: {},
       perPageOptions: [25, 50, 100, 150],
-      listLoading: true,
+      listLoading: false,
       pageData: {
         data: null,
         count: null
@@ -302,7 +302,7 @@ export default {
 
     this.sectionData = this.apiInfo[this.viewname]
     if (!this.sectionData) {
-      console.error(`Page ${this.viewname} not found in ${Object.keys(this.apiInfo)}`)
+      console.error(`Page ${this.viewname} not found`)
       this.$router.push({ path: '/404' })
       return
     }
@@ -347,10 +347,16 @@ export default {
       this.$router.push({name: this.$route.name, query: newQuery})
     },
     async getListData() {
+      const method = this.apiMethods['list']
+      if (!method) {
+        console.error(`list method is not found in the list of available methods`)
+        return
+      }
+
       this.listLoading = true
       getList({
-        url: this.apiMethods['list'].url,
-        method: this.apiMethods['list'].methodHttp,
+        url: method.url,
+        method: method.methodHttp,
         pageInfo: this.pageInfo,
         filter_info: this.filterInfo,
         ordering: this.ordering,

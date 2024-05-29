@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 from custom_admin.controllers.permissions import CheckPermissions
 
-VIEWSET_INFO = '''- {title: <35} name:{view_slug: <25} model:{model}'''
+VIEWSET_INFO = '''- **{title}** name:`{view_slug}` model:`{model}`\\'''
 
 
 class Command(BaseCommand):
@@ -20,7 +20,7 @@ class Command(BaseCommand):
 
         for group_slug, group_title in groups.items():
 
-            self.stdout.write(f'\n"{group_title}" {group_slug}')
+            self.stdout.write(f'\n## "{group_title}" {group_slug}\n')
 
             for view_slug, viewset in _ADMIN_VIEWS.items():
                 if viewset._info.group_slug != group_slug:
@@ -42,4 +42,4 @@ class Command(BaseCommand):
                 )
                 self.stdout.write(self.style.SUCCESS(line))
                 permissions = ', '.join(permissions)
-                self.stdout.write(self.style.WARNING(f'  permissions: {permissions}'))
+                self.stdout.write(self.style.WARNING(f'  _permissions:_ `{permissions}`\n'))

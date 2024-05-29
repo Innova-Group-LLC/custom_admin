@@ -2,6 +2,7 @@ import typing
 from enum import Enum
 
 from django.db.models import Q
+from django.contrib.auth.models import Permission
 
 
 # All default views: list send-action retrieve update partial_update destroy
@@ -9,7 +10,7 @@ class PermissioinType(Enum):
     VIEW = 'view'
     CHANGE = 'change'
     ADD = 'add'
-    DELETE = 'delete'
+    ACTIONS = 'send_action'
 
 
 class CheckPermissions:
@@ -25,18 +26,20 @@ class CheckPermissions:
         if self.user.is_superuser:
             return True
 
-        return self.user.filter(
-            Q(groups__codename=codename) |
-            Q(user_permissions__codename=codename)
-        ).exists()
+        has_perm = self.user.user_permissions.filter(codename=codename)
+        has_group = self.user.groups.filter(permissions__codename=codename)
+        return has_perm.exists() or has_group.exists()
 
-    def has_view_perm(self, viewset) -> bool:
-        print('viewset.action_map', viewset.action_map)
-        raise Exception(viewset.action_map)
-        method = request.method.lower()
-        action = viewset.action_map.get(method)
-
+    def has_action_perm(self, viewset, action: str) -> bool:
         codename = f'{self.get_codename(action)}_{viewset.get_view_viewname()}'
+        return self._has_perm(codename)
+
+    def has_perm(self, viewset, perm_type: PermissioinType) -> bool:
+        codename = f'{perm_type.value}_{viewset.get_view_viewname()}'
+        return self._has_perm(codename)
+
+    def has_perm_viewname(self, viewname: str, perm_type: PermissioinType) -> bool:
+        codename = f'{perm_type.value}_{viewname}'
         return self._has_perm(codename)
 
     @classmethod
@@ -60,9 +63,9 @@ class CheckPermissions:
         result = set()
         for route in routes:
             mappings = router.get_method_map(viewset, route.mapping)
-            for method, slug in mappings.items():
+            for method, method_name in mappings.items():
                 result.add(
-                    f'{cls.get_codename(slug)}_{viewset.get_view_viewname()}'
+                    f'{cls.get_codename(method_name)}_{viewset.get_view_viewname()}'
                 )
 
         return tuple(result)
