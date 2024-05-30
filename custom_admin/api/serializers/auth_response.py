@@ -8,7 +8,6 @@ from custom_admin.api.serializers.base_serializer import AdminModelSerializer
 
 class AdminAuthResponseSerializer(AdminModelSerializer):
     token = serializers.SerializerMethodField()
-    language = serializers.SerializerMethodField()
 
     class Meta:
         model = get_user_model()

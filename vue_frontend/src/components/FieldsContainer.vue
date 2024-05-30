@@ -46,7 +46,7 @@
               <template v-if="Object.keys(translations).indexOf(field_slug) !== -1">
                 <v-tabs
                   v-model="translationsTabs[field_slug]"
-                  bg-color="var(--color-light-3)"
+                  bg-color="rgb(var(--v-theme-light2))"
                 >
                   <v-tab
                     v-for="translation in translations[field_slug]"

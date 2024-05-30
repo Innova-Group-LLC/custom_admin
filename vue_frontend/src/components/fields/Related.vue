@@ -82,7 +82,9 @@ export default {
       this.formData = initFormData
       const value = initFormData[this.fieldSlug]
 
-      if (this.isMany()) {
+      let newValue = null
+      // Update in case of value in format { id: 77, text: "Hall #77 Hall environment" }
+      if (this.isMany() && value) {
         let newValue = []
         for (const v of value || []) {
           if (typeof v === 'object') {
@@ -95,20 +97,22 @@ export default {
           }
         }
         this.value = newValue
-      } else {
+      } else if (value) {
         if (typeof value === 'object') {
           if (this.field.read_only) {
             this.choices = [value]
           }
-          this.value = value.id
+          newValue = value.id
         } else {
-          this.value = value
+          newValue = value
         }
       }
 
-      if (!this.field.read_only) {
+      // Update choices to get display text
+      if (!this.field.read_only && this.value !== newValue) {
         this.updateChoices()
       }
+      this.value = newValue
     },
     updateSearch(search) {
       this.search = search

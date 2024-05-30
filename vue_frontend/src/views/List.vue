@@ -75,10 +75,10 @@
                 <v-chip
                   size="small"
                   :color="header.field.tag_style[item[header.key]]"
-                >{{ item[header.key] }}</v-chip>
+                >{{ getChoiceTitle(item, header) }}</v-chip>
               </template>
               <template v-else>
-                {{ item[header.key] }}
+                {{ getChoiceTitle(item, header) }}
               </template>
             </template>
           </template>
@@ -96,6 +96,11 @@
               cover
               :src="item[header.key].url"
             />
+          </template>
+
+          <template v-else-if="header.field.type === 'file upload'">
+            <span class="cell-string" v-if="item[header.key]">{{ item[header.key].name }}</span>
+            <span class="cell-string" v-else>{{ item[header.key] }}</span>
           </template>
 
           <template v-else>
@@ -543,6 +548,15 @@ export default {
     createdEvent() {
       this.deserializeQuery()
       this.getListData()
+    },
+    getChoiceTitle(item, header) {
+      const value = item[header.key]
+      if (!header.field.choices) return value
+
+      for (const choice of header.field.choices) {
+        if (choice.value === value) return choice.display_name
+      }
+      return value
     },
   }
 }

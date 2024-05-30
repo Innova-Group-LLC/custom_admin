@@ -83,7 +83,7 @@ export default {
 
     getApiInfo().then(response => {
       this.apiInfo = response.data.sections
-      this.profile = response.data.profile
+      this.profile = response.data.profile || {}
       this.langs = response.data.languages
       this.loading = false
     }).catch(error => {

@@ -34,7 +34,7 @@ class Base64FileField(fields.FileField):
 
         file_base64 = serializer.validated_data.get('file')
         if not file_base64:
-            return serializer.validated_data.get('name')
+            raise serializers.SkipField()
 
         content_type, base64_str = file_base64.split(",")
         upload_file = io.BytesIO(base64.b64decode(base64_str))
