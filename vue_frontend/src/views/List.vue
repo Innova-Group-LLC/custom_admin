@@ -31,6 +31,7 @@
     <v-data-table
       class="model-table"
       color="primary"
+
       v-model="selected"
       :items="pageData.data || []"
       :headers="headers"
@@ -104,6 +105,7 @@
           </template>
 
           <template v-else>
+            <div :class="header.field.type" style="display: none" />
             <span class="cell-string">{{ item[header.key] }}</span>
           </template>
         </div>
@@ -467,7 +469,7 @@ export default {
       }
     },
     handleClick(index, row) {
-      if (index !== 0 && this.canRetrieve()) return
+      if (index !== 0 || !this.canRetrieve()) return
 
       const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.id}/update`
       this.$router.push({ path: edit_url } )

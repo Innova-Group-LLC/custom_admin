@@ -14,7 +14,7 @@ def get_list_display(view):
         return list_display
 
     meta = view.metadata_class()
-    serializer_class = view.get_serializer_class()
+    serializer_class = view().get_serializer_class()
     serializer_info = meta.get_serializer_info(serializer_class())
     return serializer_info.keys()
 
@@ -62,7 +62,7 @@ def base_export_csv(filename: str, columns: typing.List, lines: typing.List):
     icon='mdi-application-export',
 )
 def export_csv_action(view, request, queryset, *args, **kwargs):
-    serializer_class = view.get_serializer_class()
+    serializer_class = view().get_serializer_class()
     serializer = serializer_class(queryset, many=True, context={'request': request})
 
     columns = _get_headers(view, serializer, serializer_class)

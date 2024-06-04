@@ -2,7 +2,7 @@
   <v-app>
     <v-main>
 
-      <v-container fluid class="fill-height login-page">
+      <v-container fluid class="fill-height gradient-bg">
 
         <v-row>
           <v-col class="d-flex justify-center">

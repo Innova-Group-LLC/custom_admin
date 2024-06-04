@@ -1,9 +1,13 @@
 @import '/src/styles/list.scss';
 @import '/src/styles/edit.scss';
 
-.login-page {
+.gradient-bg {
     background: rgb(var(--v-theme-darken2));
-    background: radial-gradient(circle, rgb(var(--v-theme-primary)) 0%, rgb(var(--v-theme-darken4)) 100%);
+    background: radial-gradient(circle, rgb(var(--v-theme-primary)) 0%, rgb(var(--v-theme-darken4)) 100%) !important;
+}
+.gradient-linear-bg {
+  background-color: rgb(var(--v-theme-primary));
+  background-image: linear-gradient(rgb(var(--v-theme-primary)), rgb(var(--v-theme-darken4))) !important;
 }
 
 :root {

@@ -56,6 +56,9 @@
         overflow: hidden;
         white-space: nowrap;
     }
+    .cell-string:hover {
+        overflow: visible;
+    }
     .select-to-all {
         width: 32px;
     }
@@ -128,4 +131,13 @@
 
 .image-preview {
     margin: 2px;
+}
+
+.theme-picker {
+    .v-btn {
+        min-width: 80px;
+    }
+    .v-btn-group {
+        margin-bottom: 5px;
+    }
 }

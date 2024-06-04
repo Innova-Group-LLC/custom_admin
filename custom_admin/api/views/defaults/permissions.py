@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 
 
 class PermissionsAdminViewSet(BaseAdminViewSet):
-    title = _('Права доступа')
     queryset = Permission.objects.all().select_related('content_type')
     search_fields = ['id', 'name', 'codename']
     filterset_fields = ['content_type']

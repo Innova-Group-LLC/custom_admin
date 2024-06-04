@@ -18,7 +18,7 @@ def get_views_choices():
 
 class AdminLogFilterSet(admin_filters.BaseAdminFilterSet):
     section = admin_filters.ChoiceFilter(
-        label=_('Раздел'), choices=lazy(get_views_choices, tuple),
+        label=_('Section'), choices=lazy(get_views_choices, tuple),
     )
 
     class Meta:
@@ -32,7 +32,7 @@ class AdminLogFilterSet(admin_filters.BaseAdminFilterSet):
 
 
 class AdminLogAdminSerializer(AdminModelSerializer):
-    section = serializers.SerializerMethodField(label=_('Раздел'))
+    section = serializers.SerializerMethodField(label=_('Section'))
 
     class Meta:
         model = AdminLog

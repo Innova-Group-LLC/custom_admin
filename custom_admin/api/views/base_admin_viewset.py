@@ -3,7 +3,10 @@ import logging
 import typing
 
 from asgiref.sync import sync_to_async
-from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor, ManyToManyDescriptor
+from django.db.models.fields.related_descriptors import (
+    ForwardManyToOneDescriptor,
+    ManyToManyDescriptor,
+)
 from django.utils.decorators import classonlymethod
 from django.utils.translation import gettext as _
 from rest_framework import mixins, serializers, viewsets
@@ -11,7 +14,11 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import JSONParser, MultiPartParser
 
 from custom_admin.api.actions import AdminActionMixIn, export_csv_action
-from custom_admin.api.backends import CustomFilterBackend, CustomOrderingFilter, CustomSearchFilter
+from custom_admin.api.backends import (
+    CustomFilterBackend,
+    CustomOrderingFilter,
+    CustomSearchFilter,
+)
 from custom_admin.api.inline_relation import RelatedInline
 from custom_admin.api.inlines import ViewActionsInlineMixIn
 from custom_admin.api.permissions import AdminPermission, AdminViewPermission
@@ -144,6 +151,8 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
 
     related_inlines: typing.List[RelatedInline] = []
 
+    request = None
+
     @classmethod
     def get_related_inlines(cls) -> typing.List[RelatedInline]:
         result = []
@@ -159,7 +168,7 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
 
     @classmethod
     def get_model(cls) -> typing.Optional[typing.Any]:
-        return cls.get_serializer_class().Meta.model
+        return cls().get_serializer_class().Meta.model
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -197,10 +206,9 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
         ctx.update({'viewname': self.get_view_viewname()})
         return ctx
 
-    @classmethod
-    def get_serializer_class(cls):
-        if hasattr(cls, 'serializer_class'):
-            serializer_class = getattr(cls, 'serializer_class')
+    def get_serializer_class(self):
+        if hasattr(self, 'serializer_class'):
+            serializer_class = getattr(self, 'serializer_class')
             if serializer_class:
                 return serializer_class
 
@@ -208,16 +216,16 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
 
         class GenericAdminSerializer(AdminModelSerializer):
             class Meta:
-                queryset = getattr(cls, 'queryset')
-                if not queryset:
-                    raise Exception(f'{cls.__name__}: To create a generic serializer, you need to specify a queryset')
+                queryset = getattr(self, 'queryset', None)
+                if queryset is None:
+                    raise Exception(f'{self.__name__}: To create a generic serializer, you need to specify a queryset')
 
                 model = queryset.model
-                fields = getattr(cls, 'serializer_fields', '__all__')
+                fields = getattr(self, 'serializer_fields', '__all__')
                 ref_name = model.__name__
 
-        cls.serializer_class = GenericAdminSerializer
-        return cls.serializer_class
+        self.serializer_class = GenericAdminSerializer
+        return self.serializer_class
 
 
 class WithoutCreateBaseAdminViewSet(

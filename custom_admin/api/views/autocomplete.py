@@ -89,7 +89,7 @@ class AutoCompeteView(APIView):
 
         from custom_admin.utils.register_admin_viewsets import _ADMIN_VIEWS
         view = _ADMIN_VIEWS[viewname]
-        serializer = view.get_serializer_class()()
+        serializer = view().get_serializer_class()()
 
         field = serializer.fields.get(field_slug)
         if not field:

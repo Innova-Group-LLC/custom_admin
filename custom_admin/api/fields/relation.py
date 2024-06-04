@@ -89,7 +89,7 @@ class AdminPrimaryKeyRelatedField(relations.PrimaryKeyRelatedField):
             return queryset.get(pk=id)
 
         except ObjectDoesNotExist:
-            raise ValidationError(_('Варианта "%(title)s" нет среди доступных.') % {'title': text or id})
+            raise ValidationError(_('The option ‘%(title)s’ is not among the available options.') % {'title': text or id})
 
         except (TypeError, ValueError):
             self.fail('incorrect_type', data_type=type(id).__name__)

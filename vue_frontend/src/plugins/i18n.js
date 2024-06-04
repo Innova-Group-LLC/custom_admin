@@ -25,7 +25,8 @@ const messages = {
     search: 'Search',
     creation: 'Creation',
     general: 'General',
-    darkTheme: 'Dark theme',
+    inputStringForSearch: 'Enter a search string',
+    themeSelection: 'Theme selection',
     $vuetify: {
       ...en,
       dataIterator: {
@@ -54,7 +55,8 @@ const messages = {
     close: 'Закрыть',
     creation: 'Создание',
     general: 'Основное',
-    darkTheme: 'Темная тема',
+    inputStringForSearch: 'Введите строку для поиска',
+    themeSelection: 'Выбор темы',
     $vuetify: {
       ...ru,
       dataIterator: {

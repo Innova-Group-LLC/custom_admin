@@ -111,8 +111,8 @@ class ViewSetSchemaGenerator:
         serializer_info = None
 
         meta = self.viewset.metadata_class()
-        if hasattr(self.viewset, 'get_serializer_class') and self.viewset.get_serializer_class():
-            serializer = self.viewset.get_serializer_class()()
+        if hasattr(self.viewset, 'get_serializer_class') and self.viewset(request=self.request).get_serializer_class():
+            serializer = self.viewset(request=self.request).get_serializer_class()()
             try:
                 serializer_info = meta.get_serializer_info(serializer)
             except Exception as e:

@@ -8,6 +8,7 @@
     :label="field.label"
     :messages="field.help_text || []"
     :disabled="field.read_only"
+    :placeholder="$t('inputStringForSearch')"
 
     :items="choices"
     :multiple="isMany()"
@@ -16,6 +17,7 @@
     closable-chips
     persistent-hint
     no-filter
+    auto-select-first
 
     :return-object="false"
     item-value="id"
@@ -85,7 +87,7 @@ export default {
       let newValue = null
       // Update in case of value in format { id: 77, text: "Hall #77 Hall environment" }
       if (this.isMany() && value) {
-        let newValue = []
+        newValue = []
         for (const v of value || []) {
           if (typeof v === 'object') {
             if (this.field.read_only) {
@@ -154,6 +156,7 @@ export default {
         'primarymany',
         'multiple choice',
         'ModelMultipleChoiceFilter',
+        'ForeignKey',
       ]
       return many.indexOf(this.field.type) !== -1
     },
