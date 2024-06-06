@@ -85,6 +85,7 @@ export default {
         'ModelMultipleChoiceFilter',
         'ManyRelatedField',
         'AdminManyRelatedField',
+        'AdminPrimaryKeyRelatedField',
       ]
       const datetime = [
         'DateTimeField',

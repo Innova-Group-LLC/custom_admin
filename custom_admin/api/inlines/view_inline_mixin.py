@@ -1,14 +1,16 @@
 import logging
 import typing
-from datetime import datetime
+from datetime import datetime, time
 
 from django.conf import settings
 from django.utils.decorators import classonlymethod
 from rest_framework.response import Response
 
-from custom_admin.controllers import AdminLogManager
+from custom_admin.api.backends import get_filter_info
 from custom_admin.api.inlines.interfaces import InlineResultInterface
-from custom_admin.controllers.filters_schema import get_filters_class_data
+from custom_admin.controllers import AdminLogManager
+
+DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 
 log = logging.getLogger("admin-actions")
 
@@ -28,25 +30,26 @@ class ViewActionsInlineMixIn:
     - actions: list of funcs
     """
 
-    def get_filters(self, filterset_class, request):
+    def get_filters(self, filterset_class, request) -> typing.Dict[str, typing.Any]:
         if filterset_class is None:
-            return {}, []
+            return {}
 
-        filterset_fields = get_filters_class_data(None, filterset_class, request)
         filters = {}
-        for field_slug, field_info in filterset_fields.items():
-            if field_info.get('type') in ('ManyRelatedField', 'AdminManyRelatedField'):
-                filters[field_slug] = request.GET.getlist(field_slug, [])
+        filter_info = get_filter_info(request)
+        if filter_info:
+            filters = filter_info.get('filters') or {}
 
-            elif field_info.get('type') == 'DateFromToRangeFilter':
-                before = request.GET.get(f'{field_slug}_before')
-                after = request.GET.get(f'{field_slug}_after')
+        for filter_key in filters.keys():
+            _filter = filters[filter_key]
 
-                filters[f'{field_slug}_before'] = datetime.strptime(before, "%Y-%m-%d") if before else None
-                filters[f'{field_slug}_after'] = datetime.strptime(after, "%Y-%m-%d") if after else None
+            if isinstance(_filter, dict):
+                if 'from' in _filter:
+                    d = datetime.strptime(_filter.get('from'), DATETIME_FORMAT)
+                    _filter['from'] = datetime.combine(d, time.min)
 
-            else:
-                filters[field_slug] = request.GET.get(field_slug)
+                if 'to' in _filter:
+                    d = datetime.strptime(_filter.get('to'), DATETIME_FORMAT)
+                    _filter['to'] = datetime.combine(d, time.max)
 
         return filters
 

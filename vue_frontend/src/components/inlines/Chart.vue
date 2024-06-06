@@ -140,8 +140,7 @@ export default {
       getList({
         url: url,
         method: this.method.methodHttp,
-        filters: this.filterInfo.filters,
-        search: this.filterInfo.search,
+        filter_info: this.filterInfo,
       }).then(response => {
         this.responseData = response
         this.loadData = false

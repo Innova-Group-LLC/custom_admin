@@ -65,6 +65,9 @@ def get_filters_class_data(model, filter_class, request) -> dict:
         if result[filter_name]['type'] in ('ModelChoiceFilter', 'OneToOneField', 'ModelMultipleChoiceFilter'):
             filter_model = filter_field.get_queryset(request).model
 
+        elif result[filter_name]['type'] in ('AdminPrimaryKeyRelatedField'):
+            filter_model = filter_field.queryset.model
+
         elif result[filter_name]['type'] in ('ManyRelatedField', 'AdminManyRelatedField'):
             filter_model = filter_field.child_relation.queryset.model
 
