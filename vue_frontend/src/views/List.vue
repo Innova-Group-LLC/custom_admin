@@ -9,6 +9,7 @@
           :search-fields="sectionData.meta.search_fields"
           :filter-info-init="filterInfo"
           :settings="settings"
+          :viewname="viewname"
           @filtered="handleFilter"
         />
       </div>
@@ -114,7 +115,7 @@
       <template v-slot:bottom></template>
 
       <template v-slot:header.data-table-select="{ on, props }">
-        <v-tooltip :text="$t('applyToAllRecords')">
+        <v-tooltip :text="`${$t('applyToAllRecords')} ${getTotalCount()}`">
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="select-to-all">
               <v-checkbox
@@ -224,12 +225,15 @@
           ></v-btn>
         </v-card-title>
 
+        <div class="action-description" v-html="getActionInfo().description"></div>
+
         <FieldsContainer
           ref="fieldscontainer"
           formType="create"
           :api-info="apiInfo"
           :form-serializer="getActionInfo().form_serializer"
           :loading="actionLoading"
+          :action-name="actionSelected"
 
           @changed="value => actionFormData = value"
         />
@@ -252,7 +256,7 @@ import moment from 'moment'
 import { toast } from "vue3-toastify"
 import { getMethods } from '/src/api/scheme'
 import { getList } from '/src/api/getList'
-import { getSettings, setSettings } from '/src/utils/settings'
+import { getSettings, setSettings, config_dataset } from '/src/utils/settings'
 import { sendAction } from '/src/api/sendAction'
 
 import ModelFormCreate from '/src/components/ModelFormCreate.vue'
@@ -271,6 +275,15 @@ export default {
     group: {type: String, required: false},
     relationNameFilter: {type: String, required: false},
     filterId: {type: String, required: false},
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to, from) {
+        const title = this.apiInfo[this.viewname].title
+        document.title = `${title} | ${config_dataset.title}`
+      }
+    },
   },
   data() {
     return {
@@ -448,7 +461,7 @@ export default {
       this.getListData()
     },
     getLength() {
-      return parseInt((this.pageData.count || 0) / this.pageInfo.limit)
+      return Math.ceil((this.pageData.count || 0) / this.pageInfo.limit)
     },
     formatDateTime(dateString) {
       if (dateString) {
@@ -532,9 +545,15 @@ export default {
     },
     applyAction() {
       this.actionLoading = false
-      sendAction(
-        this.viewname, this.actionSelected, this.selected, this.actionToAll, this.actionFormData || {},
-      ).then(response => {
+      sendAction({
+        viewname: this.viewname,
+        action: this.actionSelected,
+        ids: this.selected,
+        formData: this.actionFormData || {},
+        sendToAll: this.actionToAll,
+        relationNameFilter: this.relationNameFilter,
+        relfilterid: this.filterId,
+      }).then(response => {
         this.actionDialogConfirmation = false
         this.actionFormDialogOpen = false
         this.actionLoading = false

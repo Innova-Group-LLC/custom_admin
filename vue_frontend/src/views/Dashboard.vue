@@ -33,6 +33,7 @@
 
 <script>
 import { getNavigationInfo } from '/src/api/scheme'
+import { config_dataset } from '/src/utils/settings'
 
 export default {
   props: {
@@ -42,6 +43,14 @@ export default {
     return {
       navigation_info: null,
     }
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to, from) {
+        document.title = `${this.$t('mainPage')} | ${config_dataset.title}`
+      }
+    },
   },
   created() {
     this.navigation_info = getNavigationInfo(this.$router, this.apiInfo)

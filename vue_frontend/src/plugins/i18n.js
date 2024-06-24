@@ -6,9 +6,10 @@ import { getLang } from '/src/utils/auth'
 const messages = {
   en: {
     mainPage: 'Main page',
+    login: 'Login',
     languageSelection: 'Language selection',
     itemsPerPage: 'Items per page:',
-    applyToAllRecords: 'Apply to all finded records',
+    applyToAllRecords: 'Apply to all finded records. In total:',
     actionNotAllowEmptySelection: 'At least one record must be selected to perform this action!',
     fixErrors: 'Fix the errors',
     modelUpdated: 'Record {id} updated',
@@ -27,6 +28,7 @@ const messages = {
     general: 'General',
     inputStringForSearch: 'Enter a search string',
     themeSelection: 'Theme selection',
+    tinyMCETheme: 'Text editor theme',
     $vuetify: {
       ...en,
       dataIterator: {
@@ -36,9 +38,10 @@ const messages = {
   },
   ru: {
     mainPage: 'Главная',
+    login: 'Вход',
     languageSelection: 'Выбор языка',
     itemsPerPage: 'Записей на странице:',
-    applyToAllRecords: 'Применить для всех найденных записей',
+    applyToAllRecords: 'Применить для всех найденных записей. Всего:',
     actionNotAllowEmptySelection: 'Для выполнения данного действия необходимо выбрать хотябы одну запись!',
     fixErrors: 'Исправьте ошибки',
     modelUpdated: 'Запись {id} обновлена',
@@ -57,6 +60,7 @@ const messages = {
     general: 'Основное',
     inputStringForSearch: 'Введите строку для поиска',
     themeSelection: 'Выбор темы',
+    tinyMCETheme: 'Тема редактора текста',
     $vuetify: {
       ...ru,
       dataIterator: {

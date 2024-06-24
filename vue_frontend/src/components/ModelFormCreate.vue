@@ -4,6 +4,7 @@
     content-class="dialog-top-position"
     persistent
     v-model="open"
+    class="create-dialog"
   >
     <template v-slot:activator="{ props: activatorProps }">
       <v-btn
@@ -109,7 +110,6 @@ export default {
         this.loading = false
         if (response) {
           let message = this.$t('modelCreated').replace('{id}', response.id)
-          console.error(message)
           toast(message, {"theme": "auto", "type": "success", "position": "top-center"})
         }
         this.open = false
@@ -117,9 +117,13 @@ export default {
       }).catch(error => {
         this.loading = false
         if (error.response) {
-          this.$refs.fieldscontainer.updateErrors(error.response.data)
-          console.error('Validation errors', error.response.data)
-          toast(this.$t('fixErrors'), {"theme": "auto", "type": "error", "position": "top-center" })
+          if (error.response.status === 400) {
+            this.$refs.fieldscontainer.updateErrors(error.response.data)
+            console.error('Validation errors', error.response.data)
+            toast(this.$t('fixErrors'), {"theme": "auto", "type": "error", "position": "top-center" })
+            return
+          }
+          toast(`Error: ${error.response.data}`, {"theme": "auto", "type": "error", "position": "top-center"})
           return
         }
         console.error(error)

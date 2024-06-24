@@ -100,6 +100,10 @@
                   :field-slug="field_slug"
                   :viewname="viewname"
                   :loading="loading"
+                  :action-name="actionName"
+
+                  :relation-name-filter="relationNameFilter"
+                  :filter-id="filterId"
 
                   @changed="value => _updateValue(value, field_slug)"
                 />
@@ -154,6 +158,8 @@ export default {
 
     relationNameFilter: {type: Object, required: false},
     filterId: {type: Object, required: false},
+
+    actionName: {type: String, required: false},
   },
   emits: ["changed"],
   data() {

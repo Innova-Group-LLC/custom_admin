@@ -5,6 +5,11 @@ export const defaultProps = {
   fieldSlug: {type: String, required: true},
   viewname: {type: String, required: false},
   loading: {type: Boolean, required: true},
+  isFilter: {type: Boolean, required: false},
+  actionName: {type: String, required: false},
+
+  relationNameFilter: {type: String, required: false},
+  filterId: {type: String, required: false},
 }
 
 const baseFields = {

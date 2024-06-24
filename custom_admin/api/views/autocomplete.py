@@ -1,5 +1,8 @@
+# pylint: disable=W0201
 import logging
 import operator
+import typing
+from dataclasses import dataclass
 from functools import reduce
 
 from django.apps import apps
@@ -23,14 +26,34 @@ INT_FIELDS = (
 )
 
 
+@dataclass
+class AutocompleteInfo:
+    viewname: str
+    field_slug: str
+    is_filter: bool
+    form_data: typing.Optional[dict]
+    action_name: typing.Optional[str]
+
+
+class AnyField(serializers.Field):
+    def to_representation(self, value):
+        return value
+
+    def to_internal_value(self, data):
+        return data
+
+
 class AutoCompeteSerializer(serializers.Serializer):
     viewname = serializers.CharField(required=False)
+    is_filter = serializers.BooleanField(default=False)
+    action_name = serializers.CharField(required=False)
+
     field_slug = serializers.JSONField(required=False)
 
     search_string = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     limit = serializers.IntegerField(required=False, allow_null=True)
     existed_choices = serializers.ListField(
-        child=serializers.IntegerField(),
+        child=AnyField(),
         required=False,
         allow_empty=True,
         allow_null=True,
@@ -54,7 +77,7 @@ class AutoCompeteView(APIView):
 
         autocomplite_fields = getattr(
             model, 'admin_autocomplite_fields',
-            self.default_fields.get(model.__name__, ('id',))
+            self.default_fields.get(model.__name__, ('pk',))
         )
 
         for field_name in autocomplite_fields:
@@ -82,40 +105,43 @@ class AutoCompeteView(APIView):
 
         return reduce(operator.or_, filters)
 
-    def get_queryset_by_view(self, model, viewname, form_data, field_slug):
+    def get_queryset_by_view(self, model, request):
 
-        if not viewname:
+        if self.action_name or self.is_filter:
             return model.objects.all()
 
-        from custom_admin.utils.register_admin_viewsets import _ADMIN_VIEWS
-        view = _ADMIN_VIEWS[viewname]
-        serializer = view().get_serializer_class()()
+        if self.viewname:
+            from custom_admin.utils.register_admin_viewsets import _ADMIN_VIEWS
+            view = _ADMIN_VIEWS[self.viewname]
+            serializer = view().get_serializer_class()()
 
-        field = serializer.fields.get(field_slug)
-        if not field:
-            raise serializers.ValidationError(f'Model {self.app_label}.{self.model_name} view "{viewname}" field slug "{field_slug}" is not found')
+            field = serializer.fields.get(self.field_slug)
+            if not field:
+                raise serializers.ValidationError(
+                    f'Model {self.app_label}.{self.model_name} view "{self.viewname}" field slug "{self.field_slug}" is not found'
+                )
 
-        if isinstance(field, serializers.ManyRelatedField):
-            field = field.child_relation
+            if isinstance(field, serializers.ManyRelatedField):
+                field = field.child_relation
 
-        filter_queryset = getattr(field, 'filter_queryset', None)
-        qs = getattr(field, 'queryset')
+            filter_queryset = getattr(field, 'filter_queryset', None)
+            qs = getattr(field, 'queryset')
 
-        if form_data is None:
-            form_data = {}
+            if filter_queryset:
+                filtered_qs = filter_queryset(qs, self.form_data, self.request)
+                log.debug(
+                    'AUTOCOMPLETE view:%s using:%s init form_data.keys:%s result:%s',
+                    self.viewname, filter_queryset.__name__, self.form_data.keys(), filtered_qs,
+                )
+                return filtered_qs
 
-        if filter_queryset:
-            filtered_qs = filter_queryset(qs, form_data, self.request)
-            log.debug(
-                'AUTOCOMPLETE view:%s using:%s init form_data.keys:%s result:%s',
-                viewname, filter_queryset.__name__, form_data.keys(), filtered_qs,
-            )
-            return filtered_qs
+            if not isinstance(qs, (QuerySet, Manager)):
+                raise serializers.ValidationError(f'Model {self.app_label}.{self.model_name} view "{self.viewname}" autocomplete for {self.field_slug}')
 
-        if not isinstance(qs, (QuerySet, Manager)):
-            raise serializers.ValidationError(f'Model {self.app_label}.{self.model_name} view "{viewname}" autocomplete for {field_slug}')
+            return qs.all()
 
-        return qs.all()
+        else:
+            raise NotImplementedError('')
 
     @staticmethod
     def _get_str_value(obj):
@@ -132,45 +158,60 @@ class AutoCompeteView(APIView):
         self.app_label = app_label
         self.model_name = model_name
 
-        serializer = AutoCompeteSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        search_string = serializer.validated_data.get('search_string')
-        limit = serializer.validated_data.get('limit')
+        self.serializer = AutoCompeteSerializer(data=request.data)
+        self.serializer.is_valid(raise_exception=True)
 
         model = apps.get_model(app_label=app_label, model_name=model_name)
         if not model:
             raise serializers.ValidationError(f'Model {self.app_label}.{self.model_name} not found')
 
-        view_queryset = self.get_queryset_by_view(
-            model,
-            viewname=serializer.validated_data.get('viewname'),
-            form_data=serializer.validated_data.get('form_data'),
-            field_slug=serializer.validated_data.get('field_slug'),
-        )
+        self.viewname = self.serializer.validated_data.get('viewname')
+        self.form_data = self.serializer.validated_data.get('form_data', {})
+        self.field_slug = self.serializer.validated_data.get('field_slug')
+        self.action_name = self.serializer.validated_data.get('action_name')
+        self.is_filter = self.serializer.validated_data.get('is_filter')
 
+        view_queryset = self.get_queryset_by_view(model, request)
         qs = view_queryset
+
+        autocomplete_filter = getattr(qs.model, 'autocomplete_filter', None)
+        if callable(autocomplete_filter):
+            qs = autocomplete_filter(
+                request,
+                qs,
+                AutocompleteInfo(
+                    viewname=self.viewname,
+                    action_name=self.action_name,
+                    is_filter=self.is_filter,
+
+                    field_slug=self.field_slug,
+                    form_data=self.form_data,
+                )
+            )
+
+        search_string = self.serializer.validated_data.get('search_string')
         if search_string:
             filters = self.get_search_filter(model, search_string)
             if not filters:
                 return Response([])
-            qs = qs.filter(filters).order_by('id').distinct('id')
+            qs = qs.filter(filters).order_by('pk').distinct('pk')
 
+        limit = self.serializer.validated_data.get('limit')
         if limit:
             qs = qs[:limit]
 
-        existed_choices = serializer.validated_data.get('existed_choices', [])
+        existed_choices = self.serializer.validated_data.get('existed_choices', [])
         if existed_choices:
 
             # Добавляет в результат уже выбранные варианты
-            filter_ids = view_queryset.filter(id__in=existed_choices)
+            filter_ids = view_queryset.filter(pk__in=existed_choices)
             if qs:
                 qs = qs.union(filter_ids)
             else:
                 qs = filter_ids
 
         formated_values = [
-            {'id': obj.id, 'text': self._get_str_value(obj)}
+            {'id': obj.pk, 'text': self._get_str_value(obj)}
             for obj in qs
         ]
         return Response(formated_values)

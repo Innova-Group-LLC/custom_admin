@@ -196,9 +196,9 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
             try:
                 rel_model_descriptor = getattr(self.get_model(), relfilter)
                 if isinstance(rel_model_descriptor, ManyToManyDescriptor):
-                    relobject = rel_model_descriptor.rel.related_model.objects.get(id=relfilterid)
+                    relobject = rel_model_descriptor.rel.related_model.objects.get(pk=relfilterid)
                 if isinstance(rel_model_descriptor, ForwardManyToOneDescriptor):
-                    relobject = rel_model_descriptor.field.related_model.objects.get(id=relfilterid)
+                    relobject = rel_model_descriptor.field.related_model.objects.get(pk=relfilterid)
                 ctx.update({'relobject': relobject})
             except Exception:
                 pass

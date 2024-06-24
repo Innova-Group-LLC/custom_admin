@@ -115,6 +115,7 @@
 
 <script>
 import { getMethods } from '/src/api/scheme'
+import { config_dataset } from '/src/utils/settings'
 
 import ModelFormUpdate from '/src/components/ModelFormUpdate.vue'
 import ChartInline from '/src/components/inlines/Chart.vue'
@@ -148,6 +149,15 @@ export default {
     this.sectionData = this.apiInfo[this.viewname]
 
     this.deserializeQuery()
+  },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to, from) {
+        const title = this.apiInfo[this.viewname].title
+        document.title = `${title} #${this.id} | ${config_dataset.title}`
+      }
+    },
   },
   methods: {
     getInlineComponent(method) {

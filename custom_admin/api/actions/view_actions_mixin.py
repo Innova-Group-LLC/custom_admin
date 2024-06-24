@@ -15,10 +15,12 @@ log = logging.getLogger('admin')
 
 
 class ActionSerializer(serializers.Serializer):
-    action = serializers.CharField(required=True)
     ids = serializers.ListField(child=serializers.CharField(), required=False)
-    send_to_all = serializers.BooleanField(default=False)
     form_data = serializers.JSONField(required=False, allow_null=True)
+
+    send_to_all = serializers.BooleanField(default=False)
+    relfilterid = serializers.CharField(required=False)
+    relfilter = serializers.CharField(required=False)
 
 
 class AdminActionMixIn:
@@ -27,12 +29,11 @@ class AdminActionMixIn:
         delete_action, export_csv_action,
     ]
 
-    @action(detail=False, methods=['post'])
-    async def send_action(self, request, pk=None):
+    @action(detail=False, methods=['post'], url_path='send_action/(?P<action_name>.+)')
+    async def send_action(self, request, action_name, pk=None):
         serializer = ActionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        action_name = serializer.validated_data['action']
         ids = serializer.validated_data['ids']
         send_to_all = serializer.validated_data['send_to_all']
         form_data = serializer.validated_data['form_data']
@@ -49,7 +50,12 @@ class AdminActionMixIn:
         qs = await sync_to_async(self.filter_queryset)(qs)
 
         if not send_to_all:
-            qs = qs.filter(id__in=ids)
+            qs = qs.filter(pk__in=ids)
+
+        relfilterid = serializer.validated_data.get('relfilterid')
+        relfilter = serializer.validated_data.get('relfilter')
+        if relfilterid and relfilter:
+            qs = qs.filter(**{relfilter: relfilterid})
 
         action_fn = actions_dict[action_name]
         if not aio.iscoroutinefunction(action_fn):
@@ -67,6 +73,9 @@ class AdminActionMixIn:
 
         elif isinstance(actions_result, (Response, HttpResponse)):
             action_request = actions_result
+
+        else:
+            raise NotImplementedError(f'actions_result type {actions_result.__class__} is not implemented')
 
         await sync_to_async(self.log_action)(action_name, actions_dict[action_name].short_description, request)
         return action_request

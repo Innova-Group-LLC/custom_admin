@@ -44,7 +44,7 @@ const greenDark = {
   colors: {
     surface: '#1a1d1e',
 
-    light2: '#d3f8ea',
+    light2: '#22594a',
     light3: '#91eeca',
     secondary: '#187f58', // light-4
 

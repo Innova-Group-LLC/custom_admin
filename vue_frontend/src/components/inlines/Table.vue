@@ -12,6 +12,11 @@
       height="unset"
     >
 
+      <template v-for="column in inlineData.columns" v-slot:[`item.${column}`]="{ item }">
+        <div v-html="item[column]" v-if="isHTML(column)"></div>
+        <div v-else>{{ item[column] }}</div>
+      </template>
+
       <template v-slot:bottom>
         <div class="table-bottom">
 
@@ -79,6 +84,10 @@ export default {
     this.getInlineData()
   },
   methods: {
+    isHTML(column) {
+      const info = this.inlineData.columns_info[column] || {}
+      return info.html
+    },
     getInlineData() {
       this.listLoading = false
       this.inlineData = {}
@@ -108,6 +117,7 @@ export default {
       })
     },
     getLength() {
+      if (!this.pageData) return 0
       return parseInt((this.pageData.count || 0) / this.pageInfo.limit)
     },
     changePagination() {

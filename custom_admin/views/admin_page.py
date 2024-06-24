@@ -25,13 +25,24 @@ class CustomAdminView(View):
     def get(self, request):
         custom_admin = getattr(settings, 'CUSTOM_ADMIN', {})
 
+        logo_image = custom_admin.get('logo_image')
+        if logo_image and not logo_image.startswith('http'):
+            logo_image = request.build_absolute_uri(logo_image)
+
+        favicon_image = custom_admin.get('favicon_image', '/static/custom_admin/favicon.ico')
+        if favicon_image and not favicon_image.startswith('http'):
+            favicon_image = request.build_absolute_uri(favicon_image)
+
+        backend_prefix = custom_admin.get('backend_prefix', '/custom_admin/')
+        if backend_prefix and not backend_prefix.startswith('http'):
+            backend_prefix = request.build_absolute_uri(backend_prefix)
+
         admin_settings = {
             'title': custom_admin.get('title', 'Admin'),
-            'backend_prefix': custom_admin.get('backend_prefix'),
+            'logo_image': logo_image,
+            'backend_prefix': backend_prefix,
+            'favicon_image': favicon_image,
         }
-
-        if not admin_settings.get('backend_prefix'):
-            admin_settings['backend_prefix'] = request.build_absolute_uri('/custom_admin/')
 
         context = {
             'SETTINGS': admin_settings,

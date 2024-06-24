@@ -2,7 +2,8 @@ import Cookies from 'js-cookie'
 
 var config_dataset = {
   title: 'Dev Admin',
-  backend_prefix: import.meta.env.VITE_APP_URL_PREFIX,
+  logo_image: `${import.meta.env.VITE_APP_URL_PREFIX}/static/img/admin-logo.svg`,
+  backend_prefix: `${import.meta.env.VITE_APP_URL_PREFIX}/custom_admin/`,
   static_prefix: '/static/custom_admin',
 }
 
@@ -38,4 +39,16 @@ export function getSettings() {
 
 export function setSettings(settings) {
   Cookies.set(SETTINGS_COOKIE_NAME, JSON.stringify(settings), { sameSite:'strict' })
+}
+
+export const tinyMCEThemes = [
+  'lightgray',
+  'dark-first',
+  'dark-slim',
+]
+
+export function getTinyMCETheme() {
+  let settings = getSettings()
+  if (tinyMCEThemes.indexOf(settings.tinyMCETheme) !== -1) return settings.tinyMCETheme
+  return tinyMCEThemes[0]
 }

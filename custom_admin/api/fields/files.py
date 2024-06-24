@@ -51,8 +51,12 @@ class Base64FileField(fields.FileField):
         if not url:
             return url
 
-        request = self.context['request']
-        url = urllib.parse.unquote(request.build_absolute_uri(url))
+        url = urllib.parse.unquote(url)
+
+        request = self.context.get('request')
+        if request:
+            request.build_absolute_uri(url)
+
         return {
             'name': file.name,
             'url': url,

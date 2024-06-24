@@ -1,5 +1,5 @@
 <template>
-  <div class="inline-container">
+  <div class="chart-container">
     <Filters
       v-if="method.filterset_fields"
       :settings="settings"

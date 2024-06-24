@@ -10,11 +10,12 @@ import { defaultProps, validateProps } from '/src/utils/fields.js'
 import load from './dynamicLoadScript'
 import { wysiwygTypes } from '@/utils/settings'
 import { config_dataset } from '@/utils/settings'
+import { getSettings, getTinyMCETheme } from '/src/utils/settings'
 
 const plugins = ['advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount accordion']
 const toolbar = [
   'searchreplace undo redo | bold italic underline strikethrough blockquote removeformat | alignleft aligncenter alignright outdent indent | subscript superscript code codesample',
-  'hr bullist numlist link image charmap anchor pagebreak insertdatetime media table emoticons forecolor backcolor add-accordion | preview fullscreen'
+  'hr bullist numlist link image charmap anchor pagebreak insertdatetime media table forecolor backcolor add-accordion | preview fullscreen'
 ]
 const menubar = 'file edit insert view format table'
 
@@ -36,7 +37,6 @@ export default {
       tinymceId: this.fieldSlug,
       fullscreen: false,
       init_value: null,
-      skin: 'lightgray',
       theme: 'modern',
       height: 260,
       width: 'auto',
@@ -51,7 +51,12 @@ export default {
       return width
     }
   },
-  mounted() {
+  async mounted() {
+    this.emitter.on("settings-changed", settings => {
+      this.destroyTinymce()
+      this.initTinymce()
+    })
+
     validateProps(this)
 
     // dynamic load tinymce from cdn
@@ -70,6 +75,7 @@ export default {
     }
   },
   unmounted() {
+    this.emitter.off("settings-changed")
     this.destroyTinymce()
   },
   methods: {
@@ -87,11 +93,12 @@ export default {
         this.initTinymce()
     },
     initTinymce() {
+      const skin = getTinyMCETheme();
       const _this = this
       window.tinymce.init({
         theme: this.theme,
-        skin: this.skin,
-        skin_url: `${config_dataset.static_prefix}/tinymce/${this.skin}`,
+        skin: skin,
+        skin_url: `${config_dataset.static_prefix}/tinymce/${skin}`,
 
         external_plugins: {
           accordion: `${config_dataset.static_prefix}/tinymce/plugins/accordion/plugin.js`

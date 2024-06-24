@@ -11,6 +11,7 @@
         v-model="filterInfo.search"
         :clearable="true"
         :label="$t('search')"
+        @keydown.enter.prevent="applyFilter"
       />
     </div>
 
@@ -28,6 +29,7 @@
         :field="filter"
         :field-slug="filter_name"
         :loading="false"
+        :is-filter="true"
 
         @changed="value => _updateValue(value, filter_name)"
       />

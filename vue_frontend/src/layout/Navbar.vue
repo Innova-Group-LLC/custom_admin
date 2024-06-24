@@ -4,8 +4,18 @@
     :modelValue="drawer"
   >
     <v-list-item>
-      <p class="text-h6">{{ getTitle() }}</p>
+      <router-link to="/dashboard" v-if="getLogo()">
+        <v-img
+          class="project-logo"
+          :alt="getTitle()"
+          :src="getLogo()"
+          max-width="250"
+          :eager="true"
+        />
+      </router-link>
+      <p class="text-h6" v-else>{{ getTitle() }}</p>
     </v-list-item>
+
     <v-divider></v-divider>
 
     <v-list v-model:opened="open">
@@ -57,6 +67,9 @@ export default {
     this.navigation_info = getNavigationInfo(this.$router, this.apiInfo)
   },
   methods: {
+    getLogo() {
+      return config_dataset.logo_image
+    },
     getTitle() {
       return config_dataset.title
     },

@@ -31,7 +31,7 @@ class AdminLogManager:
         log.info(
             'ADMIN %s #%s CREATED "%s" #%s viewname:%s log:%s',
             self.staff.username, self.staff.id,
-            created_instance._meta.verbose_name, created_instance.id,
+            created_instance._meta.verbose_name, created_instance.pk,
             serializer.context['viewname'], admin_log.id,
             extra={'validated_data': validated_data}
         )
@@ -52,7 +52,7 @@ class AdminLogManager:
     def get_field_value(instance, k):
         value = getattr(instance, k, None)
         if value.__class__.__name__ == 'ManyRelatedManager':
-            return list(value.all().values_list('id', flat=True))
+            return list(value.all().values_list('pk', flat=True))
 
         return value
 
@@ -78,7 +78,7 @@ class AdminLogManager:
         log.info(
             'ADMIN %s #%s UPDATE "%s" #%s viewname:%s log:%s',
             self.staff.username, self.staff.id,
-            updated_instance._meta.verbose_name, updated_instance.id,
+            updated_instance._meta.verbose_name, updated_instance.pk,
             serializer.context['viewname'], admin_log.id,
             extra={'validated_data': validated_data}
         )

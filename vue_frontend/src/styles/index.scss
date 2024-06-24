@@ -14,13 +14,31 @@
   --toastify-toast-width: 640px;
   --toastify-toast-min-height: 64px;
   --toastify-toast-max-height: 800px;
+
+  --jse-menu-color: rgb(var(--v-theme-surface));
+  --jse-theme-color: rgb(var(--v-theme-primary));
+  --jse-text-color-inverse: rgb(var(--v-theme-darken3));
+}
+
+.jse-menu {
+    background: rgb(var(--v-theme-primary)) !important;
 }
 
 body {
     background-color: rgb(var(--v-theme-surface)) !important;
 }
 
+.mce-fullscreen {
+    .v-navigation-drawer {
+        display: none;
+    }
+    .v-toolbar {
+        display: none;
+    }
+}
+
 .navbar-container {
+    scrollbar-color: rgb(var(--v-theme-secondary)) rgb(var(--v-theme-secondary));
     background-color: rgb(var(--v-theme-darken3)) !important;
     color: #FFFFFF !important;
     width: 255px;
@@ -110,15 +128,6 @@ body {
     height: 100px;
 }
 
-.jse-menu {
-    background: rgb(var(--v-theme-darken2)) !important;
-}
-.jse-button {
-    color: rgb(var(--v-theme-light4)) !important;
-}
-.jse-button:hover {
-    background: rgb(var(--v-theme-darken1)) !important;
-}
 .v-label {
     white-space: normal;
 }
@@ -126,5 +135,25 @@ body {
 .settings-container {
     .v-navigation-drawer__content {
         padding: 25px;
+    }
+}
+.chart-container {
+    margin-bottom: 100px;
+}
+.project-logo {
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.login-header {
+    background-color: rgb(var(--v-theme-darken3)) !important;
+}
+.mce-fullscreen {
+    .create-dialog {
+        .v-overlay__content {
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0px;
+        }
     }
 }

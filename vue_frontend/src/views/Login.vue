@@ -10,10 +10,19 @@
             <v-card
               :loading="loading"
               width="400"
+              class="login-header"
             >
               <template v-slot:title>
                 <v-row justify="center" no-gutters>
-                  <span class="font-weight-black">{{ getTitle() }}</span>
+                  <v-img
+                    class="project-logo"
+                    :alt="getTitle()"
+                    :src="getLogo()"
+                    v-if="getLogo()"
+                    max-width="250"
+                    :eager="true"
+                  />
+                  <span class="font-weight-black" v-else>{{ getTitle() }}</span>
                 </v-row>
               </template>
 
@@ -27,6 +36,7 @@
                     :rules="[rules.required, rules.min]"
                     label="Username"
                     required
+                    @keydown.enter.prevent="login"
                   ></v-text-field>
                   <v-text-field
                     density="default"
@@ -39,6 +49,7 @@
                     :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                     required
                     @click:append="show = !show"
+                    @keydown.enter.prevent="login"
                   ></v-text-field>
 
                   <v-row justify="end" no-gutters>
@@ -60,8 +71,8 @@
 
 <script>
 import { toast } from "vue3-toastify";
-
 import { config_dataset } from '/src/utils/settings'
+
 import { login } from '/src/api/user'
 
 export default {
@@ -76,11 +87,22 @@ export default {
       loading: false,
     }
   },
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to, from) {
+        document.title = `${this.$t('login')} | ${config_dataset.title}`
+      }
+    },
+  },
   methods: {
     async validate () {
       const { valid } = await this.$refs.form.validate()
 
       if (valid) alert('Form is valid')
+    },
+    getLogo() {
+      return config_dataset.logo_image
     },
     getTitle() {
       return config_dataset.title

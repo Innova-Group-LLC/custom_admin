@@ -19,4 +19,9 @@ app.component('List', List)
 app.component('Edit', Edit)
 
 registerPlugins(app)
+
+import mitt from 'mitt';
+const emitter = mitt();
+app.config.globalProperties.emitter = emitter;
+
 app.mount('#app')

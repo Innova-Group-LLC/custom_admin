@@ -1,8 +1,6 @@
-import typing
 from enum import Enum
 
-from django.db.models import Q
-from django.contrib.auth.models import Permission
+from django.utils.translation import gettext as _
 
 
 # All default views: list send-action retrieve update partial_update destroy
@@ -56,16 +54,35 @@ class CheckPermissions:
         return action
 
     @classmethod
-    def get_all_permissions(cls, viewset) -> typing.Tuple[str]:
+    def get_title(cls, action: str) -> str:
+        if action in ['list', 'retrieve']:
+            return _('View')
+        if action in ['update', 'partial_update']:
+            return _('Change')
+        if action == 'destroy':
+            return _('Destroy')
+        if action == 'create':
+            return _('Create')
+        if action == 'send_action':
+            return _('Send action')
+
+        return _(action)
+
+    @classmethod
+    def get_all_permissions(cls, viewset) -> dict:
         from custom_admin.api.urls import admin_router as router
         routes = router.get_routes(viewset)
 
-        result = set()
+        result = {}
         for route in routes:
             mappings = router.get_method_map(viewset, route.mapping)
-            for method, method_name in mappings.items():
-                result.add(
-                    f'{cls.get_codename(method_name)}_{viewset.get_view_viewname()}'
-                )
+            for _method, method_name in mappings.items():
+                slug = cls.get_codename(method_name)
+                codename = f'{slug}_{viewset.get_view_viewname()}'
+                result[codename] = {
+                    'slug': slug,
+                    'viewname': viewset.get_view_viewname(),
+                    'title': f'{cls.get_title(method_name)} | {viewset.get_view_title()}',
+                }
 
-        return tuple(result)
+        return result

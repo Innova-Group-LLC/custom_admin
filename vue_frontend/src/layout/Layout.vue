@@ -95,7 +95,7 @@ export default {
         "position": "top-center",
         "dangerouslyHTMLString": true
       })
-      if (error.response && error.response.status == 401) {
+      if (error.response && (error.response.status == 401 || error.response.status == 403)) {
         removeToken()
         this.$router.push({ path: '/login' })
       }

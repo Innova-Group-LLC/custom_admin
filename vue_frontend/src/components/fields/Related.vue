@@ -7,7 +7,7 @@
     v-model="value"
     :label="field.label"
     :messages="field.help_text || []"
-    :disabled="field.read_only"
+    :disabled="isReadOnly()"
     :placeholder="$t('inputStringForSearch')"
 
     :items="choices"
@@ -17,7 +17,7 @@
     closable-chips
     persistent-hint
     no-filter
-    auto-select-first
+    hide-selected
 
     :return-object="false"
     item-value="id"
@@ -78,8 +78,16 @@ export default {
     if (!this.field.read_only) {
       this.updateChoices()
     }
+
+    if (this.relationNameFilter === this.fieldSlug) {
+      this.value = this.isMany() ? [this.filterId] : this.filterId
+      this.$emit('changed', this.value)
+    }
   },
   methods: {
+    isReadOnly() {
+      return this.field.read_only || this.relationNameFilter === this.fieldSlug
+    },
     updateFormData(initFormData) {
       this.formData = initFormData
       const value = initFormData[this.fieldSlug]
@@ -90,7 +98,7 @@ export default {
         newValue = []
         for (const v of value || []) {
           if (typeof v === 'object') {
-            if (this.field.read_only) {
+            if (this.isReadOnly()) {
               this.choices = [v]
             }
             newValue.push(v.id)
@@ -101,7 +109,7 @@ export default {
         this.value = newValue
       } else if (value) {
         if (typeof value === 'object') {
-          if (this.field.read_only) {
+          if (this.isReadOnly()) {
             this.choices = [value]
           }
           newValue = value.id
@@ -111,26 +119,33 @@ export default {
       }
 
       // Update choices to get display text
-      if (!this.field.read_only && this.value !== newValue) {
+      if (!this.isReadOnly() && this.value !== newValue) {
         this.updateChoices()
       }
+
       this.value = newValue
+
+      if (this.relationNameFilter === this.fieldSlug) {
+        this.value = this.isMany() ? [this.filterId] : this.filterId
+      }
     },
     updateSearch(search) {
       this.search = search
       this.updateChoices()
     },
     updateChoices() {
-      getAutocomplete(
-        this.field.model_name,
-        this.field.app_label,
-        this.search || '',
-        30,
-        this.viewname,
-        this.fieldSlug,
-        this.formData,
-        this.isMany() ? this.value : this.value ? [this.value] : [],
-      ).then(response => {
+      getAutocomplete({
+        model_name: this.field.model_name,
+        app_label: this.field.app_label,
+        search_string: this.search || '',
+        limit: 30,
+        viewname: this.viewname,
+        field_slug: this.fieldSlug,
+        is_filter: this.isFilter,
+        form_data: this.formData,
+        existed_choices: this.isMany() ? this.value : this.value ? [this.value] : [],
+        actionName: this.actionName,
+      }).then(response => {
         this.choices = response
         this.apiLoading = false
       }).catch(error => {
@@ -157,6 +172,7 @@ export default {
         'multiple choice',
         'ModelMultipleChoiceFilter',
         'ForeignKey',
+        'ManyToManyField',
       ]
       return many.indexOf(this.field.type) !== -1
     },

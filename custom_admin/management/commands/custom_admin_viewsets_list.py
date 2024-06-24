@@ -41,5 +41,5 @@ class Command(BaseCommand):
                     title=str(viewset.get_view_title()),
                 )
                 self.stdout.write(self.style.SUCCESS(line))
-                permissions = ', '.join(permissions)
+                permissions = ', '.join(permissions.keys())
                 self.stdout.write(self.style.WARNING(f'  _permissions:_ `{permissions}`\n'))
