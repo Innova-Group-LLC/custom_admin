@@ -1,5 +1,11 @@
 <template>
-  <ckeditor :editor="editor" v-model="value" :config="editorConfig" :disabled="readOnly"/>
+  <ckeditor
+    :editor="editor"
+    v-model="value"
+    :config="editorConfig"
+    :disabled="readOnly"
+    @input="onChange"
+  />
 </template>
 
 <script>

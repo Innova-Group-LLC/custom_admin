@@ -26,6 +26,7 @@
         <v-text-field
           :model-value="displayValue"
           @update:modelValue="updateDisplayValue"
+          @keydown.enter.prevent="isActive.value = false"
         />
         <Datepicker
           v-model="value"

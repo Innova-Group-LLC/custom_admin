@@ -180,6 +180,7 @@ export default {
       delete newQuery.inlineTab
       if (this.currentTab) {
         if (this.inline) {
+          newQuery.tab = this.viewname
           newQuery.inlineTab = this.currentTab
         }
         else {

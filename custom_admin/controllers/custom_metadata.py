@@ -1,7 +1,6 @@
 from collections import OrderedDict
 
 from django.utils.encoding import force_str
-from django.utils.translation import gettext as _
 from rest_framework import serializers
 from rest_framework.metadata import SimpleMetadata
 
@@ -57,7 +56,7 @@ class CustomMetadata(SimpleMetadata):
             field_info['choices'] = [
                 {
                     'value': choice_value,
-                    'display_name': str(_(choice_name))
+                    'display_name': choice_name,
                 }
                 for choice_value, choice_name in field.choices.items()
             ]

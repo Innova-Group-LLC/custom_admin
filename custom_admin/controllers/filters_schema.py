@@ -37,7 +37,7 @@ def get_filters_fields_data(model, filters):
         if hasattr(filter_field, 'choices') and filter_field.choices:
             choices = tuple({
                 'value': c[0],
-                'display_name': str(_(c[1]))
+                'display_name': c[1],
             } for c in filter_field.choices)
             if choices:
                 result[filter_name]['choices'] = choices
@@ -82,7 +82,7 @@ def get_filters_class_data(model, filter_class, request) -> dict:
             if choices:
                 choices = tuple({
                     'value': c[0],
-                    'display_name': str(_(c[1]))
+                    'display_name': c[1],
                 } for c in choices)
                 if choices:
                     result[filter_name]['choices'] = choices
