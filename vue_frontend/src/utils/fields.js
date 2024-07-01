@@ -6,6 +6,7 @@ export const defaultProps = {
   viewname: {type: String, required: false},
   loading: {type: Boolean, required: true},
   isFilter: {type: Boolean, required: false},
+  readOnly: {type: Boolean, required: false},
   actionName: {type: String, required: false},
 
   relationNameFilter: {type: String, required: false},

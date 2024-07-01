@@ -75,7 +75,7 @@ export default {
     validateProps(this, requiredFields)
     this.value = this.field.initial
 
-    if (!this.field.read_only) {
+    if (!this.readOnly) {
       this.updateChoices()
     }
 
@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     isReadOnly() {
-      return this.field.read_only || this.relationNameFilter === this.fieldSlug
+      return this.readOnly || this.relationNameFilter === this.fieldSlug
     },
     updateFormData(initFormData) {
       this.formData = initFormData

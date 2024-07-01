@@ -1,36 +1,14 @@
 <template>
-  <div>
-
-    <v-textarea
-      v-if="field.multilined"
-      :clearable="true"
-      :label="field.label"
-      :model-value="value"
-      :messages="field.help_text || []"
-      :disabled="readOnly"
-      :loading="loading"
-
-      @update:modelValue="onChange"
-    />
-
-    <v-text-field
-      v-else
-      :variant="variant"
-      :density="density"
-      :clearable="true"
-      :label="field.label"
-      :model-value="value"
-      :messages="field.help_text || []"
-      :disabled="readOnly"
-
-      @update:modelValue="onChange"
-    />
-
-  </div>
+  <ckeditor :editor="editor" v-model="value" :config="editorConfig" :disabled="readOnly"/>
 </template>
 
 <script>
 import { defaultProps, validateProps } from '/src/utils/fields.js'
+import CKEditor from '@ckeditor/ckeditor5-vue'
+
+import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo } from 'ckeditor5'
+
+import 'ckeditor5/ckeditor5.css';
 
 const requiredFields = {
   wysiwyg: {type: Boolean, required: false},
@@ -39,6 +17,9 @@ const requiredFields = {
 }
 
 export default {
+  components: {
+    ckeditor: CKEditor.component
+  },
   props: {
     ...defaultProps,
   },
@@ -46,6 +27,11 @@ export default {
   data(props) {
     return {
       value: null,
+      editor: ClassicEditor,
+      editorConfig: {
+        plugins: [ Bold, Essentials, Italic, Mention, Paragraph, Undo ],
+        toolbar: [ 'undo', 'redo', '|', 'bold', 'italic' ],
+      },
     }
   },
   created() {

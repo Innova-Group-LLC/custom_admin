@@ -1,6 +1,25 @@
 <template>
   <div>
 
+    <Filters
+      v-if="method.filterset_fields"
+      :settings="settings"
+      :filterset-fields="method.filterset_fields"
+      :filter-info-init="filterInfo"
+      @filtered="handleFilter"
+    />
+
+    <template v-if="inlineData && inlineData.messages">
+      <v-alert
+        v-for="error in inlineData.messages"
+        :key="error.title"
+        :title="error.title"
+        :type="error.type"
+        density="compact"
+        variant="tonal"
+      />
+    </template>
+
     <v-data-table
       class="model-table"
       :items="inlineData.data || []"
@@ -98,8 +117,7 @@ export default {
         url: url,
         method: this.method.methodHttp,
         pageInfo: this.pageInfo,
-        filters: this.filterInfo.filters,
-        search: this.filterInfo.search,
+        filter_info: this.filterInfo,
       }).then(response => {
         this.inlineData = response
         this.count = this.inlineData.count

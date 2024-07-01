@@ -77,6 +77,8 @@
                         :field-slug="translation.slug"
                         :viewname="viewname"
                         :loading="loading"
+                        :action-name="actionName"
+                        :read-only="readOnly || field.read_only"
 
                         @changed="value => _updateValue(value, translation.slug)"
                       />
@@ -101,6 +103,7 @@
                   :viewname="viewname"
                   :loading="loading"
                   :action-name="actionName"
+                  :read-only="readOnly || field.read_only"
 
                   :relation-name-filter="relationNameFilter"
                   :filter-id="filterId"
@@ -134,16 +137,21 @@ import StringField from '/src/components/fields/String.vue'
 import NumberField from '/src/components/fields/Number.vue'
 import ChoiceField from '/src/components/fields/Choice.vue'
 import FileField from '/src/components/fields/File.vue'
-import TinyMCEField from '/src/components/fields/TinyMCE/index.vue'
 import JSONFormsField from '/src/components/fields/JSONForms.vue'
 import JSONEditorField from '/src/components/fields/JSONEditor.vue'
 import RelatedField from '/src/components/fields/Related.vue'
 import DateTimeField from '/src/components/fields/DateTime.vue'
 
+import TinyMCEField from '/src/components/fields/TinyMCE/index.vue'
+import CKEditor from '/src/components/fields/CKEditor.vue'
+
+const wysiwyg = TinyMCEField;
+
 export default {
   props: {
     apiInfo: {type: Object, required: true},
     loading: {type: Boolean, required: false},
+    readOnly: {type: Boolean, required: false},
     formType: {
       type: String,
       required: true,
@@ -197,7 +205,7 @@ export default {
       if (['primary', 'primarymany'].indexOf(field.type) !== -1) return RelatedField
 
       if (['field', 'string', 'email', 'url', 'slug'].indexOf(field.type) !== -1) {
-        if (field.wysiwyg) return TinyMCEField
+        if (field.wysiwyg) return wysiwyg
         return StringField
       }
       if (field.type === 'json') {
@@ -220,7 +228,7 @@ export default {
       return false
     },
     canBeDisplayed(field, field_slug, tab_id) {
-      if (this.formType === 'create' && (field.read_only || field.update_only)) {
+      if (this.formType === 'create' && (this.readOnly || field.update_only)) {
         return false
       }
       if (this.formType !== 'create' && field.create_only) {

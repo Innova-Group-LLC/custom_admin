@@ -107,6 +107,7 @@ export default {
         plugin_preview_width: "1200",
         plugin_preview_height: "800",
 
+        readonly: this.readOnly ? 1 : false,
         selector: `#${this.tinymceId}`,
         language: 'en',
         height: this.height,

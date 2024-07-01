@@ -5,7 +5,7 @@
       :renderers="renderers"
       :schema="field.json_forms.schema"
       :uischema="field.json_forms.uischema"
-      :readonly="field.read_only"
+      :readonly="readOnly"
 
       @change="onChange"
     />

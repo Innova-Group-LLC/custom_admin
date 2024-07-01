@@ -7,7 +7,7 @@
       :label="field.label"
       :model-value="value"
       :messages="field.help_text || []"
-      :disabled="field.read_only"
+      :disabled="readOnly"
       :loading="loading"
 
       :prepend-icon="null"

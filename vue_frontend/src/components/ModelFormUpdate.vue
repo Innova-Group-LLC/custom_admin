@@ -7,6 +7,7 @@
       :api-info="apiInfo"
       :viewname="viewname"
       :loading="loading"
+      :read-only="!canUpdate()"
 
       @changed="value => formData = value"
     />

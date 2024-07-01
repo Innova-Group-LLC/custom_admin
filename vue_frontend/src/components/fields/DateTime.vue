@@ -9,7 +9,7 @@
         :label="field.label"
         :model-value="displayValue"
         :messages="field.help_text || []"
-        :disabled="field.read_only"
+        :disabled="readOnly"
         :loading="loading"
         :clearable="true"
 
