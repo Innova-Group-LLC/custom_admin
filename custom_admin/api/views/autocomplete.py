@@ -47,8 +47,9 @@ class AutoCompeteSerializer(serializers.Serializer):
     viewname = serializers.CharField(required=False)
     is_filter = serializers.BooleanField(default=False)
     action_name = serializers.CharField(required=False)
+    field_slug = serializers.CharField(required=False)
 
-    field_slug = serializers.JSONField(required=False)
+    form_data = serializers.JSONField(required=False)
 
     search_string = serializers.CharField(required=False, allow_null=True, allow_blank=True)
     limit = serializers.IntegerField(required=False, allow_null=True)
