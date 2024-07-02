@@ -104,7 +104,12 @@
 .action-description {
     padding: 10px 16px;
 }
-.v-messages__message {
-    white-space: pre;
-    margin-bottom: 5px;
+.form-field-container {
+    .v-messages__message {
+        display: inline-block;
+        max-width: 100%;
+        word-break: break-word;
+        white-space: break-spaces;
+        margin-bottom: 5px;
+    }
 }

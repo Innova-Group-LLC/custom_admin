@@ -32,6 +32,7 @@
         :is-filter="true"
 
         @changed="value => _updateValue(value, filter_name)"
+        @keydown.enter.prevent="applyFilter"
       />
       <template v-else>
         {{ filter }}
@@ -109,7 +110,7 @@ export default {
       ]
       if (datetime.indexOf(filter.type) !== -1) return DateTimeField
       if (related.indexOf(filter.type) !== -1) return RelatedField
-      if (str.indexOf(filter.type) !== -1) StringField
+      if (str.indexOf(filter.type) !== -1) return StringField
 
       if (['NumberFilter'].indexOf(filter.type) !== -1) return NumberField
       if (['BooleanField', 'BooleanFilter'].indexOf(filter.type) !== -1) return BooleanField

@@ -1,13 +1,15 @@
 <template>
   <div>
 
-    <Filters
-      v-if="method.filterset_fields"
-      :settings="settings"
-      :filterset-fields="method.filterset_fields"
-      :filter-info-init="filterInfo"
-      @filtered="handleFilter"
-    />
+    <div class="inline-filters">
+      <Filters
+        v-if="method.filterset_fields"
+        :settings="settings"
+        :filterset-fields="method.filterset_fields"
+        :filter-info-init="filterInfo"
+        @filtered="handleFilter"
+      />
+    </div>
 
     <template v-if="inlineData && inlineData.messages">
       <v-alert
@@ -143,6 +145,10 @@ export default {
       settings.page_size = this.pageInfo.limit,
       setSettings(settings)
 
+      this.getInlineData()
+    },
+    handleFilter(newFilterInfo) {
+      this.filterInfo = newFilterInfo
       this.getInlineData()
     },
   },

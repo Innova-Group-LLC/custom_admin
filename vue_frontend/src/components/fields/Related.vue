@@ -69,19 +69,20 @@ export default {
       apiLoading: false,
       choices: [],
       search: '',
+      init: false,
     }
   },
   created() {
     validateProps(this, requiredFields)
     this.value = this.field.initial
 
-    if (!this.readOnly) {
-      this.updateChoices()
-    }
-
     if (this.relationNameFilter === this.fieldSlug) {
       this.value = this.isMany() ? [this.filterId] : this.filterId
       this.$emit('changed', this.value)
+    }
+
+    if (!this.readOnly) {
+      this.updateChoices()
     }
   },
   methods: {
@@ -90,43 +91,16 @@ export default {
     },
     updateFormData(initFormData) {
       this.formData = initFormData
-      const value = initFormData[this.fieldSlug]
-
-      let newValue = null
-      // Update in case of value in format { id: 77, text: "Hall #77 Hall environment" }
-      if (this.isMany() && value) {
-        newValue = []
-        for (const v of value || []) {
-          if (typeof v === 'object') {
-            if (this.isReadOnly()) {
-              this.choices = [v]
-            }
-            newValue.push(v.id)
-          } else {
-            newValue.push(v)
-          }
-        }
-        this.value = newValue
-      } else if (value) {
-        if (typeof value === 'object') {
-          if (this.isReadOnly()) {
-            this.choices = [value]
-          }
-          newValue = value.id
-        } else {
-          newValue = value
-        }
-      }
-
-      // Update choices to get display text
-      if (!this.isReadOnly() && this.value !== newValue) {
-        this.updateChoices()
-      }
-
-      this.value = newValue
+      this.value = initFormData[this.fieldSlug]
 
       if (this.relationNameFilter === this.fieldSlug) {
         this.value = this.isMany() ? [this.filterId] : this.filterId
+      }
+
+      // Update choices to get display text
+      if (!this.init) {
+        this.init = true
+        this.updateChoices()
       }
     },
     updateSearch(search) {

@@ -1,32 +1,32 @@
 <template>
-  <div>
 
-    <v-textarea
-      v-if="field.multilined"
-      :clearable="true"
-      :label="field.label"
-      :model-value="value"
-      :messages="field.help_text || []"
-      :disabled="readOnly"
-      :loading="loading"
+  <v-textarea
+    v-if="field.multilined"
+    :clearable="true"
+    :label="field.label"
+    :model-value="value"
+    :messages="field.help_text || []"
+    :disabled="readOnly"
+    :loading="loading"
 
-      @update:modelValue="onChange"
-    />
+    @update:modelValue="onChange"
+    @keydown.enter.prevent="keydownEnter"
+  />
 
-    <v-text-field
-      v-else
-      :variant="variant"
-      :density="density"
-      :clearable="true"
-      :label="field.label"
-      :model-value="value"
-      :messages="field.help_text || []"
-      :disabled="readOnly"
+  <v-text-field
+    v-else
+    :variant="variant"
+    :density="density"
+    :clearable="true"
+    :label="field.label"
+    :model-value="value"
+    :messages="field.help_text || []"
+    :disabled="readOnly"
 
-      @update:modelValue="onChange"
-    />
+    @update:modelValue="onChange"
+    @keydown.enter.prevent="keydownEnter"
+  />
 
-  </div>
 </template>
 
 <script>
@@ -42,7 +42,7 @@ export default {
   props: {
     ...defaultProps,
   },
-  emits: ["changed"],
+  emits: ["changed", "keydown.enter.prevent"],
   data(props) {
     return {
       value: null,
@@ -59,6 +59,9 @@ export default {
     onChange(newValue) {
       this.value = newValue
       this.$emit('changed', this.value)
+    },
+    keydownEnter() {
+      this.$emit('keydown.enter.prevent')
     },
   },
 }

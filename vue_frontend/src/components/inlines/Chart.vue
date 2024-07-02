@@ -1,23 +1,26 @@
 <template>
   <div class="chart-container">
-    <Filters
-      v-if="method.filterset_fields"
-      :settings="settings"
-      :filterset-fields="method.filterset_fields"
-      :filter-info-init="filterInfo"
-      @filtered="handleFilter"
-    />
 
-    <template v-if="responseData && responseData.messages">
-      <v-alert
-        v-for="error in responseData.messages"
-        :key="error.title"
-        :title="error.title"
-        :type="error.type"
-        density="compact"
-        variant="tonal"
+    <div class="inline-filters">
+      <Filters
+        v-if="method.filterset_fields"
+        :settings="settings"
+        :filterset-fields="method.filterset_fields"
+        :filter-info-init="filterInfo"
+        @filtered="handleFilter"
       />
-    </template>
+    </div>
+
+      <template v-if="responseData && responseData.messages">
+        <v-alert
+          v-for="error in responseData.messages"
+          :key="error.title"
+          :title="error.title"
+          :type="error.type"
+          density="compact"
+          variant="tonal"
+        />
+      </template>
 
     <div v-if="responseData">
       <template v-for="chart in responseData.charts">

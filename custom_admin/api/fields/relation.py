@@ -10,6 +10,17 @@ from rest_framework.relations import ManyRelatedField, MANY_RELATION_KWARGS
 log = logging.getLogger("base-admin-serializer")
 
 
+def get_str_value(obj):
+    if obj:
+        try:
+            return str(obj)
+        except TypeError as e:
+            log.error(
+                'to_representation error: cant get str from %s with id:%s return None',
+                obj.__class__.__name__, obj.id
+            )
+
+
 class AdminManyRelatedField(ManyRelatedField):
     def run_validation(self, data=empty):
         """
@@ -63,17 +74,11 @@ class AdminPrimaryKeyRelatedField(relations.PrimaryKeyRelatedField):
         if self.pk_field is not None:
             return self.pk_field.to_representation(value.pk)
 
-        def get_str_value(obj):
-            if obj:
-                try:
-                    return str(obj)
-                except TypeError as e:
-                    log.error(
-                        'to_representation error: cant get str from %s with id:%s return None',
-                        obj.__class__.__name__, obj.id
-                    )
+        request = self.context.get('request', None)
+        if request and request.GET.get('full_relations'):
+            return {"id": value.pk, "text": get_str_value(value)}
 
-        return {"id": value.pk, "text": get_str_value(self.instance) or str(value)}
+        return value.pk
 
     def to_internal_value(self, data):
         id = data
