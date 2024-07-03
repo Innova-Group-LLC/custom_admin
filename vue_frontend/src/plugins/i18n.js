@@ -5,6 +5,8 @@ import { getLang } from '/src/utils/auth'
 
 const messages = {
   en: {
+    yes: 'Yes',
+    no: 'No',
     mainPage: 'Main page',
     login: 'Login',
     languageSelection: 'Language selection',
@@ -37,6 +39,8 @@ const messages = {
     },
   },
   ru: {
+    yes: 'Да',
+    no: 'Нет',
     mainPage: 'Главная',
     login: 'Вход',
     languageSelection: 'Выбор языка',

@@ -108,6 +108,8 @@ export default {
       this.updateChoices()
     },
     updateChoices() {
+      if (!this.field.model_name || !this.field.app_label) return
+
       getAutocomplete({
         model_name: this.field.model_name,
         app_label: this.field.app_label,

@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import BooleanField from '/src/components/fields/Boolean.vue'
+import BooleanFilter from '/src/components/fields/BooleanFilter.vue'
 import StringField from '/src/components/fields/String.vue'
 import NumberField from '/src/components/fields/Number.vue'
 import ChoiceField from '/src/components/fields/Choice.vue'
@@ -113,7 +113,7 @@ export default {
       if (str.indexOf(filter.type) !== -1) return StringField
 
       if (['NumberFilter'].indexOf(filter.type) !== -1) return NumberField
-      if (['BooleanField', 'BooleanFilter'].indexOf(filter.type) !== -1) return BooleanField
+      if (['BooleanField', 'BooleanFilter'].indexOf(filter.type) !== -1) return BooleanFilter
     },
     _updateValue(value, filter_name) {
       this.filterInfo.filters[filter_name] = value
