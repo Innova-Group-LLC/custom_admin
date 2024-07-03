@@ -111,7 +111,9 @@ export default {
             toast(this.$t('fixErrors'), {"theme": "auto", "type": "error", "position": "top-center"})
             return
           }
+          console.error('Api error:', error.response.data)
           toast(`Error: ${error.response.data}`, {"theme": "auto", "type": "error", "position": "top-center"})
+          return
         }
         toast(error, {"theme": "auto", "type": "error", "position": "top-center"})
       })
