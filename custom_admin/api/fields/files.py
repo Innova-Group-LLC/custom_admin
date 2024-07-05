@@ -16,7 +16,7 @@ class Base64Serializer(serializers.Serializer):
     file = serializers.CharField(required=False)
 
     def validate_file(self, file):
-        if not file.startswith('data:image'):
+        if not file.startswith('data:'):
             raise ValidationError('Bad base64 format')
         return file
 
