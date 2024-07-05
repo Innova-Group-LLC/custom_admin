@@ -8,7 +8,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from custom_admin.api.actions.delete_action import delete_action
-from custom_admin.api.actions.export_csv_action import export_csv_action
 from custom_admin.controllers import AdminLogManager
 
 log = logging.getLogger('admin')
@@ -26,7 +25,7 @@ class ActionSerializer(serializers.Serializer):
 class AdminActionMixIn:
 
     actions = [
-        delete_action, export_csv_action,
+        delete_action,
     ]
 
     @action(detail=False, methods=['post'], url_path='send_action/(?P<action_name>.+)')

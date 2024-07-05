@@ -3,22 +3,15 @@ import logging
 import typing
 
 from asgiref.sync import sync_to_async
-from django.db.models.fields.related_descriptors import (
-    ForwardManyToOneDescriptor,
-    ManyToManyDescriptor,
-)
+from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor, ManyToManyDescriptor
 from django.utils.decorators import classonlymethod
 from django.utils.translation import gettext as _
 from rest_framework import mixins, serializers, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.parsers import JSONParser, MultiPartParser
 
-from custom_admin.api.actions import AdminActionMixIn, export_csv_action
-from custom_admin.api.backends import (
-    CustomFilterBackend,
-    CustomOrderingFilter,
-    CustomSearchFilter,
-)
+from custom_admin.api.actions import AdminActionMixIn
+from custom_admin.api.backends import CustomFilterBackend, CustomOrderingFilter, CustomSearchFilter
 from custom_admin.api.inline_relation import RelatedInline
 from custom_admin.api.inlines import ViewActionsInlineMixIn
 from custom_admin.api.permissions import AdminPermission, AdminViewPermission
@@ -259,7 +252,7 @@ class ReadOnlyBaseAdminViewSet(
         BaseAdmin,
         viewsets.GenericViewSet,
 ):
-    actions = [export_csv_action]
+    pass
 
 
 class ListBaseAdminViewSet(
@@ -267,4 +260,4 @@ class ListBaseAdminViewSet(
         BaseAdmin,
         viewsets.GenericViewSet,
 ):
-    actions = [export_csv_action]
+    pass

@@ -97,7 +97,6 @@ class ViewActionsInlineMixIn:
             log.exception('Action error:"%s"', str(e))
             raise InlineError(f'Action error: {e}') from e
 
-        # Inlines can have actions as export_csv_inline
         if inline_action:
             return self.perform_action(view_handler, request, handler_result, inline_action, handler_kwargs.get('actions'))
 
