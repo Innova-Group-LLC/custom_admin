@@ -91,6 +91,17 @@ body {
         margin: 2px;
         width: 300px;
     }
+    .filter-button {
+        margin: 2px;
+    }
+}
+.table-button {
+    display: inline-flex;
+    margin: 2px;
+}
+.button-icon {
+    height: 40px!important;
+    width: 40px!important;
 }
 
 .v-data-table__tr:nth-child(2n) {
@@ -159,4 +170,17 @@ body {
 }
 .inline-filters {
     padding: 10px;
+}
+.page-404 {
+    p {
+        color: #FFFFFF;
+    }
+    .dashboard-link {
+        display: block;
+        margin-top: 15px;
+    }
+}
+table { -moz-user-select: none; }
+.settings-append {
+    padding: 25px;
 }

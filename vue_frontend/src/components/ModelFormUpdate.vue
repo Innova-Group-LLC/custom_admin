@@ -3,7 +3,7 @@
   <div>
     <FieldsContainer
       ref="fieldscontainer"
-      formType="edit"
+      form-type="edit"
       :api-info="apiInfo"
       :viewname="viewname"
       :loading="loading"

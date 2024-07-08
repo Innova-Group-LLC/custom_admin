@@ -1,10 +1,11 @@
 import json
 
-from django.conf import os, settings
+from django.conf import settings
 from django.shortcuts import render
 from django.template.exceptions import TemplateDoesNotExist
 from django.views import View
 
+from custom_admin import VERSION
 from custom_admin.utils import get_schema
 
 TEMPLATE_NOT_FOUND = '''
@@ -42,6 +43,7 @@ class CustomAdminView(View):
             'logo_image': logo_image,
             'backend_prefix': backend_prefix,
             'favicon_image': favicon_image,
+            'version': VERSION,
         }
 
         context = {

@@ -228,8 +228,8 @@ export default {
       return false
     },
     canBeDisplayed(field, field_slug, tab_id) {
-      if (this.formType === 'create' && (this.readOnly || field.update_only)) {
-        return false
+      if (this.formType === 'create') {
+        if (this.readOnly || field.read_only || field.update_only) return false
       }
       if (this.formType !== 'create' && field.create_only) {
         return false

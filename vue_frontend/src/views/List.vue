@@ -15,16 +15,27 @@
       </div>
 
       <div class="header-row-actions">
-        <ModelFormCreate
-          v-if="canAdd()"
-          :api-info="apiInfo"
+        <div class="table-button">
+          <ModelFormCreate
+            v-if="canAdd()"
+            :api-info="apiInfo"
 
-          :viewname="viewname"
-          :relation-name-filter="relationNameFilter"
-          :filter-id="filterId"
+            :viewname="viewname"
+            :relation-name-filter="relationNameFilter"
+            :filter-id="filterId"
 
-          @created="createdEvent"
-        />
+            @created="createdEvent"
+          />
+        </div>
+        <div class="table-button">
+          <v-btn
+            variant="outlined"
+            density="compact"
+            class="button-icon"
+            color="secondary"
+            icon="mdi-cog-outline"
+          />
+        </div>
       </div>
 
     </div>
@@ -43,6 +54,7 @@
       :page="pageInfo.page"
 
       @update:sortBy="updateSortBy"
+      @click:row="clickRow"
     >
       <template
         v-for="(header, index) in headers"
@@ -280,7 +292,7 @@ export default {
     $route: {
       immediate: true,
       handler(to, from) {
-        const title = this.apiInfo[this.viewname].title
+        const title = (this.apiInfo[this.viewname] || {}).title
         document.title = `${title} | ${config_dataset.title}`
       }
     },
@@ -323,7 +335,7 @@ export default {
     this.sectionData = this.apiInfo[this.viewname]
     if (!this.sectionData) {
       console.error(`Page ${this.viewname} not found`)
-      this.$router.push({ path: '/404' })
+      gthis.$router.push({ path: '/404' })
       return
     }
 
@@ -474,18 +486,20 @@ export default {
     canRetrieve() {
       return 'retrieve' in this.apiMethods
     },
-    clickRow(row, column, event) {
-      if (column.label && column.label.toLowerCase() === 'id') {
-        if (this.canRetrieve()) {
-          this.openDetail(this.viewname, row.id)
+    clickRow(event, row) {
+      if (event.ctrlKey) {
+        if (!this.selected.includes(row.item.id)) {
+          this.selected.push(row.item.id)
+        } else {
+          this.selected.splice(this.selected.indexOf(row.item.id), 1);
         }
       }
     },
     handleClick(index, row) {
-      if (index !== 0 || !this.canRetrieve()) return
-
-      const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.id}/update`
-      this.$router.push({ path: edit_url } )
+      if (index == 0 && this.canRetrieve()) {
+        const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.id}/update`
+        this.$router.push({ path: edit_url } )
+      }
     },
     handleFilter(newFilterInfo) {
       this.pageInfo.page = 1

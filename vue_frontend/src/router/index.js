@@ -6,6 +6,7 @@ import Dashboard from '/src/views/Dashboard.vue'
 import Login from '/src/views/Login.vue'
 import List from '/src/views/List.vue'
 import Edit from '/src/views/Edit.vue'
+import Page404 from '/src/views/404.vue'
 
 const routes = [
   {
@@ -15,6 +16,10 @@ const routes = [
   {
     path: '/login',
     component: Login,
+  },
+  {
+    path: '/404',
+    component: Page404,
   },
   {
     path: '',

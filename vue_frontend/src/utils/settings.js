@@ -5,6 +5,7 @@ var config_dataset = {
   logo_image: `${import.meta.env.VITE_APP_URL_PREFIX}/static/img/admin-logo.svg`,
   backend_prefix: `${import.meta.env.VITE_APP_URL_PREFIX}/custom_admin/`,
   static_prefix: '/static/custom_admin',
+  version: '-',
 }
 
 if (import.meta.env.PROD) {

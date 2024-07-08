@@ -17,12 +17,20 @@
       <v-select :value="tinyMCETheme" :items="getTinymcethemes()" @update:modelValue="changeTinymcetheme"></v-select>
     </div>
 
+
+    <template v-slot:append>
+      <div class="settings-append">
+        <v-label>Version:</v-label> {{ getConfig().version }}
+      </div>
+    </template>
+
   </v-navigation-drawer>
 
 </template>
 
 <script>
 import { getSettings, setSettings, tinyMCEThemes, getTinyMCETheme } from '/src/utils/settings'
+import { config_dataset } from '/src/utils/settings'
 import Theme from '/src/components/Theme.vue'
 
 export default {
@@ -45,6 +53,9 @@ export default {
     },
     toggle() {
       this.drawer = !this.drawer
+    },
+    getConfig() {
+      return config_dataset
     },
     changeTinymcetheme(value) {
       let settings = getSettings()

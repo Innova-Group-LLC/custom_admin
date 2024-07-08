@@ -11,7 +11,9 @@
         v-bind="activatorProps"
         color="primary"
         @click="open = true"
-      >{{ $t('create') }}</v-btn>
+        icon="mdi-plus"
+        class="button-icon"
+      ></v-btn>
     </template>
 
     <template v-slot:default="{ isActive }">
@@ -31,7 +33,7 @@
         <!-- Form for create new model record -->
         <FieldsContainer
           ref="fieldscontainer"
-          formType="create"
+          form-type="create"
           :api-info="apiInfo"
           :viewname="viewname"
 

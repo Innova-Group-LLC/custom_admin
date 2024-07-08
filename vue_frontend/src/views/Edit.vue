@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'edit-content': true, 'inline-view': inline }">
+  <div :class="{ 'edit-content': true, 'inline-view': inline }" v-if="sectionData">
     <v-card>
       <div class="edit-card-container">
         <v-tabs
@@ -145,8 +145,14 @@ export default {
     }
   },
   created() {
-    this.apiMethods = getMethods(this.viewname, this.apiInfo)
     this.sectionData = this.apiInfo[this.viewname]
+    if (!this.sectionData) {
+      console.error(`Page ${this.viewname} not found`)
+      this.$router.push({ path: '/404' })
+      return
+    }
+
+    this.apiMethods = getMethods(this.viewname, this.apiInfo)
 
     this.deserializeQuery()
   },
@@ -154,7 +160,7 @@ export default {
     $route: {
       immediate: true,
       handler(to, from) {
-        const title = this.apiInfo[this.viewname].title
+        const title = (this.apiInfo[this.viewname] || {}).title
         document.title = `${title} #${this.id} | ${config_dataset.title}`
       }
     },

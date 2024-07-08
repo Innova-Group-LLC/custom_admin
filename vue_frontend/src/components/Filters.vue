@@ -39,7 +39,20 @@
       </template>
     </div>
 
-    <div class="filter-element">
+    <!--
+    <div class="filter-button">
+      <v-btn
+        variant="outlined"
+        density="compact"
+        class="button-icon"
+        @click="applyFilter"
+        color="secondary"
+        icon="mdi-cog-outline"
+      />
+    </div>
+    -->
+
+    <div class="filter-button">
       <v-btn
         @click="applyFilter"
         color="secondary"

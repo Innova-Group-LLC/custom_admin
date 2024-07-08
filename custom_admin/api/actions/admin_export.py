@@ -12,7 +12,11 @@ DATETIME_FORMAT = '%Y-%m-%d_%H:%M:%S'
 
 
 def get_format_choices():
-    from import_export.formats import base_formats
+    try:
+        from import_export.formats import base_formats
+    except ModuleNotFoundError:
+        return ()
+
     return tuple(f.CONTENT_TYPE for f in base_formats.DEFAULT_FORMATS)
 
 
@@ -51,7 +55,7 @@ def admin_export(view, request, queryset, form_data, *args, **kwargs):
     if not file_format:
         raise Exception('"{method}" export format is not found')
 
-    file_format = file_format()
+    file_format = file_format(encoding='utf-8-sig')
 
     dataset = resource().export(queryset)
     export_data = file_format.export_data(dataset=dataset)
@@ -60,7 +64,7 @@ def admin_export(view, request, queryset, form_data, *args, **kwargs):
     response = HttpResponse(export_data, content_type=content_type)
 
     time = datetime.datetime.now().strftime(DATETIME_FORMAT)
-    filename = f'{view.get_view_viewname()}_{time}.csv'
+    filename = f'{view.get_view_viewname()}_{time}.{file_format.get_extension()}'
     response["Content-Disposition"] = 'attachment; filename="%s"' % (filename,)
     response['Pragma'] = filename
 

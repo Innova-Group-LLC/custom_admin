@@ -41,16 +41,16 @@ def admin_import(view, request, queryset, form_data, *args, **kwargs):
         if f.CONTENT_TYPE == method:
             file_format = f
 
-    file_format = file_format()
+    file_format = file_format(encoding='utf-8-sig')
 
-    f = TextIOWrapper(file, encoding='ascii', errors='replace')
+    f = TextIOWrapper(file, encoding='utf-8-sig', errors='replace')
     dataset = file_format.create_dataset(f)
     result = resource.import_data(
         dataset,
         dry_run=False,
-        use_transactions=False,
         collect_failed_rows=True,
-        rollback_on_validation_errors=False,
+        use_transactions=True,
+        rollback_on_validation_errors=True,
     )
 
     if result.has_errors():
