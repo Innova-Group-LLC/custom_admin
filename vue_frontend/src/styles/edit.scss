@@ -65,9 +65,6 @@
             color: rgb(var(--v-theme-primary));
         }
     }
-    .form-error {
-        color: rgb(var(--v-theme-error));
-    }
     .form-title {
         display: inline;
     }
@@ -75,6 +72,9 @@
         display: inline;
         color: rgb(var(--v-theme-error));
     }
+}
+.form-error {
+    color: rgb(var(--v-theme-error));
 }
 
 .model-form-bottom-actions {

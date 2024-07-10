@@ -25,7 +25,7 @@
 
           <template v-for="relationData in sectionData.meta.related_inlines">
             <v-tab
-              :text="relationData.title"
+              :text="getrelationDataTitle(relationData)"
               :value="relationData.inline_slug"
               :prepend-icon="relationData.icon"
             >
@@ -202,6 +202,14 @@ export default {
     modelFormClosed() {
       const list_url = `/${this.group}/${this.viewname}/list`
       this.$router.push({ path: list_url })
+    },
+    getrelationDataTitle(relationData) {
+      if (relationData.title) return relationData.title
+
+      const sectionData = this.apiInfo[relationData.viewset_name]
+      if (sectionData) return sectionData.title
+
+      return relationData.viewset_name
     },
   },
 }

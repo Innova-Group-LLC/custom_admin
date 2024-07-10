@@ -57,10 +57,10 @@
             color="primary"
             @click="createModel"
           />
-      </v-card-actions>
-    </v-card>
-  </template>
-</v-dialog>
+        </v-card-actions>
+      </v-card>
+    </template>
+  </v-dialog>
 </template>
 
 <script>

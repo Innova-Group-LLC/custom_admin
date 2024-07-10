@@ -28,12 +28,10 @@
           />
         </div>
         <div class="table-button">
-          <v-btn
-            variant="outlined"
-            density="compact"
-            class="button-icon"
-            color="secondary"
-            icon="mdi-cog-outline"
+          <PageSettings
+            :api-info="apiInfo"
+            :viewname="viewname"
+            @changed="settingsChanged"
           />
         </div>
       </div>
@@ -264,6 +262,7 @@
 </template>
 
 <script>
+import { getViewsetsSettings } from '/src/utils/settings'
 import moment from 'moment'
 import { toast } from "vue3-toastify"
 import { getMethods } from '/src/api/scheme'
@@ -272,12 +271,14 @@ import { getSettings, setSettings, config_dataset } from '/src/utils/settings'
 import { sendAction } from '/src/api/sendAction'
 
 import ModelFormCreate from '/src/components/ModelFormCreate.vue'
+import PageSettings from '/src/components/PageSettings.vue'
 import Filters from '/src/components/Filters.vue'
 
 export default {
   components: {
     ModelFormCreate,
     Filters,
+    PageSettings,
   },
   props: {
     apiInfo: {type: Object, required: true},
@@ -410,7 +411,7 @@ export default {
       })
     },
     getHeader(field, name) {
-      if (! this.canDisplayInList(field, name)) return
+      if (!this.canDisplayInList(field, name)) return
 
       let headerData = {
         title: field.label,
@@ -433,8 +434,13 @@ export default {
     getHeaders() {
       let result = []
 
+      const settings = getViewsetsSettings(this.viewname, this.sectionData.meta.serializer)
+
       if (!this.sectionData.meta.filds_list) {
         for (const [name, field] of Object.entries(this.sectionData.meta.serializer)) {
+
+          if (!settings.headers[name]) continue
+
           const headerData = this.getHeader(field, name)
           if (headerData) result.push(headerData)
         }
@@ -448,6 +454,8 @@ export default {
           console.error(`Field ${field_name} is not presented in serializer fields`)
           return
         }
+
+        if (!settings.headers[name]) continue
 
         const headerData = this.getHeader(field, name)
         if (headerData) result.push(headerData)
@@ -592,6 +600,9 @@ export default {
         if (choice.value === value) return choice.display_name
       }
       return value
+    },
+    settingsChanged() {
+      this.headers = this.getHeaders()
     },
   }
 }

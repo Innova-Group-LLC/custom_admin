@@ -67,8 +67,8 @@
                   >
                     <v-card flat>
                       <component
-                        v-if="getFieldComponent(field)"
-                        :is="getFieldComponent(field)"
+                        v-if="getFieldComponent(field, translation.slug)"
+                        :is="getFieldComponent(field, translation.slug)"
 
                         density="comfortable"
                         variant="filled"
@@ -92,8 +92,8 @@
 
               <template v-else>
                 <component
-                  v-if="getFieldComponent(field)"
-                  :is="getFieldComponent(field)"
+                  v-if="getFieldComponent(field, field_slug)"
+                  :is="getFieldComponent(field, field_slug)"
 
                   density="comfortable"
                   variant="filled"
@@ -130,6 +130,7 @@
 </template>
 
 <script>
+import { getCustomField } from '/src/components/custom-fields/index.js'
 // Contains a list of tabs and a list of fields
 
 import BooleanField from '/src/components/fields/Boolean.vue'
@@ -196,7 +197,10 @@ export default {
     }
   },
   methods: {
-    getFieldComponent(field) {
+    getFieldComponent(field, field_slug) {
+      const custom_field = getCustomField(this.viewname, field_slug)
+      if (custom_field) return custom_field
+
       if (['boolean'].indexOf(field.type) !== -1) return BooleanField
       if (['integer', 'decimal', 'float'].indexOf(field.type) !== -1) return NumberField
       if (['list', 'choice'].indexOf(field.type) !== -1) return ChoiceField

@@ -17,7 +17,7 @@ Are you sure its ORM viewset?'''
 
 @dataclass
 class RelatedInline:
-    title: str
+    title: typing.Optional[str] = None
 
     # manage.py custom-admin-viewsets-list
     viewset_name: str

@@ -26,13 +26,13 @@
 import { toast } from "vue3-toastify"
 import { defaultProps, validateProps } from '/src/utils/fields.js'
 
-//import { vanillaRenderers } from '@jsonforms/vue-vanilla';
+import { vanillaRenderers } from '@jsonforms/vue-vanilla';
 
- import { vuetifyRenderers } from '@jsonforms/vue-vuetify';
+//import { vuetifyRenderers } from '@jsonforms/vue-vuetify';
 
 const renderers = [
-  ...vuetifyRenderers,
-//  ...vanillaRenderers,
+  //...vuetifyRenderers,
+  ...vanillaRenderers,
 ];
 
 const requiredFields = {

@@ -5,6 +5,7 @@ import { getLang } from '/src/utils/auth'
 
 const messages = {
   en: {
+    sectionSettings: 'Section settings',
     notFoundPageHeadline: 'Page not found',
     notFoundPageTitle: 'The page you were looking for does not exist',
     notFoundPageGoBack: 'Go back to Dashboard',
@@ -42,6 +43,7 @@ const messages = {
     },
   },
   ru: {
+    sectionSettings: 'Настройки раздела',
     notFoundPageHeadline: 'Страница не найдена',
     notFoundPageTitle: 'Страница, которую вы искали, не существует',
     notFoundPageGoBack: 'Вернуться на главную страницу',
