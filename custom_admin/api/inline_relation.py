@@ -17,12 +17,12 @@ Are you sure its ORM viewset?'''
 
 @dataclass
 class RelatedInline:
-    title: typing.Optional[str] = None
-
     # manage.py custom-admin-viewsets-list
     viewset_name: str
 
     inline_slug: str
+
+    title: typing.Optional[str] = None
 
     # In case of ORM related viewset
     back_relation_name: typing.Optional[str] = None

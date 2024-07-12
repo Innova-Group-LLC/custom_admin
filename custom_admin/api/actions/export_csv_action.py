@@ -62,6 +62,8 @@ def base_export_csv(filename: str, columns: typing.List, lines: typing.List):
     icon='mdi-application-export',
 )
 def export_csv_action(view, request, queryset, *args, **kwargs):
+    'Depricated'
+
     serializer_class = view().get_serializer_class()
     serializer = serializer_class(queryset, many=True, context={'request': request})
 

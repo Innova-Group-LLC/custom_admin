@@ -21,7 +21,11 @@ class AdminViewSetInfo:
         from custom_admin.api.views import BaseAdminDataViewSet, BaseAdminViewSet
 
         for view_class_path in self.views:
-            view = import_string(view_class_path)
+            try:
+                view = import_string(view_class_path)
+            except ModuleNotFoundError as e:
+                raise ModuleNotFoundError(f'Cannot import admin viewset "{view_class_path}": {e}') from e
+
             assert issubclass(view, (BaseAdminDataViewSet, BaseAdminViewSet)), f'Admin viewset "{view_class_path}" {view.__name__} must be instance of BaseAdminDataViewSet or BaseAdminViewSet'
             yield view
 

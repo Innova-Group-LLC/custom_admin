@@ -7,6 +7,7 @@ from rest_framework import serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from custom_admin.api.actions.action_result import ActionResult
 from custom_admin.api.actions.delete_action import delete_action
 from custom_admin.controllers import AdminLogManager
 
@@ -62,22 +63,25 @@ class AdminActionMixIn:
 
         actions_result = await action_fn(self, request, qs, form_data)
 
+        if isinstance(actions_result, ActionResult):
+            action_response = actions_result.to_response()
+
         if isinstance(actions_result, (tuple, list)):
             action_messages, code = actions_result
 
             if isinstance(action_messages, (str)) or action_messages.__class__.__name__ == '__proxy__':
                 action_messages = [action_messages]
 
-            action_request = Response({'action_messages': action_messages}, status=code)
+            action_response = Response({'action_messages': action_messages}, status=code)
 
         elif isinstance(actions_result, (Response, HttpResponse)):
-            action_request = actions_result
+            action_response = actions_result
 
         else:
             raise NotImplementedError(f'actions_result type {actions_result.__class__} is not implemented')
 
         await sync_to_async(self.log_action)(action_name, actions_dict[action_name].short_description, request)
-        return action_request
+        return action_response
 
     def log_action(self, action_name: str, short_description: str, request):
         AdminLogManager(self.request.user).register_action(
