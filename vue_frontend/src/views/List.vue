@@ -258,6 +258,18 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model="persistentMessageDialog" max-width="1200">
+      <v-card>
+
+        <v-card-text v-html="persistentMessage"></v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn :text="$t('close')" variant="elevated" @click="persistentMessageDialog = false"></v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
   </div>
 </template>
 
@@ -268,7 +280,7 @@ import { toast } from "vue3-toastify"
 import { getMethods } from '/src/api/scheme'
 import { getList } from '/src/api/getList'
 import { getSettings, setSettings, config_dataset } from '/src/utils/settings'
-import { sendAction } from '/src/api/sendAction'
+import { sendAction, downloadContent } from '/src/api/sendAction'
 
 import ModelFormCreate from '/src/components/ModelFormCreate.vue'
 import PageSettings from '/src/components/PageSettings.vue'
@@ -323,6 +335,9 @@ export default {
       actionFormDialogOpen: false,
       actionSelected: null,
       actionLoading: false,
+
+      persistentMessageDialog: false,
+      persistentMessage: null,
     }
   },
   created() {
@@ -576,6 +591,27 @@ export default {
         relationNameFilter: this.relationNameFilter,
         relfilterid: this.filterId,
       }).then(response => {
+
+        if(response.headers['content-type'] !== 'application/json') {
+          const fileName = response.headers['pragma'] || `${moment().format('DD.MM.YYYY_HH:MM')}.csv`
+          downloadContent(
+            response.data, fileName, response.headers['content-type']
+          )
+        }
+        else {
+          if (response.data.action_messages) {
+            toast(response.data.action_messages.join('<br>'), {
+              "type": "success",
+              "position": "top-center",
+              "dangerouslyHTMLString": true
+            })
+          }
+          if (response.data.persistent_message) {
+            this.persistentMessageDialog = true
+            this.persistentMessage = response.data.persistent_message
+          }
+        }
+
         this.actionDialogConfirmation = false
         this.actionFormDialogOpen = false
         this.actionLoading = false

@@ -37,19 +37,6 @@ export async function sendAction(actinInfo) {
         'Accept-Language': getLang(),
       },
     }).then(response => {
-      if(response.headers['content-type'] !== 'application/json') {
-        const fileName = response.headers['pragma'] || `${moment().format('DD.MM.YYYY_HH:MM')}.csv`
-        downloadContent(
-          response.data, fileName, response.headers['content-type']
-        )
-      }
-      else {
-        toast(response.data.action_messages.join('<br>'), {
-          "type": "success",
-          "position": "top-center",
-          "dangerouslyHTMLString": true
-        })
-      }
       resolve(response)
     }).catch(error => {
       if (error.response) {
