@@ -19,6 +19,12 @@
   --jse-theme-color: rgb(var(--v-theme-primary));
   --jse-text-color-inverse: rgb(var(--v-theme-darken3));
 }
+.jse-readonly {
+    cursor: not-allowed;
+    .jse-menu {
+        display: none !important;
+    }
+}
 
 .jse-menu {
     background: rgb(var(--v-theme-primary)) !important;
@@ -180,7 +186,6 @@ body {
         margin-top: 15px;
     }
 }
-table { -moz-user-select: none; }
 .settings-append {
     padding: 25px;
 }

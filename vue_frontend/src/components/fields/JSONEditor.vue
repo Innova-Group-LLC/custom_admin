@@ -1,5 +1,9 @@
 <template>
-  <JsonEditorVue v-model="value" :class="{ 'jse-theme-dark': this.$vuetify.theme.current.dark }"/>
+  <JsonEditorVue
+    v-model="value"
+    :class="{ 'jse-theme-dark': this.$vuetify.theme.current.dark, 'jse-readonly': readOnly }"
+    :read-only="readOnly"
+  />
 </template>
 
 <script>

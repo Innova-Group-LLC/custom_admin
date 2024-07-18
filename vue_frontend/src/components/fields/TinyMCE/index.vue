@@ -1,5 +1,5 @@
 <template>
-  <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
+  <div :class="{ fullscreen: fullscreen, 'tinymce-disabled': readOnly }" class="tinymce-container" :style="{width:containerWidth}">
     <textarea :id="tinymceId" class="tinymce-textarea" />
   </div>
 </template>
@@ -111,7 +111,8 @@ export default {
         selector: `#${this.tinymceId}`,
         language: 'en',
         height: this.height,
-        body_class: 'panel-body',
+        content_style: ".panel-readonly { cursor: not-allowed; }",
+        body_class: 'panel-body ' + this.readOnly ? 'panel-readonly' : '',
         object_resizing: false,
         toolbar: toolbar,
         menubar: menubar,

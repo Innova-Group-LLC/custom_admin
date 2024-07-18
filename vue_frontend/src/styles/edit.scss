@@ -113,3 +113,8 @@
         margin-bottom: 5px;
     }
 }
+.tinymce-disabled {
+    .mce-top-part {
+        display: none;
+    }
+}
