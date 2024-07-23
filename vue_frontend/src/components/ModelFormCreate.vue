@@ -105,13 +105,13 @@ export default {
       this.loading = true
       this.$refs.fieldscontainer.updateErrors({})
       sendData(
-        method.url.replace("{id}", this.id),
+        method.url.replace("{pk}", this.pk),
         method.methodHttp,
         this.formData,
       ).then(response => {
         this.loading = false
         if (response) {
-          let message = this.$t('modelCreated').replace('{id}', response.id)
+          let message = this.$t('modelCreated').replace('{pk}', response.pk)
           toast(message, {"theme": "auto", "type": "success", "position": "top-center"})
         }
         this.open = false

@@ -1,5 +1,6 @@
 import asyncio as aio
 import logging
+from typing import Awaitable, Callable
 
 from asgiref.sync import sync_to_async
 from django.http import HttpResponse
@@ -15,7 +16,7 @@ log = logging.getLogger('admin')
 
 
 class ActionSerializer(serializers.Serializer):
-    ids = serializers.ListField(child=serializers.CharField(), required=False)
+    pks = serializers.ListField(child=serializers.CharField(), required=False)
     form_data = serializers.JSONField(required=False, allow_null=True)
 
     send_to_all = serializers.BooleanField(default=False)
@@ -34,7 +35,7 @@ class AdminActionMixIn:
         serializer = ActionSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        ids = serializer.validated_data['ids']
+        pks = serializer.validated_data['pks']
         send_to_all = serializer.validated_data['send_to_all']
         form_data = serializer.validated_data['form_data']
 
@@ -50,16 +51,16 @@ class AdminActionMixIn:
         qs = await sync_to_async(self.filter_queryset)(qs)
 
         if not send_to_all:
-            qs = qs.filter(pk__in=ids)
+            qs = qs.filter(pk__in=pks)
 
         relfilterid = serializer.validated_data.get('relfilterid')
         relfilter = serializer.validated_data.get('relfilter')
         if relfilterid and relfilter:
             qs = qs.filter(**{relfilter: relfilterid})
 
-        action_fn = actions_dict[action_name]
+        action_fn: Awaitable[Callable] = actions_dict[action_name]
         if not aio.iscoroutinefunction(action_fn):
-            action_fn = sync_to_async(action_fn)
+            raise Exception('Decorator "admin_action" is required for admin actions')
 
         actions_result = await action_fn(self, request, qs, form_data)
 

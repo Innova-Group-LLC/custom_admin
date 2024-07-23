@@ -19,14 +19,14 @@ export function downloadContent(data, fileName, type) {
 
 export async function sendAction(actinInfo) {
   return new Promise((resolve, reject) => {
-    console.log('Send action', actinInfo.action, actinInfo.ids, actinInfo.sendToAll, actinInfo.formData)
+    console.log('Send action', actinInfo.action, actinInfo.pks, actinInfo.sendToAll, actinInfo.formData)
 
     const url = `${config_dataset.backend_prefix}${actinInfo.viewname}/send_action/${actinInfo.action}/`
     request({
       url: url,
       method: 'post',
       data: {
-        ids: actinInfo.ids,
+        pks: actinInfo.pks,
         form_data: actinInfo.formData,
 
         send_to_all: actinInfo.sendToAll,

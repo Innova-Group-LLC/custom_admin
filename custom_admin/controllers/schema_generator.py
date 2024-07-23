@@ -125,18 +125,18 @@ class ViewSetSchemaGenerator:
                     )
                 )
 
-            if 'id' not in serializer_info.keys():
-                raise Exception(
-                    f'Make sure that {serializer.__class__.__name__} have id field'
-                )
+            if self.model:
+                pk_name = self.model._meta.pk.name
+                if pk_name not in serializer_info.keys():
+                    raise Exception(
+                        f'Make sure that {serializer.__class__.__name__} have pk "{pk_name}" field'
+                    )
 
         return serializer, serializer_info
 
     def _get_list_display(self, serializer_info, serializer):
         list_display = getattr(self.viewset, 'list_display', None)
         if list_display:
-            if 'id' not in list_display:
-                list_display = list(list_display) + ['id']
 
             for field_display in list_display:
                 if field_display not in serializer_info.keys():
@@ -244,6 +244,7 @@ class ViewSetSchemaGenerator:
             'fixed_columns': getattr(self.viewset, 'fixed_columns', []),
             'actions': self._get_actions_info(getattr(self.viewset, "actions", [])),
             'translations': self._get_translations_info(serializer),
+            'pk_name': self.model._meta.pk.name if self.model else None,
         }
 
         lookup = self.router.get_lookup_regex(self.viewset)

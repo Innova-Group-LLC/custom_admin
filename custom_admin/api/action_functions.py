@@ -1,5 +1,8 @@
+import asyncio as aio
 import functools
 import typing
+
+from asgiref.sync import sync_to_async
 
 ACTION_ATTRIBUTES = [
     'description',
@@ -44,8 +47,12 @@ def admin_action(
             func.form_serializer = form_serializer
 
         @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            result = func(*args, **kwargs)
-            return result
+        async def wrapper(*args, **kwargs):
+
+            f = func
+            if not aio.iscoroutinefunction(func):
+                f = sync_to_async(func)
+            return await f(*args, **kwargs)
+
         return wrapper
     return decorator

@@ -21,12 +21,12 @@ export function getBreadcrumbs(apiInfo, router, route) {
   }
 
   if (route.name === 'edit') {
-    const edit_url = `/${sectionData.group}/${route.params.viewname}/${route.params.id}/update`
+    const edit_url = `/${sectionData.group}/${route.params.viewname}/${route.params.pk}/update`
     path.push({
       to: edit_url,
-      title: `${sectionData.title} #${route.params.id}`,
+      title: `${sectionData.title} #${route.params.pk}`,
       viewname: route.params.viewname,
-      id: route.params.id,
+      pk: route.params.pk,
     })
   }
 

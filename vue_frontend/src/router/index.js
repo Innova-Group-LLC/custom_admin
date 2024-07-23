@@ -31,7 +31,7 @@ const routes = [
         component: Dashboard,
       },
       {
-        path: ':group/:viewname/:id/:mode',
+        path: ':group/:viewname/:pk/:mode',
         props: true,
         name: 'edit',
         component: Edit,

@@ -63,7 +63,7 @@
 
           <template v-if="header.field.type === 'primary'">
             <v-tooltip v-if="item[header.key]">
-              #{{ item[header.key].id }}
+              #{{ item[header.key].pk }}
               <template v-slot:activator="{ props }">
                 <v-chip size="small" v-bind="props">{{ item[header.key].text }}</v-chip>
               </template>
@@ -520,7 +520,14 @@ export default {
     },
     handleClick(index, row) {
       if (index == 0 && this.canRetrieve()) {
-        const edit_url = `/${this.sectionData.group}/${this.viewname}/${row.id}/update`
+        const pkValue = row[this.sectionData.meta.pk_name]
+
+        if (!this.sectionData.meta.pk_name || !pkValue) {
+          console.error(`PK value "${this.sectionData.meta.pk_name}" not found in row:`, row)
+          return
+        }
+
+        const edit_url = `/${this.sectionData.group}/${this.viewname}/${pkValue}/update`
         this.$router.push({ path: edit_url } )
       }
     },
@@ -585,7 +592,7 @@ export default {
       sendAction({
         viewname: this.viewname,
         action: this.actionSelected,
-        ids: this.selected,
+        pks: this.selected,
         formData: this.actionFormData || {},
         sendToAll: this.actionToAll,
         relationNameFilter: this.relationNameFilter,

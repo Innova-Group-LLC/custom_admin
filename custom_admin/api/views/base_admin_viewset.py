@@ -132,15 +132,15 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
     filter_backends = [
         CustomSearchFilter, CustomOrderingFilter, CustomFilterBackend
     ]
-    search_fields = ['id']
-    ordering_fields = ['id']
-    ordering = ['-id']
+    search_fields = ['pk']
+    ordering_fields = ['pk']
+    ordering = ['-pk']
     filterset_fields = []
 
-    fixed_columns = ('id',)
+    fixed_columns = ('pk',)
 
     # Set None for diplay all fields
-    filds_list = ['id']
+    filds_list = ['pk']
 
     related_inlines: typing.List[RelatedInline] = []
 

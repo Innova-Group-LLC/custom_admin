@@ -92,7 +92,7 @@ export default {
   props: {
     settings: {type: Object, required: true},
 
-    id: {type: String, required: true},
+    pk: {type: String, required: true},
     method: {type: Object, required: true},
   },
   emits: ["changed"],
@@ -139,7 +139,7 @@ export default {
     getInlineData() {
       this.loadData = true
       this.responseData = null
-      const url = this.method.url.replace("{id}", this.id)
+      const url = this.method.url.replace("{pk}", this.pk)
       getList({
         url: url,
         method: this.method.methodHttp,

@@ -36,7 +36,7 @@ export default {
     apiInfo: {type: Object, required: true},
     viewname: {type: String, required: true},
     group: {type: String, required: false},
-    id: {type: String, required: true},
+    pk: {type: String, required: true},
   },
   emits: ["closed"],
   data() {
@@ -59,7 +59,7 @@ export default {
       }
 
       this.loading = true
-      getDetail(method.url.replace("{id}", this.id),
+      getDetail(method.url.replace("{pk}", this.pk),
         method.methodHttp,
         this.sectionData
       ).then(response => {
@@ -93,13 +93,13 @@ export default {
       this.$refs.fieldscontainer.updateErrors({})
       this.loading = true
       sendData(
-        method.url.replace("{id}", this.id),
+        method.url.replace("{pk}", this.pk),
         method.methodHttp,
         this.formData,
       ).then(response => {
         this.loading = false
         if (response) {
-          let message = this.$t('modelUpdated').replace('{id}', response.id)
+          let message = this.$t('modelUpdated').replace('{pk}', response.pk)
           toast(message, {"theme": "auto", "type": "success", "position": "top-center"})
         }
         this.$emit('closed')

@@ -48,7 +48,7 @@
             <ModelFormUpdate
               :api-info="apiInfo"
               :viewname="viewname"
-              :id="id"
+              :pk="pk"
               :group="group"
 
               @closed="modelFormClosed"
@@ -67,7 +67,7 @@
                 v-if="getInlineComponent(method)"
                 :is="getInlineComponent(method)"
 
-                :id="id"
+                :pk="pk"
                 :method="method"
                 :settings="settings"
               />
@@ -92,14 +92,14 @@
                 :viewname="relationData.viewset_name"
                 :settings="settings"
                 :relation-name-filter="relationData.back_relation_name"
-                :filterId="id"
+                :filterId="pk"
               />
               <Edit
                 v-else
                 :settings="settings"
                 :viewname="relationData.viewset_name"
                 :api-info="apiInfo"
-                :id="id"
+                :pk="pk"
                 :inline="true"
                 mode="update"
               />
@@ -131,7 +131,7 @@ export default {
 
     group: {type: String, required: false},
     viewname: {type: String, required: false},
-    id: {type: String, required: false},
+    pk: {type: String, required: false},
     mode: {type: String, required: false},
   },
   components: {

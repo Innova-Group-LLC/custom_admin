@@ -75,7 +75,7 @@ import { getList } from '/src/api/getList'
 
 export default {
   props: {
-    id: {type: String, required: true},
+    pk: {type: String, required: true},
     method: {type: Object, required: true},
     settings: {type: Object, required: true},
   },
@@ -114,7 +114,7 @@ export default {
       this.inlineData = {}
       this.errors = null
 
-      const url = this.method.url.replace("{id}", this.id)
+      const url = this.method.url.replace("{pk}", this.pk)
       getList({
         url: url,
         method: this.method.methodHttp,

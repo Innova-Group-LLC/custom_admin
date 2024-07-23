@@ -89,7 +89,7 @@ export function getMethods(viewname, apiInfo) {
       let url = config_dataset.backend_prefix + `${viewname}/`
 
       if (routeData.detail) {
-        url = `${url}{id}/`
+        url = `${url}{pk}/`
       }
       if (routeData.inline_type) {
         url = `${url}${methodName}/`

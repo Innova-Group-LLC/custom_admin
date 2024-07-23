@@ -32,7 +32,7 @@ export function getList(kwargs) {
       }
     }
 
-    // For format {"id": int, "text": String}
+    // For format {"pk": int, "text": String}
     params.append('full_relations', true);
 
     const fillUrl = `${kwargs.url}?${params.toString()}`

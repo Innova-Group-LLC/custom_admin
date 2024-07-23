@@ -76,19 +76,19 @@ class AdminPrimaryKeyRelatedField(relations.PrimaryKeyRelatedField):
 
         request = self.context.get('request', None)
         if request and request.GET.get('full_relations'):
-            return {"id": value.pk, "text": get_str_value(value)}
+            return {"pk": value.pk, "text": get_str_value(value)}
 
         return value.pk
 
     def to_internal_value(self, data):
-        id = data
+        _id = data
         text = None
         if isinstance(data, dict):
-            id = data.get('id')
+            _id = data.get('pk')
             text = data.get('text')
 
         if self.pk_field is not None:
-            id = self.pk_field.to_internal_value(id)
+            _id = self.pk_field.to_internal_value(_id)
         queryset = self.get_queryset()
         try:
             return queryset.get(pk=id)
