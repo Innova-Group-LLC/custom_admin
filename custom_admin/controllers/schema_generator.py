@@ -127,7 +127,7 @@ class ViewSetSchemaGenerator:
 
             if self.model:
                 pk_name = self.model._meta.pk.name
-                if pk_name not in serializer_info.keys():
+                if pk_name not in serializer_info.keys() and 'id' not in serializer_info.keys():
                     raise Exception(
                         f'Make sure that {serializer.__class__.__name__} have pk "{pk_name}" field'
                     )

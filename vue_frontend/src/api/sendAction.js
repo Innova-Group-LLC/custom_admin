@@ -17,21 +17,27 @@ export function downloadContent(data, fileName, type) {
   aElement.dispatchEvent(eElelent)
 }
 
-export async function sendAction(actinInfo) {
+export async function sendAction(kwargs) {
   return new Promise((resolve, reject) => {
-    console.log('Send action', actinInfo.action, actinInfo.pks, actinInfo.sendToAll, actinInfo.formData)
+    console.log(`Send action "${kwargs.action}"`, kwargs.pks, kwargs.sendToAll, kwargs.formData)
 
-    const url = `${config_dataset.backend_prefix}${actinInfo.viewname}/send_action/${actinInfo.action}/`
+    let url = `${config_dataset.backend_prefix}${kwargs.viewname}/send_action/${kwargs.action}/`
+
+    if (kwargs.filter_info) {
+      const filter_info = encodeURIComponent(JSON.stringify(kwargs.filter_info))
+      url = `${url}?filter_info=${filter_info}`
+    }
+
     request({
       url: url,
       method: 'post',
       data: {
-        pks: actinInfo.pks,
-        form_data: actinInfo.formData,
+        pks: kwargs.pks,
+        form_data: kwargs.formData,
 
-        send_to_all: actinInfo.sendToAll,
-        relfilter: actinInfo.relationNameFilter,
-        relfilterid: actinInfo.relfilterid,
+        send_to_all: kwargs.sendToAll,
+        relfilter: kwargs.relationNameFilter,
+        relfilterid: kwargs.relfilterid,
       },
       headers: {
         'Accept-Language': getLang(),

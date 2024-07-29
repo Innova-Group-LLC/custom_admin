@@ -60,7 +60,9 @@ class AdminActionMixIn:
 
         action_fn: Awaitable[Callable] = actions_dict[action_name]
         if not aio.iscoroutinefunction(action_fn):
-            raise Exception('Decorator "admin_action" is required for admin actions')
+            raise Exception(
+                f'Decorator "admin_action" is required for {self.get_view_viewname()}.{action_name} (is not coroutine function)'
+            )
 
         actions_result = await action_fn(self, request, qs, form_data)
 

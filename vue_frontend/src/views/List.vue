@@ -595,6 +595,7 @@ export default {
         pks: this.selected,
         formData: this.actionFormData || {},
         sendToAll: this.actionToAll,
+        filter_info: this.filterInfo,
         relationNameFilter: this.relationNameFilter,
         relfilterid: this.filterId,
       }).then(response => {

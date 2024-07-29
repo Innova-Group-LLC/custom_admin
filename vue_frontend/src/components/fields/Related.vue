@@ -20,7 +20,7 @@
     hide-selected
 
     :return-object="false"
-    item-value="id"
+    item-value="pk"
     item-title="text"
 
     :append-inner-icon="isMany() ? 'mdi-relation-many-to-many' : 'mdi-relation-many-to-one'"
