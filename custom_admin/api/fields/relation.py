@@ -91,13 +91,13 @@ class AdminPrimaryKeyRelatedField(relations.PrimaryKeyRelatedField):
             _id = self.pk_field.to_internal_value(_id)
         queryset = self.get_queryset()
         try:
-            return queryset.get(pk=id)
+            return queryset.get(pk=_id)
 
         except ObjectDoesNotExist:
             raise ValidationError(_('The option ‘%(title)s’ is not among the available options.') % {'title': text or id})
 
         except (TypeError, ValueError):
-            self.fail('incorrect_type', data_type=type(id).__name__)
+            self.fail('incorrect_type', data_type=type(_id).__name__)
 
     def get_queryset(self):
         qs = super().get_queryset()

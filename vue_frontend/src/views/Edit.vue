@@ -161,7 +161,7 @@ export default {
       immediate: true,
       handler(to, from) {
         const title = (this.apiInfo[this.viewname] || {}).title
-        document.title = `${title} #${this.id} | ${config_dataset.title}`
+        document.title = `${title} #${this.pk} | ${config_dataset.title}`
       }
     },
   },

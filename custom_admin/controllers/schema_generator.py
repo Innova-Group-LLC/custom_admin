@@ -213,6 +213,14 @@ class ViewSetSchemaGenerator:
             pass
         return result
 
+    def get_pk_name(self):
+        if hasattr(self.viewset, 'lookup_url_kwarg') or hasattr(self.viewset, 'lookup_field'):
+            return self.viewset.lookup_url_kwarg or self.viewset.lookup_field
+
+        if self.model:
+            self.model._meta.pk.name
+
+        return None
 
     def get_viewset_urls(self) -> dict:
         viewset_urls = {}
@@ -244,7 +252,7 @@ class ViewSetSchemaGenerator:
             'fixed_columns': getattr(self.viewset, 'fixed_columns', []),
             'actions': self._get_actions_info(getattr(self.viewset, "actions", [])),
             'translations': self._get_translations_info(serializer),
-            'pk_name': self.model._meta.pk.name if self.model else None,
+            'pk_name': self.get_pk_name(),
         }
 
         lookup = self.router.get_lookup_regex(self.viewset)
