@@ -89,10 +89,10 @@ class ViewActionsInlineMixIn:
 
         inline_action = request.GET.get('inline_action')
 
-        pk = kwargs.pop('pk', None)
-
         try:
-            handler_result: typing.Optional[InlineResultInterface] = view_handler(request, pk, filters, page, page_size, inline_action, *args, **kwargs)
+            handler_result: typing.Optional[InlineResultInterface] = view_handler(
+                request=request, filters=filters, page=page, page_size=page_size, inline_action=inline_action, *args, **kwargs
+            )
         except Exception as e:
             log.exception('Action error:"%s"', str(e))
             raise InlineError(f'Action error: {e}') from e
