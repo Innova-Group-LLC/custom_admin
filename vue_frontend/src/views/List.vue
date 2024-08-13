@@ -82,7 +82,7 @@
           </template>
 
           <template v-else-if="header.field.type === 'choice'">
-            <template v-if="item[header.key]">
+            <template v-if="item[header.key] !== null && item[header.key] !== undefined">
               <template v-if="Object.keys(header.field.tag_style || {}).length > 0">
                 <v-chip
                   size="small"

@@ -37,7 +37,6 @@
           v-model="currentTab"
           class="edit-page-tabs"
         >
-
           <!-- Main tab -->
           <v-tabs-window-item
             v-if="isDisplayMainTab()"
