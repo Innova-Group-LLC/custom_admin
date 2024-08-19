@@ -52,7 +52,7 @@ export default {
       this.value = initFormData[this.fieldSlug]
     },
     onChange(newValue) {
-      this.value = newValue
+      this.value = newValue === undefined ? null : newValue
       this.$emit('changed', this.value)
     },
   },

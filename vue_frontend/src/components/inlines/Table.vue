@@ -51,7 +51,7 @@
 
             <v-pagination
               class="list-pagination"
-              v-if="count > 0"
+              v-if="getLength() > 0"
               v-model="pageInfo.page"
               :length="getLength()"
               :total-visible="6"
@@ -85,7 +85,7 @@ export default {
       perPageOptions: [25, 50, 100, 150],
       inlineData: {},
       listLoading: false,
-      count: 0,
+      numPages: 0,
       filterInfo: {
         search: null,
         filters: {},
@@ -122,7 +122,7 @@ export default {
         filter_info: this.filterInfo,
       }).then(response => {
         this.inlineData = response
-        this.count = this.inlineData.count
+        this.numPages = this.inlineData.num_pages
 
         this.listLoading = false
       }).catch(error => {
@@ -137,8 +137,7 @@ export default {
       })
     },
     getLength() {
-      if (!this.pageData) return 0
-      return parseInt((this.pageData.count || 0) / this.pageInfo.limit)
+      return this.numPages || 0
     },
     changePagination() {
       let settings = getSettings()
