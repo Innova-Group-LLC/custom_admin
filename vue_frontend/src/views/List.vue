@@ -11,6 +11,7 @@
           :settings="settings"
           :viewname="viewname"
           @filtered="handleFilter"
+          :loading="listLoading"
         />
       </div>
 

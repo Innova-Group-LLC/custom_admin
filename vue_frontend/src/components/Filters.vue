@@ -57,6 +57,7 @@
         @click="applyFilter"
         color="secondary"
         prepend-icon="mdi-magnify"
+        :disabled="loading"
       >{{ $t('apply') }}</v-btn>
     </div>
   </div>
@@ -78,6 +79,7 @@ export default {
     filtersetFields: {type: Object, required: true},
     filterInfoInit: {type: Object, required: false},
     viewname: {type: String, required: false},
+    loading: {type: Boolean, required: false},
   },
   emits: ["filtered"],
   data() {
@@ -132,6 +134,7 @@ export default {
       this.filterInfo.filters[filter_name] = value
     },
     applyFilter() {
+      if (this.loading) return
       this.$emit('filtered', this.filterInfo)
     },
   },

@@ -8,19 +8,20 @@
         :filterset-fields="method.filterset_fields"
         :filter-info-init="filterInfo"
         @filtered="handleFilter"
+        :loading="listLoading"
       />
     </div>
 
     <template v-if="inlineData && inlineData.messages">
       <div class="table-messages">
-      <v-alert
-        v-for="message in inlineData.messages"
-        :key="message.title"
-        :title="message.title"
-        :type="message.type"
-        density="compact"
-        variant="tonal"
-      />
+        <v-alert
+          v-for="message in inlineData.messages"
+          :key="message.title"
+          :title="message.title"
+          :type="message.type"
+          density="compact"
+          variant="tonal"
+        />
       </div>
     </template>
 
