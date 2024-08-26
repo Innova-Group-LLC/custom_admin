@@ -133,7 +133,7 @@ class BaseAdmin(AdminActionMixIn, BaseAdminDataViewSet, AsyncMixin):
         CustomSearchFilter, CustomOrderingFilter, CustomFilterBackend
     ]
     lookup_field = 'id'
-    search_fields = ['pk']
+    search_fields = []
     ordering_fields = ['pk']
     ordering = ['-pk']
     filterset_fields = []

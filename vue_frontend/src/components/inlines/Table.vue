@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="list-page">
 
     <div class="inline-filters">
       <Filters
@@ -12,17 +12,20 @@
     </div>
 
     <template v-if="inlineData && inlineData.messages">
+      <div class="table-messages">
       <v-alert
-        v-for="error in inlineData.messages"
-        :key="error.title"
-        :title="error.title"
-        :type="error.type"
+        v-for="message in inlineData.messages"
+        :key="message.title"
+        :title="message.title"
+        :type="message.type"
         density="compact"
         variant="tonal"
       />
+      </div>
     </template>
 
     <v-data-table
+      v-if="!listLoading"
       class="model-table"
       :items="inlineData.data || []"
       :loading="listLoading"
@@ -34,8 +37,10 @@
     >
 
       <template v-for="column in inlineData.columns" v-slot:[`item.${column}`]="{ item }">
-        <div v-html="item[column]" v-if="isHTML(column)"></div>
-        <div v-else>{{ item[column] }}</div>
+        <div :class="{ 'table-cell': true }">
+          <div class="cell-string" v-html="item[column]" v-if="isHTML(column)"></div>
+          <div class="cell-string" v-else>{{ item[column] }}</div>
+        </div>
       </template>
 
       <template v-slot:bottom>
@@ -64,6 +69,16 @@
       </template>
 
     </v-data-table>
+
+    <template v-else-if="listLoading">
+      <div class="chart-loader">
+        <v-progress-circular
+          :size="50"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+      </div>
+    </template>
 
   </div>
 </template>
@@ -110,7 +125,7 @@ export default {
       return info.html
     },
     getInlineData() {
-      this.listLoading = false
+      this.listLoading = true
       this.inlineData = {}
       this.errors = null
 
