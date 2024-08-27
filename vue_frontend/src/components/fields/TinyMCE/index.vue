@@ -12,10 +12,10 @@ import { wysiwygTypes } from '@/utils/settings'
 import { config_dataset } from '@/utils/settings'
 import { getSettings, getTinyMCETheme } from '/src/utils/settings'
 
-const plugins = ['advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount accordion']
+const plugins = ['advlist anchor autolink autosave code codesample colorpicker colorpicker contextmenu directionality emoticons fullscreen hr image imagetools insertdatetime link lists media nonbreaking noneditable pagebreak paste preview print save searchreplace spellchecker tabfocus table template textcolor textpattern visualblocks visualchars wordcount accordion customLink']
 const toolbar = [
   'searchreplace undo redo | bold italic underline strikethrough blockquote removeformat | alignleft aligncenter alignright outdent indent | subscript superscript code codesample',
-  'hr bullist numlist link image charmap anchor pagebreak insertdatetime media table forecolor backcolor add-accordion | preview fullscreen'
+  'hr bullist numlist link image charmap anchor pagebreak insertdatetime media table forecolor backcolor add-accordion customLink | preview fullscreen'
 ]
 const menubar = 'file edit insert view format table'
 
@@ -101,7 +101,8 @@ export default {
         skin_url: `${config_dataset.static_prefix}/tinymce/${skin}`,
 
         external_plugins: {
-          accordion: `${config_dataset.static_prefix}/tinymce/plugins/accordion/plugin.js`
+          accordion: `${config_dataset.static_prefix}/tinymce/plugins/accordion/plugin.js`,
+          customLink: `${config_dataset.static_prefix}/tinymce/plugins/customLink/plugin.js`
         },
 
         plugin_preview_width: "1200",
