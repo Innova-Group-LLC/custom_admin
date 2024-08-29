@@ -1,6 +1,5 @@
 tinymce.PluginManager.add('customLink', function (editor, url) {
   editor.contentCSS.push(url + '/css/link.css');
-  console.log(editor.contentCSS);
   editor.addButton('customLink', {
     text: 'Custom Link',
     icon: false,
@@ -62,6 +61,16 @@ tinymce.PluginManager.add('customLink', function (editor, url) {
             },
           },
         ],
+        // onOpen: function () {
+        //   console.log('onOpen');
+        //   const win = editor.windowManager.getWindows()[0];
+        //   const firstInput = win.$el.find('input')[0];
+        //   console.log(win.$el.find('input')[0]);
+        //   win.$el.find('input')[0].focus();
+        //   if (firstInput) {
+        //     firstInput.focus();
+        //   }
+        // }
       });
 
       const validationRules = {
