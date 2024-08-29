@@ -1,6 +1,5 @@
 tinymce.PluginManager.add('customLink', function (editor, url) {
   editor.contentCSS.push(url + '/css/link.css');
-  console.log(editor.contentCSS);
   editor.addButton('customLink', {
     text: 'Custom Link',
     icon: false,
@@ -61,7 +60,7 @@ tinymce.PluginManager.add('customLink', function (editor, url) {
               editor.windowManager.close();
             },
           },
-        ],
+        ]
       });
 
       const validationRules = {
