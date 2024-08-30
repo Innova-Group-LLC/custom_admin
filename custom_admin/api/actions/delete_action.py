@@ -14,6 +14,10 @@ RELATED_ERROR = _('It is not possible to delete some model instances because the
 )
 def delete_action(view, request, queryset, *args, **kwargs):
     try:
+        # Get rid of distinct in case of "Cannot call delete() after .distinct()"
+        if queryset.query.distinct or queryset.query.distinct_fields:
+            queryset = queryset.model.objects.filter(pk__in=queryset.values_list('pk'))
+
         queryset.delete()
     except ProtectedError as e:
         return RELATED_ERROR % {'objects': ", ".join([str(obj) for obj in e.protected_objects])}, 400
