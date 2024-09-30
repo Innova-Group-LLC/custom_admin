@@ -173,7 +173,7 @@
                 class="list-pagination-per-page"
                 v-model="pageInfo.limit"
                 :items="perPageOptions"
-                @update:modelValue="changePagination"
+                @update:modelValue="value => {this.pageInfo.page = 1; changePagination(value)}"
               ></v-select>
             </div>
           </template>
@@ -187,7 +187,7 @@
           :length="getLength()"
           :total-visible="5"
           size="40"
-          @update:modelValue="changePagination"
+          @update:modelValue="value => changePagination(value)"
         ></v-pagination>
       </div>
 
@@ -489,9 +489,10 @@ export default {
     },
     changePagination() {
       let settings = getSettings()
-      settings.page_size = this.pageInfo.limit,
+      settings.page_size = this.pageInfo.limit
       setSettings(settings)
 
+      console.log('console.log', settings, this.pageInfo.page)
       this.selected = []
       this.serializeQuery()
       this.getListData()
