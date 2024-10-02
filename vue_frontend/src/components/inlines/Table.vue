@@ -52,7 +52,7 @@
               class="list-pagination-per-page"
               v-model="pageInfo.limit"
               :items="perPageOptions"
-              @update:modelValue="changePagination"
+              @update:modelValue="value => {this.pageInfo.page = 1; changePagination(value)}"
             ></v-select>
 
             <v-pagination
@@ -62,7 +62,7 @@
               :length="getLength()"
               :total-visible="6"
               size="40"
-              @update:modelValue="changePagination"
+              @update:modelValue="value => changePagination(value)"
             ></v-pagination>
           </v-row>
 
