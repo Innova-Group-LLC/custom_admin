@@ -116,6 +116,7 @@ export default {
           toast(message, {"theme": "auto", "type": "success", "position": "top-center"})
         }
         this.open = false
+        this.formData = {}
         this.$emit('created')
       }).catch(error => {
         this.loading = false
